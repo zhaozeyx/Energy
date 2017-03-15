@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+  <FrameLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      >
+
+    <SurfaceView
+        android:id="@+id/preview_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        />
+
+    <com.shudongedu.energy.codebar.view.ViewfinderView
+        android:id="@+id/viewfinder_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="430dp"
+        android:gravity="center"
+        android:text="@string/code_bar_capture_prompt_text"
+        android:textColor="@color/font_color_white"
+        android:textSize="@dimen/font_size_large"
+        />
+
+  </FrameLayout>
+  <CheckBox
+      android:id="@+id/flashlight_btn"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentBottom="true"
+      android:layout_centerHorizontal="true"
+      android:layout_marginBottom="48dp"
+      android:checked="false"
+      android:button="@null"
+      />
+</RelativeLayout>

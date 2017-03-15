@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+  <com.shudongedu.energy.ui.basic.widget.ScrollWebView
+      android:id="@+id/xm_life_webview"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layerType="software"
+      android:overScrollMode="ifContentScrolls"
+      android:scrollbars="none"
+      />
+
+  <FrameLayout android:id="@+id/loading_layout"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      >
+    <android.support.v4.widget.ContentLoadingProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="visible"
+        style="?android:attr/progressBarStyleLarge"
+        />
+  </FrameLayout>
+
+</FrameLayout>

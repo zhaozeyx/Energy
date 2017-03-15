@@ -1,0 +1,177 @@
+.card-bottom {
+    display: flex;
+    display: -webkit-flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+i.icon-t,
+i.icon-b {
+    width: 5px;
+    height: 13px;
+    background-size: 5px 13px;
+    display: inline-block;
+    margin-left: .5rem;
+}
+
+.icon-t {
+    background-image: url(../images/top@2.png);
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.icon-b {
+    background-image: url(../images/bottom@2.png);
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.card-bottom .center {
+    text-align: center;
+    width: 8rem;
+    height: 8rem;
+    margin-top: -4.5rem;
+    background-color: white;
+    border-radius: 50%;
+    position: relative;
+}
+
+.card-bottom .center #monthStat {
+    width: 8rem;
+    height: 8rem;
+    border-radius: 50%;
+}
+
+.card-bottom .center .info {
+    position: absolute;
+    top: 1.8rem;
+    width: 8rem;
+    height: 8rem;
+}
+
+.card-bottom .center p {
+    line-height: .4rem;
+}
+
+.center p.describe {
+    color: #1e8fee;
+    font-size: .8rem;
+}
+
+.center p.num {
+    color: #333;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.center p.unit {
+    color: #888;
+    font-size: .6rem;
+}
+
+
+/*图表容器样式*/
+
+#yearPower {
+    width: 100%;
+    height: 10rem;
+}
+
+#classifyChart {
+    width: 100%;
+    height: 10rem;
+    margin-bottom: 1rem;
+}
+
+#weekChart {
+    width: 100%;
+    height: 10rem;
+}
+
+
+/*用电分类*/
+
+.col-25 .item {
+    text-align: center;
+    padding: .4rem;
+}
+
+.col-25 .item small {
+    color: #888888;
+}
+
+.col-25 .item p {
+    font-size: .8rem;
+    font-weight: bold;
+    margin: 0;
+    color: #646464;
+}
+
+.col-25 .item div[class^='icon'] {
+    background-size: 47.5px;
+    width: 47.5px;
+    height: 47.5px;
+    margin: 0 auto;
+}
+
+.col-25 .item .icon-zm {
+    background: url(../images/zm@2.png) center center no-repeat;
+}
+
+.col-25 .item .icon-kt {
+    background: url(../images/kt@2.png) center center no-repeat;
+}
+
+.col-25 .item .icon-dl {
+    background: url(../images/dl@2.png) center center no-repeat;
+}
+
+.col-25 .item .icon-ts {
+    background: url(../images/ts@2.png) center center no-repeat;
+}
+
+
+/*月度限额公里表*/
+
+.gauge-content {
+    display: flex;
+    display: -webkit-flex;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+}
+
+.gauge-content P {
+    line-height: .6rem;
+}
+
+.gauge-content .l {
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+}
+
+.gauge-content .c {}
+
+.gauge-content .r {
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+}
+
+.gauge-content .t p:first-child,
+.gauge-content .b p:first-child {
+    color: #7d7d7d;
+}
+
+.gauge-content #gaugeChart {
+    width: 8rem;
+    height: 8rem;
+}
+
+
+/*副级页面顶部样式*/

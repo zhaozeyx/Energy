@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.shudongedu.energy"
+    >
+
+  <!-- 使用opengles 2.0 -->
+
+  <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+  <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+  <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+  <uses-permission android:name="android.permission.INTERNET"/>
+  <!-- 闪光灯 -->
+  <uses-permission android:name="android.permission.FLASHLIGHT"/>
+  <!-- 二维码扫描相关的权限 -->
+  <uses-permission android:name="android.permission.CAMERA"/>
+  <uses-permission android:name="android.permission.VIBRATE"/>
+
+  <application
+      android:name="com.shudongedu.energy.CustomApp"
+      android:allowBackup="true"
+      android:icon="@mipmap/ic_launcher"
+      android:label="@string/app_name"
+      android:largeHeap="true"
+      android:supportsRtl="true"
+      android:theme="@style/AppTheme"
+      tools:replace="android:icon"
+      >
+    <activity
+        android:name="com.shudongedu.energy.BootActivity"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme.NoActionBar">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+    </activity>
+    <activity
+        android:name=".ui.tab.MainTabActivity"
+        android:screenOrientation="portrait"/>
+    <activity
+        android:name=".ui.login.LoginActivity"
+        android:screenOrientation="portrait"
+        android:windowSoftInputMode="adjustPan|stateVisible"/>
+    <activity
+        android:name=".ui.home.EnergyDetailActivity"
+        android:screenOrientation="portrait"/>
+    <activity
+        android:name=".codebar.CodeBarCaptureActivity"
+        android:screenOrientation="portrait"/>
+    <!-- Glide Module  -->
+    <meta-data
+        android:name="com.shudongedu.energy.utils.imageloader.GlideImageModule"
+        android:value="GlideModule"
+        />
+    <meta-data
+        android:name="com.bumptech.glide.integration.okhttp3.OkHttpGlideModule"
+        android:value="GlideModule"
+        tools:node="remove"
+        />
+  </application>
+
+</manifest>

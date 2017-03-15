@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>MyApp secondary</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="./sui/css/sm.min.css">
+    <link rel="stylesheet" href="./sui/css/sm-extend.min.css">
+    <link rel="stylesheet" href="./css/common.css">
+    <link rel="stylesheet" href="./css/index.css">
+    <script src="./js/echarts.js"></script>
+    <script type='text/javascript' src='./sui/js/zepto.min.js' charset='utf-8'></script>   
+    <script type='text/javascript' src='./js/config.js' charset='utf-8'></script>
+
+</head>
+
+<body>
+    <div class="page-group">
+        <div class="page page-current" id="routers-step-2'">
+            <!-- 你的html代码 -->
+            <div class="content">
+
+                <!--周统计开始-->
+                <div class="card noneMargin bgColor">
+                    <div class="card-content">
+                        <div class="card-content-inner">
+                            <div id="weekChart"></div>
+                            <div class="dateOption" style="margin-bottom:0;">
+                                <button class="button prev"><i class="icon icon-left"></i> 上一周</button>
+                                <button class="button center">2017-01-07-2017-01-14</button>
+                                <button class="button next">下一周 <i class="icon icon-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!--周统计结束-->
+
+                <!--月度数据开始-->
+                <div class="content-block-title">月度数据</div>
+                <div class="card noneMargin">
+                    <div class="card-content">
+                        <div class="card-content-inner">
+                            <div class="gauge-content">
+                                <div class="l">
+                                    <div class="t">
+                                        <p>同比</p>
+                                        <p><strong>30%</strong> <i class="icon-t"></i></p>
+                                    </div>
+                                    <div class="border-t" style="width:2rem;margin:.5rem 0;"></div>
+                                    <div class="b">
+                                        <p>单位面积能耗</p>
+                                        <P><strong>44</strong></P>
+                                    </div>
+                                </div>
+                                <div class="c">
+                                    <div id="gaugeChart"></div>
+                                </div>
+                                <div class="r">
+                                    <div class="t">
+                                        <p>同比</p>
+                                        <p><strong>30%</strong> <i class="icon-b"></i></p>
+                                    </div>
+                                    <div class="border-t" style="width:2rem;margin:.5rem 0;"></div>
+                                    <div class="b">
+                                        <p>人均能耗</p>
+                                        <P><strong>44</strong></P>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--月度数据结束-->
+
+                <!--能耗分类开始-->
+                <div class="content-block-title" onclick="performClick('能耗分类')">能耗分类</div>
+                <div class="card noneMargin">
+                    <div class="card-content">
+                        <div class="card-content-inner">
+                            <div id="classifyChart"></div>
+                            <div class="list-block">
+                                <ul>
+                                    <li class="item-content">
+                                        <div class="item-media">
+                                            <i class="icon icon-app"></i>
+                                        </div>
+                                        <div class="item-inner">
+                                            <div class="item-title">照明插座用电</div>
+                                            <div class="item-after">201.3千瓦时</div>
+                                        </div>
+                                    </li>
+                                    <li class="item-content">
+                                        <div class="item-media">
+                                            <i class="icon icon-app"></i>
+                                        </div>
+                                        <div class="item-inner">
+                                            <div class="item-title">空调用电</div>
+                                            <div class="item-after">201.3千瓦时</div>
+                                        </div>
+                                    </li>
+                                    <li class="item-content">
+                                        <div class="item-media">
+                                            <i class="icon icon-app"></i>
+                                        </div>
+                                        <div class="item-inner">
+                                            <div class="item-title">动力用电</div>
+                                            <div class="item-after">201.3千瓦时</div>
+                                        </div>
+                                    </li>
+                                    <li class="item-content">
+                                        <div class="item-media">
+                                            <i class="icon icon-app"></i>
+                                        </div>
+                                        <div class="item-inner">
+                                            <div class="item-title">特殊用电</div>
+                                            <div class="item-after">201.3千瓦时</div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--能耗分类结束-->
+                <div class="list-block"></div>
+
+            </div>
+        </div>
+    </div>
+
+    <script type='text/javascript' src='./sui/js/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='./sui/js/sm-extend.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='./js/secondary.js' charset='utf-8'></script>
+    <script type='text/javascript' src='./js/bridge.js' charset='utf-8'></script>
+
+    <script type="text/javascript">
+        function performClick(data) {
+          console.log('secondary click   ' + data);
+          window.WebViewJavascriptBridge.callHandler('onClick', data, function(responseData){});
+        }
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <array name="main_tab_titles">
+    <item>首页</item>
+    <item>能耗分析</item>
+    <item>重要参数</item>
+    <item>设备状态</item>
+    <item>个人</item>
+  </array>
+
+  <array name="task_tab_titles">
+    <item>我负责的</item>
+    <item>我发起的</item>
+    <item>抄送我的</item>
+  </array>
+</resources>

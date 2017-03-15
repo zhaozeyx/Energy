@@ -1,0 +1,104 @@
+apply plugin: 'com.android.application'
+apply plugin: 'realm-android'
+
+buildscript {
+  repositories {
+    mavenCentral()
+    jcenter()
+  }
+  dependencies {
+    classpath 'com.android.tools.build:gradle:2.3.0'
+    classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
+    classpath 'io.realm:realm-gradle-plugin:0.91.0'
+  }
+}
+
+android {
+  compileSdkVersion 24
+  buildToolsVersion '25.0.0'
+
+  defaultConfig {
+    applicationId "com.shudongedu.energy"
+    minSdkVersion 19
+    targetSdkVersion 24
+    versionCode 1
+    versionName "1.0"
+  }
+
+  sourceSets {
+    main {
+      jniLibs.srcDirs = ['libs']
+    }
+  }
+
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    }
+  }
+
+  lintOptions {
+    checkReleaseBuilds false
+    abortOnError false
+  }
+
+  packagingOptions {
+    exclude  'META-INF/rxjava.properties'
+  }
+}
+
+repositories {
+  mavenCentral()
+  jcenter()
+  maven { url "https://jitpack.io" }
+}
+
+apply plugin: 'com.neenbedankt.android-apt'
+//apply plugin: 'com.bugtags.library.plugin'
+//bugtags {
+//  //自动上传符号表功能配置，如果需要根据 build varint 配置，请参考插件详细使用说明
+//  appKey "67fa6fe3a054500306262132ef4bfe55" //这里是你的 appKey
+//  appSecret "APP_SECRET" //这里是你的 appSecret，管理员在设置页可以查看
+//  mappingUploadEnabled true
+//
+//  //网络跟踪功能配置
+//  trackingNetworkEnabled true
+//}
+
+dependencies {
+  compile fileTree(include: ['*.jar'], dir: 'libs')
+  testCompile 'junit:junit:4.12'
+  compile 'com.android.support:appcompat-v7:24.2.0'
+  compile 'com.android.support:design:24.2.0'
+  apt 'com.google.dagger:dagger-compiler:2.0.1'
+  provided 'org.glassfish:javax.annotation:10.0-b28'
+  compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
+  compile 'com.squareup:otto:1.3.6'
+  compile 'com.jakewharton:butterknife:7.0.1'
+  compile 'com.squareup.okhttp3:okhttp:3.2.0'
+  compile 'com.github.bumptech.glide:glide:3.7.0'
+  compile 'com.github.bumptech.glide:okhttp3-integration:1.4.0@aar'
+  compile 'com.google.dagger:dagger:2.0.1'
+  compile 'com.squareup.retrofit2:retrofit:2.0.2'
+  compile 'com.squareup.retrofit2:converter-gson:2.0.2'
+  compile 'com.jakewharton.timber:timber:4.1.2'
+  compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
+  compile 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
+  compile 'com.f2prateek.rx.preferences:rx-preferences:1.0.1'
+  compile 'com.malinskiy:superrecyclerview:1.1.3'
+  compile 'com.github.chrisbanes:PhotoView:1.2.6'
+  compile 'com.facebook.fresco:fresco:0.9.0'
+  compile 'com.avast:android-styled-dialogs:2.3.3'
+  compile 'com.android.support:multidex:1.0.1'
+  compile 'com.github.d-max:spots-dialog:0.4@aar'
+  compile 'net.grandcentrix.tray:tray:1.0.0-rc3'
+  compile 'com.bugtags.library:bugtags-lib:latest.integration'
+  compile 'com.youth.banner:banner:1.4.1'
+  compile 'de.hdodenhof:circleimageview:2.1.0'
+  compile 'com.github.frank-zhu:pullzoomview:1.0.0'
+  compile 'com.google.zxing:core:3.2.1'
+  compile 'io.reactivex.rxjava2:rxjava:2.0.6'
+  compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+  compile 'com.github.lzyzsd:jsbridge:1.0.4'
+}
