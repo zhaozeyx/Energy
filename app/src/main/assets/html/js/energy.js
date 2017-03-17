@@ -8,8 +8,8 @@ var Chart = function () {
         grid: {
             show: true,
             top: '30',
-            left: '0',
-            right: '0',
+           	left: '3%',
+			right: '3.5%',
             bottom: '0',
             containLabel: true,
             borderColor: borderColor,
@@ -28,6 +28,7 @@ var Chart = function () {
         },
         xAxis: [
             {
+            boundaryGap: false,
                 type: 'category',
                 data: week,
                 axisLine: {
@@ -89,27 +90,7 @@ var Chart = function () {
                 scale: true
             }
         ],
-        series: [
-            {
-                symbolSize: 0,
-                name: '2016',
-                type: 'line',
-                stack: '总量',
-                smooth: true,
-                itemStyle: {
-                    normal: {
-                        width: 1,
-                        color: 'rgba(255, 255, 255, .4)'
-                    }
-                },
-                //图像区域颜色
-                areaStyle: {
-                    normal: {
-                        color: 'rgba(255, 255, 255, .3)'
-                    }
-                },
-                data: [120, 132, 101, 134, 90, 230, 210]
-            },
+        series: [           
             {
                 name: '2017',
                 type: 'line',
@@ -129,9 +110,6 @@ var Chart = function () {
                 },
                 //图像区域颜色
                 areaStyle: {
-                    //                    normal: {
-                    //                        color: 'rgba(255, 255, 255,.5)'
-                    //                    }
                     normal: {
                         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                             offset: 1,

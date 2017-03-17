@@ -37,7 +37,7 @@ var yearPower = function() {
 		grid: {
 			show: true,
 			left: '0',
-			right: '0',
+			right: '1.9%',
 			bottom: '0',
 			top: '35',
 			borderColor: '#f5f5f5',
@@ -49,6 +49,7 @@ var yearPower = function() {
 			data: [prevYear + '年', currentYear + '年']
 		},
 		xAxis: [{
+		 	boundaryGap : false,
 			type: 'category',
 			data: prevYearMonth,
 			axisLine: {
@@ -279,7 +280,7 @@ function deployData(data) {
 	//能耗总览		
 	var energyTotal = '<ul>' +
 		'<li>' +
-		'<a href="secondary.html" class="item-link item-content" external>' +
+		'<a href="secondary.html?typeid=01000" class="item-link item-content" external>' +
 		'<div class="item-media"><i class="icon icon-f7"></i></div>' +
 		'<div class="item-inner">' +
 		'<div class="item-title">电</div>' +
@@ -288,7 +289,7 @@ function deployData(data) {
 		'</a>' +
 		'</li>' +
 		'<li >' +
-		'<a href="energy.html" class="item-link item-content" external>' +
+		'<a href="secondary.html?typeid=02000" class="item-link item-content" external>' +
 		'<div class="item-media"><i class="icon icon-f7"></i></div>' +
 		'<div class="item-inner">' +
 		'<div class="item-title">水</div>' +
@@ -296,19 +297,23 @@ function deployData(data) {
 		'</div>' +
 		'</a>' +
 		'</li>' +
-		'<li class="item-content item-link">' +
+		'<li>' +
+		'<a href="secondary.html?typeid=07000" class="item-link item-content" external>' +
 		'<div class="item-media"><i class="icon icon-f7"></i></div>' +
 		'<div class="item-inner">' +
-		'<div class="item-title">暖</div>' +
+		'<div class="item-title">煤</div>' +
 		'<div class="item-after">'+data.totalCoal+'</div>' +
 		'</div>' +
+		'</a>' +
 		'</li>' +
-		'<li class="item-content item-link">' +
+		'<li>' +
+		'<a href="secondary.html?typeid=03000" class="item-link item-content" external>' +
 		'<div class="item-media"><i class="icon icon-f7"></i></div>' +
 		'<div class="item-inner">' +
 		'<div class="item-title">天然气</div>' +
 		'<div class="item-after">'+data.totalGas+'</div>' +
 		'</div>' +
+		'</a>' +
 		'</li>' +
 		'</ul>';
 	$('#energyTotal').html(energyTotal);
@@ -316,6 +321,5 @@ function deployData(data) {
 
 //初始化图表
 $(function() {
-
 	indexPost()
 });

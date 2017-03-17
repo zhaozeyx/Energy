@@ -1,20 +1,195 @@
 var api = 'http://192.168.4.14:8080';
-var weekKey = [],
+var	path;
+var fEnergytype = window.location.href.split('=')[1]; //页面类型参数
+var week = [],
+	weekKey = [],
 	weekVal = [];
+var prevYearData = [],
+	currentYearData = [];	
+var firstData,
+	lastData;
 var borderColor = 'rgba(255,255,255,.2)';
+var unit;
 var newDate = new Date();
 var getYear = newDate.getFullYear(), //当前年
- 	getDay = newDate.getDate(), //当天
+	prevYear = getYear - 1, //上一年
+	getDay = newDate.getDate(), //当天
 	getMonth = newDate.getMonth() + 1; //当月
-var getDate = getYear+"-"+((getMonth)<10?"0":"")+(getMonth)+"-"+(getDay<10?"0":"")+getDay;
-var weekData = { "fDatacenterid": "1", "fEnergytype": "01000", "theTime": getDate, "op": "init" };
+var getDate = getYear + "-" + ((getMonth) < 10 ? "0" : "") + (getMonth) + "-" + (getDay < 10 ? "0" : "") + getDay;
 
+//判断当前页面能耗类型
+switch (fEnergytype) 
+{ 
+  case '01000': 
+  $('#yearPK').hide();
+  path = '/monitor/api/electricityIndex';
+  postData(path);
+  unit = '千瓦时';
+  console.log('电');
+  break; 
+  case '02000':  
+  $('#energyType').hide();
+  path = '/monitor/api/waterIndex';
+  postData(path);
+  unit = '吨';
+  console.log('水');
+  break; 
+  case '07000': 
+  $('#energyType').hide();
+  path = '/monitor/api/coalIndex';
+  postData(path);
+  unit = 'MJ';
+  console.log('煤');
+  break; 
+  case '03000':
+  $('#energyType').hide();
+  path = '/monitor/api/gasIndex';
+  postData(path);
+  unit = '立方米';
+  console.log('天然气');
+  break; 
+
+}
+
+//年度曲线
+var yearPower = function() {
+	var Month = [1,2,3,4,5,6,7,8,9,10,11,12];
+	var yearChart = echarts.init(document.getElementById('yearPower'));
+	var option = {
+		title: {
+			text: '(年度)',
+			textStyle: {
+				color: 'rgba(0,0,0,.5)',
+				fontSize: 14,
+				fontWeight: 'none'
+			}
+		},
+		tooltip: {
+			show: true,
+			trigger: 'axis',
+			borderColor: '#f00',
+			backgroundColor: 'rgba(0,0,0,.3)',
+			axisPointer: {
+				lineStyle: {
+					color: '#a5c5eb'
+				}
+			}
+		},
+		grid: {
+			show: true,
+			left: '0',
+			right: '1.9%',
+			bottom: '0',
+			top: '35',
+			borderColor: '#f5f5f5',
+			borderWidth: 1,
+			containLabel: true
+		},
+		legend: {
+			show: true,
+			data: [prevYear + '年', getYear + '年']
+		},
+		xAxis: [{
+		 	boundaryGap : false,
+			type: 'category',
+			data: Month,
+			axisLine: {
+				show: true,
+				lineStyle: {
+					color: '#f5f5f5' // x轴底线颜色
+				}
+			},
+			axisTick: {
+				show: true,
+				lineStyle: {
+					color: 'none'
+				}
+			},
+			splitLine: {
+				show: true,
+				lineStyle: {
+					color: '#f5f5f5'
+				}
+			},
+			axisLabel: {
+				show: true,
+				textStyle: {
+					color: 'rgba(0,0,0,.5)' //x轴文字颜色
+				}
+			}
+		}],
+		yAxis: [{
+			type: 'value',
+			//name:'千瓦时',
+			nameTextStyle: {
+				color: '#646464'
+			},
+			axisLine: {
+				show: true,
+				lineStyle: {
+					color: '#f5f5f5' //y轴底线颜色
+				}
+			},
+			axisLabel: {
+				show: true,
+				textStyle: {
+					color: 'rgba(0,0,0,.5)' //y轴文字颜色
+				}
+			},
+			splitLine: {
+				show: false
+			},
+		}],
+		series: [{
+				symbolSize: 0,
+				name: prevYear + '年',
+				type: 'line',
+				stack: '总量',
+				smooth: true,
+				itemStyle: {
+					normal: {
+						width: 1,
+						color: 'rgb(187, 228, 249)'
+					}
+				},
+				//图像区域颜色
+				areaStyle: {
+					normal: {
+						color: 'rgb(214,236,247)'
+					}
+				},
+				data: prevYearData
+			},
+			{
+				name: getYear + '年',
+				type: 'line',
+				stack: '总量',
+				smooth: true,
+				symbolSize: 0,
+				itemStyle: {
+					normal: {
+						width: 1,
+						color: 'rgb(165, 197, 235)'
+					}
+				},
+				//图像区域颜色
+				areaStyle: {
+					normal: {
+						color: 'rgb(212, 232, 255)'
+					}
+				},
+				data: currentYearData
+			}
+		]
+	};
+	// 使用刚指定的配置项和数据显示图表。
+	yearChart.setOption(option);
+};
 
 //饼图分类
 var classifyChart = function(data) {
 	var myChart = echarts.init(document.getElementById('classifyChart'));
 	var option = {
-		//color: ['#2e75b6', '#73de2b', '#f2f354', '#ea5d7f'],
 		tooltip: {
 			trigger: 'item',
 			formatter: "{a} <br/>{b} : {c} ({d}%)"
@@ -91,14 +266,14 @@ var classifyChart = function(data) {
 };
 
 //码表统计
-var gaugeChart = function() {
+var gaugeChart = function(total, monthOnStd) {
 	var myChart = echarts.init(document.getElementById('gaugeChart'));
 	var option = {
 		tooltip: {
 			formatter: "{a} <br/>{b} : {c}%"
 		},
 		series: [{
-			name: '业务指标',
+			//name: '业务指标',
 			type: 'gauge',
 			radius: '90%',
 			//仪表盘轴线配置
@@ -135,15 +310,15 @@ var gaugeChart = function() {
 			},
 			//仪表盘详细数据            
 			detail: {
-				formatter: '{value}%',
+				formatter: total,
 				offsetCenter: [0, '80%'],
 				textStyle: {
 					fontSize: 18
 				}
 			},
 			data: [{
-				value: 90,
-				name: 'Kwh'
+				value: monthOnStd,
+				//name: 'Kwh'
 			}]
 		}]
 	};
@@ -152,21 +327,14 @@ var gaugeChart = function() {
 
 //周统计图表
 var weekChart = function() {
-	var week = []
-	$.each(weekKey,function(index){
 
-		week.push(this.substring(5,10))
-//		alert(this.substring(5,9))
-	})
-	
-	
 	var myChart = echarts.init(document.getElementById('weekChart'));
 	var option = {
 		grid: {
 			show: true,
 			top: '30',
-			left: '0',
-			right: '0',
+			left: '3%',
+			right: '3.5%',
 			bottom: '0',
 			containLabel: true,
 			borderColor: borderColor,
@@ -184,6 +352,7 @@ var weekChart = function() {
 			}
 		},
 		xAxis: [{
+			boundaryGap: false,
 			type: 'category',
 			data: week,
 			axisLine: {
@@ -213,7 +382,7 @@ var weekChart = function() {
 		}],
 		yAxis: [{
 			type: 'value',
-			name: '（千瓦时）',
+			name: unit,
 			nameTextStyle: {
 				color: 'rgba(255,255,255,.9)'
 			},
@@ -272,17 +441,17 @@ var weekChart = function() {
 				}
 
 			},
-			data:weekVal
+			data: weekVal
 		}]
 	};
 	myChart.setOption(option);
 };
 
 //数据请求
-function postData() {
+function postData(path) {
 	$.ajax({
 		type: 'POST',
-		url: api + '/monitor/api/electricityIndex',
+		url: api + path,
 		data: JSON.stringify({ "fDatacenterid": "1" }),
 		contentType: 'application/json',
 		timeout: 10000,
@@ -299,7 +468,8 @@ function postData() {
 }
 
 //最近七天数据
-function curveByWeek() {
+function curveByWeek(fEnergytype,getdata,op) {	
+	var weekData = { "fDatacenterid": "1", "fEnergytype": fEnergytype, "theTime": getdata, "op": op };	
 	$.ajax({
 		type: 'POST',
 		url: api + '/monitor/api/curveByWeek',
@@ -307,20 +477,59 @@ function curveByWeek() {
 		contentType: 'application/json',
 		timeout: 10000,
 		success: function(res) {
-			//alert(JSON.stringify(res));
 			var res = res.data;
-			var yearData = res[getYear];
-			$.each(yearData, function(key,val) {
+			if($.isEmptyObject( res )){
+				alert('查询数据不存在')
+			}
+			weekKey.splice(0,weekKey.length);//清空数组 
+			weekVal.splice(0,weekVal.length);//清空数组 
+			week.splice(0,week.length);//清空数组 
+			$.each(res, function(key, val) {
 				weekKey.push(key);
 				weekVal.push(val);
 			});
+
+			$.each(weekKey, function(index) {
+				week.push(this.substring(5, 100))
+			})
+			var weekKeyFirst = weekKey[0].toString();
+			var weekKeyLast = weekKey.pop().toString();
+				firstData = weekKeyFirst;
+				lastData = weekKeyLast;
+
 			weekChart();
+			//最近7天数据索引显示
+			$('#contentWeek').text(weekKeyFirst + ' -- ' + weekKeyLast);
+			//日期对比	
+			var start=new Date(getDate.replace("-", "/").replace("-", "/"));  
+			var end=new Date(lastData.replace("-", "/").replace("-", "/"));  
+			console.log(start,end)
+			if(end<start){
+				$('#nextWeek').removeAttr('disabled');
+			}else if(end>=start){
+				$('#nextWeek').attr('disabled','disabled');
+			}
+
 		},
 		error: function(xhr, type) {
 			console.log('ajax error');
 		}
 	})
 }
+
+//上一周
+$('#prevWeek').bind('click', function() {
+	var op = 'previous';
+	var getdata = firstData;
+	var lastData = lastData;
+	curveByWeek(fEnergytype,getdata,op);
+});
+//下一周
+$('#nextWeek').bind('click', function() {
+	var op = 'next';
+	var getdata =lastData;
+	curveByWeek(fEnergytype,getdata,op)
+});
 
 //数据部署
 function deployData(data) {
@@ -363,13 +572,62 @@ function deployData(data) {
 		'</li>' +
 		'</ul>';
 	$('#electricityType').html(electricityType);
+	
+	//月度数据图表信息
+	//	同比
+	$('#yoy').html(function() {
+		var d = data.yearOnYear * 100;
+		var str = d.toString();
+		if(d > 0) {
+			var sub = str.substring(0, 2);
+			return sub + '%' + '<i class="icon-t"></i>'
+		} else {
+			var sub = str.substring(1, 3);
+			return sub + '%' + '<i class="icon-b"></i>'
+		}
+	});
+	//月能耗图表
+	var monthOnStd = data.monthOnStd;
+	var total = data.total;
+	gaugeChart(total, monthOnStd);
+	//	环比
+	$('#mom').html(function() {
+		var d = data.monthOnMonth * 100;
+		var str = d.toString();
+		if(d > 0) {
+			var sub = str.substring(0, 2);
+			return sub + '%' + '<i class="icon-t"></i>'
+		}else if(d == 0){
+			var sub = str.substring(0, 2);
+			return sub
+		}else {
+			var sub = str.substring(1, 3);
+			return sub + '%' + '<i class="icon-b"></i>'
+		}
+	});
+	//单位面积能耗
+	$('#byArea').text(data.byArea);
+	//人均能耗
+	$('#byPerson').text(data.byPerson);
 
+	//年度曲线对比
+	if(data.curveByYear){
+		var powerCurveData0 = data.curveByYear[prevYear];
+		var powerCurveData1 = data.curveByYear[getYear];
+		$.each(powerCurveData0, function(key, value) {
+			prevYearData.push(value);
+		});
+		$.each(powerCurveData1, function(key, value) {
+			currentYearData.push(value);
+		});
+		yearPower();
+	}
 }
 
 //页面初始化
 $(function() {
-	postData();
-	curveByWeek();
-	gaugeChart();
-
+	var fEnergytype = window.location.href.split('=')[1]; //页面类型参数
+	var	getdata = getDate;
+	var	op = 'init';	
+	curveByWeek(fEnergytype,getdata,op);	
 })

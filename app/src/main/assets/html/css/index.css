@@ -151,9 +151,10 @@ i.icon-b {
     flex-direction: column;
     text-align: center;
     align-items: center;
+    flex: 1;
 }
 
-.gauge-content .c {}
+.gauge-content .c {flex: 1;}
 
 .gauge-content .r {
     display: flex;
@@ -161,6 +162,7 @@ i.icon-b {
     flex-direction: column;
     text-align: center;
     align-items: center;
+    flex: 1;
 }
 
 .gauge-content .t p:first-child,

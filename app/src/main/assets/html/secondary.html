@@ -21,13 +21,13 @@
 <body>
     <div class="page-group">
         <div class="page page-current" id="routers-step-2'">
-            <header class="bar bar-nav">
+            <!--<header class="bar bar-nav">
     <a class="button button-link button-nav pull-left back" href="/index.html">
       <span class="icon icon-left"></span>
       返回
     </a>
     <h1 class="title">电力详细</h1>
-  </header>
+  </header>-->
             <!-- 你的html代码 -->
             <div class="content">
 
@@ -37,9 +37,9 @@
                         <div class="card-content-inner">
                             <div id="weekChart"></div>
                             <div class="dateOption" style="margin-bottom:0;">
-                                <button class="button prev"><i class="icon icon-left"></i></button>
-                                <button class="button center">2017-01-07-2017-01-14</button>
-                                <button class="button next"><i class="icon icon-right"></i></button>
+                                <button class="button prev" id="prevWeek"><i class="icon icon-left"></i></button>
+                                <button class="button center" id="contentWeek"><!--2017-01-07-2017-01-14--></button>
+                                <button class="button next" id="nextWeek" disabled="disabled"><i class="icon icon-right"></i></button>
                             </div>
                         </div>
                     </div>
@@ -56,12 +56,12 @@
                                 <div class="l">
                                     <div class="t">
                                         <p>同比</p>
-                                        <p><strong>30%</strong> <i class="icon-t"></i></p>
+                                        <p id="yoy"><!--<strong>30%</strong> <i class="icon-t"></i>--></p>
                                     </div>
                                     <div class="border-t" style="width:2rem;margin:.5rem 0;"></div>
                                     <div class="b">
                                         <p>单位面积能耗</p>
-                                        <P><strong>44</strong></P>
+                                        <P><strong id="byArea"></strong></P>
                                     </div>
                                 </div>
                                 <div class="c">
@@ -69,13 +69,13 @@
                                 </div>
                                 <div class="r">
                                     <div class="t">
-                                        <p>同比</p>
-                                        <p><strong>30%</strong> <i class="icon-b"></i></p>
+                                        <p>环比</p>
+                                        <p id="mom"><!--<strong>30%</strong> <i class="icon-b"></i>--></p>
                                     </div>
                                     <div class="border-t" style="width:2rem;margin:.5rem 0;"></div>
                                     <div class="b">
                                         <p>人均能耗</p>
-                                        <P><strong>44</strong></P>
+                                        <P><strong id="byPerson"></strong></P>
                                     </div>
                                 </div>
                             </div>
@@ -85,6 +85,7 @@
                 <!--月度数据结束-->
 
                 <!--能耗分类开始-->
+                <div id="energyType">
                 <div class="content-block-title">能耗分类</div>
                 <div class="card noneMargin">
                     <div class="card-content">
@@ -133,7 +134,21 @@
                         </div>
                     </div>
                 </div>
+                </div>
                 <!--能耗分类结束-->
+                
+                <!--年度对比曲线开始-->
+                <div id="yearPK">
+                	<div class="content-block-title">年度曲线</div>
+                	<div class="card noneMargin">
+                		<div class="card-content">
+                			<div class="card-content-inner">
+                				<div id="yearPower"></div>
+                			</div>
+                		</div>
+                	</div>
+                </div>
+                <!--年度对比曲线结束-->
                 <div class="list-block"></div>
 
             </div>
