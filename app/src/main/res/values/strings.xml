@@ -16,35 +16,19 @@
   <string name="check_upgrade_failed">检测更新失败</string>
 
   <!-- 首页 -->
-  <string name="fragment_home_title">VR烟台</string>
-  <string name="fragment_home_menu_brand">品牌优选</string>
-  <string name="fragment_home_menu_discover">每日发现</string>
-  <string name="fragment_home_menu_gv_city">全景烟台</string>
-  <string name="fragment_home_menu_ar_card">AR名片</string>
-  <string name="fragment_home_menu_vr_device">VR设备</string>
-  <string name="fragment_home_label_more">更多</string>
-  <string name="fragment_home_label_city">VR烟台</string>
-  <string name="fragment_home_label_city_news">烟台新闻</string>
-  <string name="fragment_home_label_hot_game">热门游戏</string>
+  <string name="fragment_home_title">主页</string>
 
   <!-- 个人 -->
   <string name="fragment_profile_title">个人中心</string>
-  <string name="fragment_profile_label_department">所属部门</string>
-  <string name="fragment_profile_label_change_password">修改密码</string>
-  <string name="fragment_profile_btn_quit">退出当前账号</string>
 
   <!-- 任务 -->
-  <string name="fragment_task_title">任务</string>
-  <string name="fragment_task_list_item_label_author">发起人:</string>
-  <string name="fragment_task_list_item_label_project">项目:</string>
+  <string name="fragment_analysis_title">能耗分析</string>
 
   <!-- 审批 -->
-  <string name="fragment_approve_title">审批</string>
+  <string name="fragment_params_title">重要参数</string>
 
   <!-- 通知 -->
-  <string name="fragment_notification_title">通知</string>
-  <string name="permission_denied_camera">请检查是否开启摄像头权限</string>
-  <string name="dialog_loading">正在加载</string>
+  <string name="fragment_device_state_title">设备状态</string>
 
   <string name="code_bar_capture_title_txt">扫一扫</string>
   <string name="code_bar_capture_prompt_text">将二维码置于方框内，即自行读取</string>
@@ -53,4 +37,7 @@
   <string name="activity_login_btn_submit">登 录</string>
   <string name="account_error_empty">账户名不能为空</string>
   <string name="password_error_empty">密码不能为空</string>
+  <string name="permission_denied_camera">请确认您开启了摄像头权限</string>
+
+
 </resources>

@@ -65,6 +65,7 @@ public abstract class BaseWebFragment extends BasicTitleBarFragment {
   private void initViews(View rootView) {
     mWebView = (ScrollWebView) rootView.findViewById(R.id.xm_life_webview);
     mLoadingLayout = rootView.findViewById(R.id.loading_layout);
+
     WebSettings webSettings = mWebView.getSettings();
     //设置支持JS
     webSettings.setJavaScriptEnabled(true);
@@ -73,13 +74,18 @@ public abstract class BaseWebFragment extends BasicTitleBarFragment {
     //设置WebView加载的页面的模式，适应屏幕宽度
     webSettings.setLoadWithOverviewMode(true);
     //设置支持缩放
-    webSettings.setSupportZoom(true);
-    webSettings.setBuiltInZoomControls(true);
+    webSettings.setSupportZoom(false);
+    webSettings.setBuiltInZoomControls(false);
     webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
     webSettings.setAllowFileAccess(true);
     webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
     webSettings.setDomStorageEnabled(true);
     webSettings.setDatabaseEnabled(true);
+    webSettings.setAllowUniversalAccessFromFileURLs(true);
+
+    webSettings.setUseWideViewPort(true);//设置webview自适应屏幕大小
+    webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);//设置，可能的话使所有列的宽度不超过屏幕宽度
+    webSettings.setLoadWithOverviewMode(true);//设置webview自适应屏幕大小
 
     //添加JS调用java接口
     //mWebView.addJavascriptInterface(new DealJs(), JS_INTERFACE_NAME);

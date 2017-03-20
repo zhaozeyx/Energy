@@ -12,6 +12,7 @@
 package com.shudongedu.energy.ui.parameter;
 
 import com.shudongedu.energy.R;
+import com.shudongedu.energy.ui.basic.BaseWebFragment;
 import com.shudongedu.energy.ui.basic.BasicTitleBarFragment;
 
 /**
@@ -21,10 +22,16 @@ import com.shudongedu.energy.ui.basic.BasicTitleBarFragment;
  * @author zhaozeyang
  * @version [Taobei Client V20160411, 2016/12/13]
  */
-public class ParameterFragment extends BasicTitleBarFragment {
+public class ParameterFragment extends BaseWebFragment {
 
   @Override
-  public int getLayoutId() {
-    return R.layout.fragment_notification;
+  protected String getUrl() {
+    return "file:///android_asset/html/params.html";
+  }
+
+  @Override
+  public boolean initializeTitleBar() {
+    setMiddleTitle(R.string.fragment_params_title);
+    return true;
   }
 }

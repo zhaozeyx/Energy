@@ -12,7 +12,7 @@
 package com.shudongedu.energy.ui.device;
 
 import com.shudongedu.energy.R;
-import com.shudongedu.energy.ui.basic.BasicTitleBarFragment;
+import com.shudongedu.energy.ui.basic.BaseWebFragment;
 
 /**
  * [一句话功能简述]<BR>
@@ -21,9 +21,16 @@ import com.shudongedu.energy.ui.basic.BasicTitleBarFragment;
  * @author zhaozeyang
  * @version [Taobei Client V20160411, 2016/12/13]
  */
-public class DeviceStateFragment extends BasicTitleBarFragment {
+public class DeviceStateFragment extends BaseWebFragment {
+
   @Override
-  public int getLayoutId() {
-    return R.layout.fragment_device_state;
+  protected String getUrl() {
+    return "file:///android_asset/html/state.html";
+  }
+
+  @Override
+  public boolean initializeTitleBar() {
+    setMiddleTitle(R.string.fragment_device_state_title);
+    return true;
   }
 }

@@ -52,6 +52,7 @@ var yearPower = function() {
 		 	boundaryGap : false,
 			type: 'category',
 			data: prevYearMonth,
+			boundaryGap: false,
 			axisLine: {
 				show: true,
 				lineStyle: {

@@ -41,6 +41,7 @@
     </activity>
     <activity
         android:name=".ui.tab.MainTabActivity"
+        android:hardwareAccelerated="true"
         android:screenOrientation="portrait"/>
     <activity
         android:name=".ui.login.LoginActivity"

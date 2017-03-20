@@ -14,6 +14,7 @@ package com.shudongedu.energy.ui.profile;
 import android.os.Bundle;
 import android.view.View;
 import com.shudongedu.energy.R;
+import com.shudongedu.energy.ui.basic.BaseWebFragment;
 import com.shudongedu.energy.ui.basic.BasicTitleBarFragment;
 
 /**
@@ -23,22 +24,15 @@ import com.shudongedu.energy.ui.basic.BasicTitleBarFragment;
  * @author zhaozeyang
  * @version [Taobei Client V20160411, 16/9/18]
  */
-public class ProfileFragment extends BasicTitleBarFragment {
+public class ProfileFragment extends BaseWebFragment {
 
   @Override
-  public int getLayoutId() {
-    return R.layout.fragment_profile;
-  }
-
-  @Override
-  public void onViewCreated(View view, Bundle savedInstanceState) {
-    super.onViewCreated(view, savedInstanceState);
-
+  protected String getUrl() {
+    return "file:///android_asset/html/Me.html";
   }
 
   @Override
   public boolean initializeTitleBar() {
-    setMiddleTitle(R.string.fragment_profile_title);
     return true;
   }
 }
