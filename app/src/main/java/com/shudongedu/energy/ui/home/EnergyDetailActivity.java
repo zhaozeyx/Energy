@@ -3,6 +3,7 @@ package com.shudongedu.energy.ui.home;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import com.github.lzyzsd.jsbridge.BridgeHandler;
 import com.github.lzyzsd.jsbridge.CallBackFunction;
@@ -24,6 +25,11 @@ import com.shudongedu.energy.ui.basic.BaseWebActivity;
 public class EnergyDetailActivity extends BaseWebActivity {
   public static final String RESULT_KEY_DATA = "data";
   private static final String BUNDLE_KEY_URL = "BUNDLE_KEY_URL";
+
+  private static final String SOURCE_ID_ELECTRICAL = "01000";
+  private static final String SOURCE_ID_WATER = "02000";
+  private static final String SOURCE_ID_COAL = "07000";
+  private static final String SOURCE_ID_NATURAL_GAS = "03000";
 
   private String mUrl;
 
@@ -52,6 +58,17 @@ public class EnergyDetailActivity extends BaseWebActivity {
         finish();
       }
     });
+    if (!TextUtils.isEmpty(mUrl)) {
+      if (mUrl.contains(SOURCE_ID_ELECTRICAL)) {
+        setMiddleTitle(R.string.activity_energy_detail_title_electrical);
+      } else if (mUrl.contains(SOURCE_ID_WATER)) {
+        setMiddleTitle(R.string.activity_energy_detail_title_water);
+      } else if (mUrl.contains(SOURCE_ID_COAL)) {
+        setMiddleTitle(R.string.activity_energy_detail_title_coal);
+      } else if (mUrl.contains(SOURCE_ID_NATURAL_GAS)) {
+        setMiddleTitle(R.string.activity_energy_detail_title_natural_gas);
+      }
+    }
     return true;
   }
 

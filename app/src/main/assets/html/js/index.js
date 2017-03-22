@@ -298,7 +298,7 @@ function deployData(data) {
 	//能耗总览		
 	var energyTotal = '<ul>' +
 		'<li>' +
-		'<a href="secondary.html?typeid=01000" class="item-link item-content" external>' +
+		'<a href="javascript:performItemClicked(1)" class="item-link item-content" external>' +
 		'<div class="item-media"><i class="icon icon-f7"></i></div>' +
 		'<div class="item-inner">' +
 		'<div class="item-title">电</div>' +
@@ -307,7 +307,7 @@ function deployData(data) {
 		'</a>' +
 		'</li>' +
 		'<li >' +
-		'<a href="secondary.html?typeid=02000" class="item-link item-content" external>' +
+		'<a href="javascript:performItemClicked(2)" class="item-link item-content" external>' +
 		'<div class="item-media"><i class="icon icon-f7"></i></div>' +
 		'<div class="item-inner">' +
 		'<div class="item-title">水</div>' +
@@ -316,7 +316,7 @@ function deployData(data) {
 		'</a>' +
 		'</li>' +
 		'<li>' +
-		'<a href="secondary.html?typeid=07000" class="item-link item-content" external>' +
+		'<a href="javascript:performItemClicked(3)" class="item-link item-content" external>' +
 		'<div class="item-media"><i class="icon icon-f7"></i></div>' +
 		'<div class="item-inner">' +
 		'<div class="item-title">煤</div>' +
@@ -325,7 +325,7 @@ function deployData(data) {
 		'</a>' +
 		'</li>' +
 		'<li>' +
-		'<a href="secondary.html?typeid=03000" class="item-link item-content" external>' +
+		'<a href="javascript:performItemClicked(4)" class="item-link item-content" external>' +
 		'<div class="item-media"><i class="icon icon-f7"></i></div>' +
 		'<div class="item-inner">' +
 		'<div class="item-title">天然气</div>' +

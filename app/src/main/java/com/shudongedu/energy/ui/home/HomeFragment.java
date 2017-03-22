@@ -23,7 +23,6 @@ import com.shudongedu.energy.R;
 import com.shudongedu.energy.codebar.CodeBarCaptureActivity;
 import com.shudongedu.energy.log.Logger;
 import com.shudongedu.energy.ui.basic.BaseWebFragment;
-import com.shudongedu.energy.ui.basic.titlebar.TitleBar;
 
 /**
  * [一句话功能简述]<BR>
@@ -70,11 +69,6 @@ public class HomeFragment extends BaseWebFragment {
       }
     });
     return true;
-  }
-
-  @Override
-  public TitleBar.TitleBarStyle getTitleBarStyle() {
-    return TitleBar.TitleBarStyle.TRANSPARENT;
   }
 
   @Override
