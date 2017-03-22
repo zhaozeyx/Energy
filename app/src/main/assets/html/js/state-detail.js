@@ -298,9 +298,9 @@ var getData = function() {
 		contentType: 'application/json',
 		timeout: 10000,
 		async: true,
-		beforeSend: function() {
-			$.showPreloader();
-		},
+//		beforeSend: function() {
+//			$.showPreloader();
+//		},
 		success: function(res) {
 			var res = res.data;
 			deployData(res);
@@ -406,7 +406,7 @@ function deployData(res) {
 		'								</li>';
 
 	$('#ammeter-list').html(html);
-	$.hidePreloader();
+//	$.hidePreloader();
 }
 
 //页面初始化

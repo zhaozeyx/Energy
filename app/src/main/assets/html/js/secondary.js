@@ -455,9 +455,9 @@ function postData(path) {
 		data: JSON.stringify({ "fDatacenterid": "1" }),
 		contentType: 'application/json',
 		timeout: 10000,
-		beforeSend:function(){
-			 $.showPreloader();
-		},		
+//		beforeSend:function(){
+//			 $.showPreloader();
+//		},		
 		success: function(res) {
 			var data = res.data;
 			deployData(data);
@@ -628,7 +628,7 @@ function deployData(data) {
 		yearPower();
 	}
 	//取消加载中
-	$.hidePreloader();
+//	$.hidePreloader();
 }
 
 //页面初始化

@@ -193,9 +193,9 @@ var ajaxTimeout = $.ajax({
 		data: JSON.stringify({ "fDatacenterid": "1" }),
 		contentType: 'application/json',
 		timeout: 4000,
-		beforeSend:function(){
-			 $.showPreloader();
-		},
+//		beforeSend:function(){
+//			 $.showPreloader();
+//		},
 		success: function(data) {
 			var data = data.data;
 			var powerCurveData0 = data.powerCurve[prevYear];
@@ -214,7 +214,7 @@ var ajaxTimeout = $.ajax({
 			//其他数据
 			deployData(data);
 			//关闭加载中		
-        	$.hidePreloader();
+        	//$.hidePreloader();
 
 		},
 		error: function(xhr, type) {
@@ -223,7 +223,7 @@ var ajaxTimeout = $.ajax({
 		complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
 			console.log(status);
 	　　　　if(status=='timeout'){//超时,status还有success,error等值的情况
-			   $.hidePreloader();
+			   //$.hidePreloader();
 	 　　　　　  ajaxTimeout.abort();
 	 		   console.log("网络超时，请刷新");
 //	　　　　　   alert("网络超时，请刷新", function () {
