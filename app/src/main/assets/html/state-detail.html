@@ -13,6 +13,9 @@
 		<link rel="stylesheet" href="./sui/css/sm-extend.min.css">
 		<link rel="stylesheet" href="./css/common.css">
 		<link rel="stylesheet" href="./css/state.css">
+		<style type="text/css">
+		.content-block-title:before,.content-block-title:after{width:33%;}
+		</style>
 
 		<script src="./js/echarts.js"></script>
 		<script type='text/javascript' src='./sui/js/zepto.min.js' charset='utf-8'></script>
@@ -24,10 +27,11 @@
 			<div class="page page-current" id="">
 				<!-- 你的html代码 -->
 				<div class="content">
+				<div class="card noneMargin">
 					<div class="list-block">
 						<div class="list-block">
-							<ul>
-								<li class="item-content">
+							<ul id="ammeter-list">
+								<!--<li class="item-content">
 									<div class="item-inner">
 										<div class="item-title">编号</div>
 										<div class="item-after">200000000A0010003</div>
@@ -86,17 +90,34 @@
 										<div class="item-title">正反向接反</div>
 										<div class="item-after">嘿嘿嘿嘿</div>
 									</div>
-								</li>
-								
+								</li>-->								
 							</ul>
 						</div>
 					</div>
+					</div>
+					<div class="content-block-title">三相电流曲线</div>
+					<div class="card noneMargin">
+						<div class="card-content">
+							<div class="card-content-inner">
+								<div id="electricity"></div>
+							</div>
+						</div>
+					</div>
+					<div class="content-block-title">最近七天用电</div>
+					<div class="card noneMargin">
+						<div class="card-content">
+							<div class="card-content-inner">
+								<div id="weekChart"></div>
+							</div>
+						</div>
+					</div>
+					<div class="content-block-title"></div>
 				</div>
 			</div>
 		</div>
 		<script type='text/javascript' src='./sui/js/sm.min.js' charset='utf-8'></script>
 		<script type='text/javascript' src='./sui/js/sm-extend.min.js' charset='utf-8'></script>
-		<script type='text/javascript' src='./js/state.js' charset='utf-8'></script>
+		<script type='text/javascript' src='./js/state-detail.js' charset='utf-8'></script>
 
 		<script type="text/javascript">
 		</script>

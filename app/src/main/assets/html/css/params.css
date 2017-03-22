@@ -2,3 +2,83 @@
 	width: 100%;
 	height:10rem;
 }
+.param-content-t{
+	display: flex;
+	display: -webkit-flex;
+	border-bottom: 1px solid #eee;
+}
+.param-content-t .item{
+	flex: 1;
+	text-align: center;	
+	height: 5rem;
+	padding: 1rem 0;
+}
+.param-content-t .item h3{
+	padding:0;
+	line-height: 0;
+	font-size: .8rem;
+	color: #444;
+}
+.param-content-t .item p{
+	margin: 0;
+	font-size: .7rem;
+}
+.param-content-t .item:last-child{
+	border-left: 1px solid #eee;
+}
+.param-content-b{
+	display: flex;
+	display: -webkit-flex;	
+}
+.param-content-b .item{
+	flex: 1;
+	text-align: center;
+	border-left: 1px solid #eee;
+	height: 6rem;
+	padding:1rem 0;
+}
+.param-content-b .item h3{
+	padding: 0;
+	line-height: 0;	
+	font-size: .8rem;
+	color: #444;
+}
+.param-content-b .item p{
+	margin: 0;
+	font-size:.7rem;
+}
+.icon-you{
+	background: url(../images/you.png) center center no-repeat;
+	background-size: 31px;
+	width: 31px;
+	height: 30px;
+	vertical-align: middle;
+}
+.icon-wu{
+	background: url(../images/wu.png) center center no-repeat;
+	background-size: 31px;
+	width: 31px;
+	height: 30px;
+	vertical-align: middle;
+}
+.icon-gonglvyinshu{
+	background: url(../images/gonglvyinshu.png) center center no-repeat;
+	background-size: 32px;
+	width: 32px;
+	height: 32px;
+	vertical-align: middle;
+}
+.icon-dianfei{
+	background: url(../images/dianfei.png) center center no-repeat;
+	background-size: 32px;
+	width: 32px;
+	height: 32px;
+	vertical-align: middle;
+}
+.icon-fakuan{
+	background:url(../images/fakuan.png) center center no-repeat;
+	background-size: 32px;
+	width: 32px;
+	height: 32px;
+	vertical-align: middle;
+}

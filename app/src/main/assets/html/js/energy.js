@@ -1,4 +1,5 @@
 var borderColor = 'rgba(255,255,255,.2)';
+var api = 'http://192.168.4.14:8080';
 
 //周统计图表
 var Chart = function () {
@@ -28,7 +29,7 @@ var Chart = function () {
         },
         xAxis: [
             {
-            boundaryGap: false,
+            	boundaryGap: false,
                 type: 'category',
                 data: week,
                 axisLine: {
@@ -128,10 +129,73 @@ var Chart = function () {
     myChart.setOption(option);
 };
 
+
+//获取一级建筑数据
+function getSetpOne(){
+	var data = {"fDatacenterid1":"1"};
+	$.ajax({
+		type:"post",
+		url:api+'/monitor/api/device/buildlist',
+		data: JSON.stringify(data),
+		contentType: 'application/json',
+		timeout: 10000,
+		async: true,
+		beforeSend: function() {
+			$.showPreloader();
+		},
+		success: function(res) {
+			$.hidePreloader();
+			var res = res.data;
+			//alert(JSON.stringify(res))
+			//deployData(res);
+			var list = '';
+			for(var i = 0; i<res.length; i++){
+				list += '<li><a href="javascript:void(0)" data-fbdid="'+res[i].fBdId+'" onclick="tapSetpOne(this)">'+res[i].fBuildname+'</a></li>'
+			}			
+			//$('#accordion').html(list);			
+		},
+		error:function(){
+			alert('ajax error')
+		}
+	});
+}
+
+function tapSetpOne(tags){
+	var fbdid = $(tags).attr('data-fbdid');	
+	console.log("【点击了】 ==> "+$(tags).html() +' | 当前fbdid：'+fbdid);
+	var data = {"fBdId":fbdid};
+	$.ajax({
+		type:"post",
+		url:api+'/monitor/api/consume/analy/bdfloorlist',
+		data: JSON.stringify(data),
+		contentType: 'application/json',
+		timeout: 10000,
+		async: true,
+		beforeSend: function() {
+			$.showPreloader();
+		},
+		success: function(res) {
+			$.hidePreloader();
+			var list = '';
+			for(var i = 0; i<res.length; i++){
+				list += '<li><a href="#">'+res[i].fDatalevelname+'</a></li>'
+			}
+			$(tags).append('<ul class="menu">'+list+'</ul>')
+		},
+		error:function(){
+			alert('ajax error')
+		}
+	});
+
+}
+
+
+
+
 //页面初始化
 $(function () {
     Chart();
-
+    getSetpOne()	
     $(document).on("pageInit", function () {
         $("#picker").picker({
             toolbarTemplate: '<header class="bar bar-nav">\
@@ -192,12 +256,5 @@ $(function () {
         }
 
     });
-
-
-
-
-
-
-
     $.init();
 })

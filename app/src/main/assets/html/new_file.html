@@ -1,0 +1,69 @@
+<!-- 
+Echart
+xAxis.axixsLabel 换行效果测试文档
+
+作者：Reese 
+版本：V0.1
+时间：2015-08-11               
+ -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Test</title>
+</head>
+<body>
+    <div id="main" style="width: 550px; height: 300px"></div>
+    <!--<script src="http://echarts.baidu.com/build/dist/echarts.js"></script>-->
+        <script src="./js/echarts.js"></script>
+    <script type="text/javascript">
+var myChart = echarts.init(document.getElementById('main'));
+myChart.showLoading();
+                    var option = {
+                        xAxis : {
+                            show : true,
+                            type : 'category',
+                            //data : [ '一二三四五六', '一二三四五', '二三四五', '二三四五六七八九',
+                            //        '二三四五一七八九十' ],
+                            axisLabel : {
+                                interval : 0,
+                                formatter : function(params){
+                                    var newParamsName = "";
+                                    var paramsNameNumber = params.length;
+                                    var provideNumber = 4;
+                                    var rowNumber = Math.ceil(paramsNameNumber / provideNumber);
+                                    if (paramsNameNumber > provideNumber) {
+                                        for (var p = 0; p < rowNumber; p++) {
+                                            var tempStr = "";
+                                            var start = p * provideNumber;
+                                            var end = start + provideNumber;
+                                            if (p == rowNumber - 1) {
+                                                tempStr = params.substring(start, paramsNameNumber);
+                                            } else {
+                                                tempStr = params.substring(start, end) + "\n";
+                                            }
+                                            newParamsName += tempStr;
+                                        }
+
+                                    } else {
+                                        newParamsName = params;
+                                    }
+                                    return newParamsName
+                                }
+
+                            }
+                        },
+                        yAxis : {
+                            type : 'value'
+                        },
+                        series : [ {
+                            name : "人数",
+                            type : "bar",
+//                            data : [ 12, 24, 25, 11, 18 ]
+                            data : []
+                        } ]
+                    };
+                    myChart.setOption(option);
+    </script>
+</body>
+</html>

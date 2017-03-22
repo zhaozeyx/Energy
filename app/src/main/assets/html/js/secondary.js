@@ -455,6 +455,9 @@ function postData(path) {
 		data: JSON.stringify({ "fDatacenterid": "1" }),
 		contentType: 'application/json',
 		timeout: 10000,
+		beforeSend:function(){
+			 $.showPreloader();
+		},		
 		success: function(res) {
 			var data = res.data;
 			deployData(data);
@@ -476,6 +479,9 @@ function curveByWeek(fEnergytype,getdata,op) {
 		data: JSON.stringify(weekData),
 		contentType: 'application/json',
 		timeout: 10000,
+		beforeSend:function(){
+			
+		},
 		success: function(res) {
 			var res = res.data;
 			if($.isEmptyObject( res )){
@@ -509,7 +515,6 @@ function curveByWeek(fEnergytype,getdata,op) {
 			}else if(end>=start){
 				$('#nextWeek').attr('disabled','disabled');
 			}
-
 		},
 		error: function(xhr, type) {
 			console.log('ajax error');
@@ -622,6 +627,8 @@ function deployData(data) {
 		});
 		yearPower();
 	}
+	//取消加载中
+	$.hidePreloader();
 }
 
 //页面初始化

@@ -187,12 +187,15 @@ var monthStat = function(data) {
 
 //数据请求
 function indexPost() {
-	$.ajax({
+var ajaxTimeout = $.ajax({
 		type: 'POST',
 		url: api + 'monitor/api/index',
 		data: JSON.stringify({ "fDatacenterid": "1" }),
 		contentType: 'application/json',
-		timeout: 10000,
+		timeout: 4000,
+		beforeSend:function(){
+			 $.showPreloader();
+		},
 		success: function(data) {
 			var data = data.data;
 			var powerCurveData0 = data.powerCurve[prevYear];
@@ -210,13 +213,27 @@ function indexPost() {
 			monthStat(data);
 			//其他数据
 			deployData(data);
+			//关闭加载中		
+        	$.hidePreloader();
 
 		},
 		error: function(xhr, type) {
 			//alert('Ajax error!')
-		}
+		},
+		complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
+			console.log(status);
+	　　　　if(status=='timeout'){//超时,status还有success,error等值的情况
+			   $.hidePreloader();
+	 　　　　　  ajaxTimeout.abort();
+	 		   console.log("网络超时，请刷新");
+//	　　　　　   alert("网络超时，请刷新", function () {
+//                      location.reload();
+//                  })
+	　　　　}
+	　　}
 	})
 }
+
 
 //数据部署
 function deployData(data) {

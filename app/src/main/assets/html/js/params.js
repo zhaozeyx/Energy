@@ -24,7 +24,7 @@ var powerChart = function () {
          grid: {
             show: true,
             left: '0',
-            right: '0',
+            right: '1.9%',
             bottom: '0',
             top: '35',
             borderColor: '#f5f5f5',
@@ -37,6 +37,7 @@ var powerChart = function () {
         },
         xAxis: [
             {
+            	boundaryGap : false,
                 type: 'category',
                 data: month,
                 axisLine: {
@@ -143,7 +144,7 @@ var costChart = function () {
          grid: {
             show: true,
             left: '0',
-            right: '0',
+            right: '1.9%',
             bottom: '0',
             top: '35',
             borderColor: '#f5f5f5',
@@ -156,6 +157,7 @@ var costChart = function () {
         },
         xAxis: [
             {
+            	boundaryGap : false,
                 type: 'category',
                 data: month,
                 axisLine: {

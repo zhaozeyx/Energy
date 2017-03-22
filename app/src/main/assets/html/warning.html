@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>设备故障</title>
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="./sui/css/sm.min.css">
+		<link rel="stylesheet" href="./sui/css/sm-extend.min.css">
+		<link rel="stylesheet" href="./css/common.css">
+		<style type="text/css">
+			i[class^='icon']{background-size:1.6rem;width: 1.4rem;height: 1.4rem;vertical-align: middle;}
+			.icon-danger {background:url(images/yiji.png)center center no-repeat;}
+			.icon-warning{background:url(images/erji.png)center center no-repeat;}
+			.icon-primary{background:url(images/sanji.png) center center no-repeat;}
+		</style>
+		<script src="./js/echarts.js"></script>
+		<script type='text/javascript' src='./sui/js/zepto.min.js' charset='utf-8'></script>
+		<script type='text/javascript' src='./js/config.js' charset='utf-8'></script>
+
+	</head>
+
+	<body>
+		<div class="page-group">
+			<div class="page page-current" id="">
+				<!-- 你的html代码 -->
+				<div class="content">
+					<div class="list-block">
+						<ul id="warn-list">
+							<li class="item-content">
+								<div class="item-media"><i class="icon icon-danger"></i></div>
+								<div class="item-inner">
+									<div class="item-title">2017-01-03 09:08:23 通道44：测试离线</div>
+								</div>
+							</li>
+							<li class="item-content">
+								<div class="item-media"><i class="icon icon-warning"></i></div>
+								<div class="item-inner">
+									<div class="item-title">2017-01-03 09:08:23 通道45：测试离线</div>
+								</div>
+							</li>
+							<li class="item-content">
+								<div class="item-media"><i class="icon icon-primary"></i></div>
+								<div class="item-inner">
+									<div class="item-title">2017-01-03 09:08:23 通道46：测试离线</div>
+								</div>
+							</li>
+						</ul>
+
+					</div>
+				</div>
+			</div>
+			<script type='text/javascript' src='./sui/js/sm.min.js' charset='utf-8'></script>
+			<script type='text/javascript' src='./sui/js/sm-extend.min.js' charset='utf-8'></script>
+			<script type="text/javascript">
+				var api = 'http://192.168.4.14:8080';
+				var data = {"fDatacenterid":"1"};
+				var getData = function () {
+					$.ajax({
+						type:"post",
+						url:api+'/monitor/api/device/warninglist',
+						data:JSON.stringify(data),
+						processData:true,
+						async:true,
+						contentType: 'application/json',
+						timeout: 10000,
+						success:function (res) {
+							var res = res.data;
+							deployData(res);
+							//alert(JSON.stringify(res))
+						}
+					});
+				};
+				function deployData(res) {
+					var html = '';
+					console.log(res.length)
+					for(var i = 0; i < res.length; i++){
+						html +='<li class="item-content">'+
+								'<div class="item-media"><i class="icon icon-danger"></i></div>'+
+								'<div class="item-inner">'+
+									'<div class="item-title">'+res[i].fEventinfo+'</div>'+
+								'</div>'+
+							'</li>';						
+					}
+					$('#warn-list').html(html);
+				};
+				getData();
+				
+			</script>
+	</body>
+</html>
