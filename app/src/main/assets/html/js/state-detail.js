@@ -316,7 +316,13 @@ function deployData(res) {
 		curveByWeekX.push(key.substring(5, 100));
 		curveByWeekData.push(val);	
 	});
-	weekChart();
+	
+	if($.isEmptyObject( res.curveByWeek )){
+		$('#weekChart').html('<p style="text-align:center;line-height:10rem;color:#a9a9a9;">暂无数据</p>')
+	}else{
+		weekChart();
+	}
+	
 	//三相电流数据
 	var curveByDay = res.curveByDay;
 	var curveByDayA = curveByDay.A,

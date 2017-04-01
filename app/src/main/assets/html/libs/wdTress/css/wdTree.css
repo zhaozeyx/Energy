@@ -68,7 +68,7 @@
 }
 
 .bbit-tree-arrows .bbit-tree-elbow-minus{
-    background:transparent no-repeat -16px 0;
+    background:transparent no-repeat -27px 0;
 }
 
 .bbit-tree-arrows .bbit-tree-elbow-end{
@@ -80,7 +80,7 @@
 }
 
 .bbit-tree-arrows .bbit-tree-elbow-end-minus{
-    background:transparent no-repeat -16px 0;
+    background:transparent no-repeat -27px 0;
 }
 
 .bbit-tree-arrows .bbit-tree-elbow-line{
@@ -115,8 +115,11 @@
 }
 
 .bbit-tree-node-el {
-    line-height:18px;
+    line-height:40px;
     cursor:default;
+    background-color: white;
+    border-bottom:1px solid #ddd;
+    padding-left: 20px;
    /* cursor:pointer;*/
 }
 
@@ -229,19 +232,39 @@
 }
 
 .bbit-tree-arrows .bbit-tree-elbow-plus{
-    background-image:url(images/tree/arrows.gif);
+    background-image:url(images/tree/arrows.png);
+    background-size:53px 26px;
+    float: right;
+    width: 26px;
+    height: 26px;
+    margin:7px 15px;
 }
 
 .bbit-tree-arrows .bbit-tree-elbow-minus{
-    background-image:url(images/tree/arrows.gif);
+    background-image:url(images/tree/arrows.png);
+    background-size:53px 26px;
+    float: right;
+    width: 26px;
+    height: 26px;
+    margin:7px 15px;
 }
 
 .bbit-tree-arrows .bbit-tree-elbow-end-plus{
-    background-image:url(images/tree/arrows.gif);
+    background-image:url(images/tree/arrows.png);
+    background-size:53px 26px;
+    float: right;
+    width: 26px;
+    height: 26px;
+    margin:7px 15px;
 }
 
 .bbit-tree-arrows .bbit-tree-elbow-end-minus{
-    background-image:url(images/tree/arrows.gif);
+    background-image:url(images/tree/arrows.png);
+    background-size:53px 26px;
+    float: right;
+    width: 26px;
+    height: 26px;
+    margin:7px 15px;
 }
 
 .bbit-tree-node{
@@ -263,5 +286,8 @@
 }
 
 .bbit-tree-node .bbit-tree-selected {
-	background-color: #d9e8fb;
+	background-color: #0894ec;
+}
+.bbit-tree-node .bbit-tree-selected a,.bbit-tree-node .bbit-tree-selected a span{
+	color: #fff;
 }

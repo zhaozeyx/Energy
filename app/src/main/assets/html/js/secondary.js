@@ -9,7 +9,7 @@ var prevYearData = [],
 var firstData,
 	lastData;
 var borderColor = 'rgba(255,255,255,.2)';
-var unit;
+
 var newDate = new Date();
 var getYear = newDate.getFullYear(), //当前年
 	prevYear = getYear - 1, //上一年
@@ -473,6 +473,7 @@ function postData(path) {
 //最近七天数据
 function curveByWeek(fEnergytype,getdata,op) {	
 	var weekData = { "fDatacenterid": "1", "fEnergytype": fEnergytype, "theTime": getdata, "op": op };	
+	console.log(weekData)
 	$.ajax({
 		type: 'POST',
 		url: api + '/monitor/api/curveByWeek',
@@ -495,21 +496,29 @@ function curveByWeek(fEnergytype,getdata,op) {
 				weekVal.push(val);
 			});
 
+
+			
 			$.each(weekKey, function(index) {
 				week.push(this.substring(5, 100))
 			})
-			var weekKeyFirst = weekKey[0].toString();
-			var weekKeyLast = weekKey.pop().toString();
+			
+			if($.isEmptyObject( res )){
+				$('#weekChart').html('<p style="text-align:center;line-height:10rem;color:#fff;">暂无数据</p>')
+			}else{
+				var weekKeyFirst = weekKey[0].toString();
+				var weekKeyLast = weekKey.pop().toString();
 				firstData = weekKeyFirst;
 				lastData = weekKeyLast;
 
-			weekChart();
+				weekChart();
+			}
+			//console.log(getDate, lastData)
 			//最近7天数据索引显示
 			$('#contentWeek').text(weekKeyFirst + ' -- ' + weekKeyLast);
 			//日期对比	
 			var start=new Date(getDate.replace("-", "/").replace("-", "/"));  
 			var end=new Date(lastData.replace("-", "/").replace("-", "/"));  
-			console.log(start,end)
+			//console.log(start,end)
 			if(end<start){
 				$('#nextWeek').removeAttr('disabled');
 			}else if(end>=start){
@@ -526,7 +535,7 @@ function curveByWeek(fEnergytype,getdata,op) {
 $('#prevWeek').bind('click', function() {
 	var op = 'previous';
 	var getdata = firstData;
-	var lastData = lastData;
+	//var lastData = lastData;
 	curveByWeek(fEnergytype,getdata,op);
 });
 //下一周

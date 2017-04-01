@@ -1,4 +1,3 @@
-var api = 'http://192.168.4.14:8080/';
 var prevYearData = [];
 var currentYearData = [];
 var prevYearMonth = [];
@@ -187,7 +186,7 @@ var monthStat = function(data) {
 
 //数据请求
 function indexPost() {
-var ajaxTimeout = $.ajax({
+	$.ajax({
 		type: 'POST',
 		url: api + 'monitor/api/index',
 		data: JSON.stringify({ "fDatacenterid": "1" }),
@@ -197,6 +196,7 @@ var ajaxTimeout = $.ajax({
 //			 $.showPreloader();
 //		},
 		success: function(data) {
+			$('#network').hide();
 			var data = data.data;
 			var powerCurveData0 = data.powerCurve[prevYear];
 			var powerCurveData1 = data.powerCurve[currentYear];
@@ -217,23 +217,34 @@ var ajaxTimeout = $.ajax({
         	//$.hidePreloader();
 
 		},
-		error: function(xhr, type) {
+		error: function(xhr, errorType, error) {
 			//alert('Ajax error!')
+			console.log(xhr, errorType, error)
 		},
-		complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
-			console.log(status);
-	　　　　if(status=='timeout'){//超时,status还有success,error等值的情况
-			   //$.hidePreloader();
-	 　　　　　  ajaxTimeout.abort();
-	 		   console.log("网络超时，请刷新");
-//	　　　　　   alert("网络超时，请刷新", function () {
-//                      location.reload();
-//                  })
-	　　　　}
-	　　}
+		complete:function(xhr, status){
+			console.log(xhr, status)
+			if(status == 'abort'|| status== 'timeout'){
+				console.log('网络错误');
+				$('#network').show();				
+			}
+		}
+//		complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
+//			console.log(status);
+//	　　　　if(status=='timeout'){//超时,status还有success,error等值的情况
+//			   //$.hidePreloader();
+//	 　　　　　  ajaxTimeout.abort();
+//	 		   console.log("网络超时，请刷新");
+////	　　　　　   alert("网络超时，请刷新", function () {
+////                      location.reload();
+////                  })
+//	　　　　}
+//	　　}
 	})
 }
 
+$('#resetNetwork').click(function(){
+	indexPost()
+})
 
 //数据部署
 function deployData(data) {
@@ -298,7 +309,7 @@ function deployData(data) {
 	//能耗总览		
 	var energyTotal = '<ul>' +
 		'<li>' +
-		'<a href="javascript:performItemClicked(1)" class="item-link item-content" external>' +
+		'<a href="secondary.html?typeid=01000" class="item-link item-content" external>' +
 		'<div class="item-media"><i class="icon icon-f7"></i></div>' +
 		'<div class="item-inner">' +
 		'<div class="item-title">电</div>' +
@@ -307,7 +318,7 @@ function deployData(data) {
 		'</a>' +
 		'</li>' +
 		'<li >' +
-		'<a href="javascript:performItemClicked(2)" class="item-link item-content" external>' +
+		'<a href="secondary.html?typeid=02000" class="item-link item-content" external>' +
 		'<div class="item-media"><i class="icon icon-f7"></i></div>' +
 		'<div class="item-inner">' +
 		'<div class="item-title">水</div>' +
@@ -316,7 +327,7 @@ function deployData(data) {
 		'</a>' +
 		'</li>' +
 		'<li>' +
-		'<a href="javascript:performItemClicked(3)" class="item-link item-content" external>' +
+		'<a href="secondary.html?typeid=07000" class="item-link item-content" external>' +
 		'<div class="item-media"><i class="icon icon-f7"></i></div>' +
 		'<div class="item-inner">' +
 		'<div class="item-title">煤</div>' +
@@ -325,7 +336,7 @@ function deployData(data) {
 		'</a>' +
 		'</li>' +
 		'<li>' +
-		'<a href="javascript:performItemClicked(4)" class="item-link item-content" external>' +
+		'<a href="secondary.html?typeid=03000" class="item-link item-content" external>' +
 		'<div class="item-media"><i class="icon icon-f7"></i></div>' +
 		'<div class="item-inner">' +
 		'<div class="item-title">天然气</div>' +

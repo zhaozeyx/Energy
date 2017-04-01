@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>MyApp index</title>
+    <title>烟台威思顿节能监管平台</title>
     <meta name="viewport" content="initial-scale=1, maximum-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -22,11 +22,18 @@
 </head>
 
 <body>
+<!--无网络状态-->
+<div  id="network" style="display:none;">
+	<div>
+		<P><span class="icon icon-browser"></span> 请检查网络连接</P>
+		<a href="#" class="button button-light" id="resetNetwork"><span class="icon icon-refresh"></span> 点击重试</a>
+	</div>
+</div>	
 <div class="page-group">
     <div class="page page-current">
         <!-- 你的html代码 -->
         <div class="content">
-
+			
             <!--总览图表展示开始-->
             <div class="card noneMargin">
                 <div class="card-content">
@@ -41,7 +48,7 @@
                                 <div class="info">
                                     <p class="describe">本月用电总量</p>
                                     <p class="num" id="totalM"></p>
-                                    <p class="unit">千万时</p>
+                                    <p class="unit">千瓦时</p>
                                 </div>
                             </div>
                             <div class="right" id="mom"><!--环比30%<i class="icon-b"></i>--></div>
@@ -153,45 +160,45 @@
 <script type='text/javascript' src='./js/index.js' charset='utf-8'></script>
 
 <script type="text/javascript">
-        function performItemClicked(index) {
-            <!--console.log('itemClicked');-->
-            var url;
-            switch(index) {
-              case 1:
-                url = 'secondary.html?typeid=01000';
-                break;
-              case 2:
-                url = 'secondary.html?typeid=02000';
-                break;
-              case 3:
-                url = 'secondary.html?typeid=07000';
-                break;
-              case 4:
-                url = 'secondary.html?typeid=03000';
-                break;
-            }
-            window.WebViewJavascriptBridge.callHandler('submitFromWeb', url, function(responseData){});
-        }
-
-
-
-        connectWebViewJavascriptBridge(function(bridge) {
-            bridge.init(function(message, responseCallback) {
-                console.log('JS got a message', message);
-                var data = {
-                    'Javascript Responds': '测试中文!'
-                };
-                console.log('JS responding with', data);
-                responseCallback(data);
-            });
-
-            window.WebViewJavascriptBridge.registerHandler("functionInJs", function(data, responseCallback) {
-                        document.getElementById("show").innerHTML = data;
-                        var responseData = "Javascript Says Right back aka!";
-                        responseCallback(responseData);
-
-            });
-        })
+//      function performItemClicked(index) {
+//          <!--console.log('itemClicked');-->
+//          var url;
+//          switch(index) {
+//            case 1:
+//              url = 'secondary.html?typeid=01000';
+//              break;
+//            case 2:
+//              url = 'secondary.html?typeid=02000';
+//              break;
+//            case 3:
+//              url = 'secondary.html?typeid=07000';
+//              break;
+//            case 4:
+//              url = 'secondary.html?typeid=03000';
+//              break;
+//          }
+//          window.WebViewJavascriptBridge.callHandler('submitFromWeb', url, function(responseData){});
+//      }
+//
+//
+//
+//      connectWebViewJavascriptBridge(function(bridge) {
+//          bridge.init(function(message, responseCallback) {
+//              console.log('JS got a message', message);
+//              var data = {
+//                  'Javascript Responds': '测试中文!'
+//              };
+//              console.log('JS responding with', data);
+//              responseCallback(data);
+//          });
+//
+//          window.WebViewJavascriptBridge.registerHandler("functionInJs", function(data, responseCallback) {
+//                      document.getElementById("show").innerHTML = data;
+//                      var responseData = "Javascript Says Right back aka!";
+//                      responseCallback(responseData);
+//
+//          });
+//      })
 
 </script>
 </body>

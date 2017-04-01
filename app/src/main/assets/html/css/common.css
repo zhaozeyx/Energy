@@ -144,10 +144,11 @@ button[disabled], html input[disabled] {
 .accordion .link {
 	cursor: pointer;
 	display: block;
-	padding: .8rem;
+	height:2rem;
+	line-height: 2rem;
+    padding-left: .75rem;
 	color: #3d4145;
-	font-size: .7rem;
-	
+	font-size: .7rem;	
 	border-bottom: 1px solid #e7e7e7;
 	position: relative;
 	-webkit-transition: all 0.4s ease;
@@ -159,21 +160,25 @@ button[disabled], html input[disabled] {
 	border-bottom: 0;
 }
 
-.accordion li i {
+.accordion li .toggle {
 	position: absolute;
-	top: 16px;
-	left: 12px;
-	font-size: 18px;
-	color: #595959;
+	top:0;
+	right: 0;
+	left: auto;
+	width: 2rem;
+	height: 1.95rem;
+	line-height: 2rem;
+	text-align: center;
+	font-size: 0.8rem;
+	color: white;
+	background:#0894ec;
 	-webkit-transition: all 0.4s ease;
 	-o-transition: all 0.4s ease;
 	transition: all 0.4s ease;
 }
 
-.accordion li i.icon-up {
-	right: .8rem;
-	left: auto;
-	font-size: 0.8rem;
+.accordion li i.icon-right {
+	
 }
 
 .accordion li.open .link {
@@ -181,13 +186,13 @@ button[disabled], html input[disabled] {
 }
 
 .accordion li.open i {
-	color: #0894ec;
+
 }
-.accordion li.open i.icon-up {
-	-webkit-transform: rotate(180deg);
-	-ms-transform: rotate(180deg);
-	-o-transform: rotate(180deg);
-	transform: rotate(180deg);
+.accordion li.open i.icon-right {
+	-webkit-transform: rotate(90deg);
+	-ms-transform: rotate(90deg);
+	-o-transform: rotate(90deg);
+	transform: rotate(90deg);
 }
 
 /**
@@ -255,6 +260,29 @@ button[disabled], html input[disabled] {
     transform: scaleY(.5);
 }
 
+#network{
+	position: absolute;
+	width:100%;
+	height: 100%;
+	background-color: #f3f3f3;
+	overflow: hidden;
+	z-index: 99999;
+}
+#network div{
+	margin-top: 40%;
+	text-align: center;
+	color:#5f646e;
+}
+#network .button{
+	width: 30%;
+	margin:0 auto;
+	height: 2rem;
+	line-height: 2rem;
+}
+#network div span{
+	padding-left:.2rem;
+	display: inline-block;
+}
 
 /*sui 修改*/
 

@@ -13,13 +13,19 @@
 		<link rel="stylesheet" href="./sui/css/sm-extend.min.css">
 		<link rel="stylesheet" href="./css/common.css">
 		<link rel="stylesheet" href="./css/state.css">
-
+    	<link rel="stylesheet" href="./libs/wdTress/css/wdTree.css">
 		<script src="./js/echarts.js"></script>
 		<script type='text/javascript' src='./sui/js/zepto.min.js' charset='utf-8'></script>
 		<script type='text/javascript' src='./js/config.js' charset='utf-8'></script>
 	</head>
 
 	<body>
+<div  id="network" style="display:none;">
+	<div>
+		<P><span class="icon icon-browser"></span> 请检查网络连接</P>
+		<a href="#" class="button button-light" id="resetNetwork"><span class="icon icon-refresh"></span> 点击重试</a>
+	</div>
+</div>			
 		<div class="page-group">
 			<div class="page page-current" id="">
 				<!-- 你的html代码 -->
@@ -61,7 +67,7 @@
 												<div class="item-inner color-primary">
 													<div class="item-title label">建筑选择</div>
 													<div class="item-input">
-														<input type="text" placeholder="建筑选择" class="open-build" id="" value="全部" readonly>
+														<input type="text" placeholder="建筑选择" class="open-build" id="buildName" value="全部" readonly>
 													</div>
 												</div>
 											</div>
@@ -71,18 +77,18 @@
 								</div>
 							</div>
 
-							<div class="card noneMarginLR">
-								<div class="list-block">
-									<ul id="ammeter-list">
-										<!--<li>
+							<div class="card noneMarginLR" style="box-shadow:none;">
+								<div class="list-block" id="ammeter-list">
+									<!--<ul id="ammeter-list">
+										<li>
 											<a href="state-detail.html" class="item-link item-content">
 												<div class="item-media"><i class="icon icon-ammeter"></i></div>
 												<div class="item-inner">
 													<div class="item-title">东方威思顿北区仓库2楼东1号电表</div>
 												</div>
 											</a>
-										</li>-->					
-									</ul>
+										</li>				
+									</ul>-->	
 								</div>
 							</div>
 						</div>
@@ -100,60 +106,16 @@
 				<a class="button button-link button-nav pull-right close-popup">确定</a>
 			</header>
 			<div class="content native-scroll bgLight">
-		<ul id="accordion" class="accordion">
-        <li>
-            <div class="link"><i class="fa fa-paint-brush"></i>一级分类<i class="icon icon-up"></i></div>
-            <ul class="submenu">
-                <li>
-                    <div class="link"><i class="fa fa-paint-brush"></i>二级分类<i class="icon icon-up"></i></div>
-                    <ul class="submenu">
-                        <li><a href="javascript:void(0)">三级分类</a></li>
-                        <li><a href="javascript:void(0)">二级分类</a></li>
-                        <li><a href="javascript:void(0)">三级分类</a></li>
-                        <li><a href="javascript:void(0)">三级分类</a></li>
-                        <li><a href="javascript:void(0)">三级分类</a></li>
-                    </ul>
-                </li>
-                <li><a href="javascript:void(0)">二级分类</a></li>
-                <li><a href="javascript:void(0)">二级分类</a></li>
-                <li><a href="javascript:void(0)">二级分类</a></li>
-                <li><a href="javascript:void(0)">二级分类</a></li>
-            </ul>
-        </li>
-        <li>
-            <div class="link"><i class="fa fa-code"></i>一级分类<i class="icon icon-up"></i></div>
-            <ul class="submenu">
-                <li><a href="javascript:void(0)">二级分类</a></li>
-                <li><a href="javascript:void(0)">二级分类</a></li>
-                <li><a href="javascript:void(0)">二级分类</a></li>
-                <li><a href="javascript:void(0)">二级分类</a></li>
-                <li><a href="javascript:void(0)">二级分类</a></li>
-            </ul>
-        </li>
-        <li>
-            <div class="link"><i class="fa fa-mobile"></i>一级分类<i class="icon icon-up"></i></div>
-            <ul class="submenu">
-                <li><a href="javascript:void(0)">二级分类</a></li>
-                <li><a href="javascript:void(0)">二级分类</a></li>
-                <li><a href="javascript:void(0)">二级分类</a></li>
-                <li><a href="javascript:void(0)">二级分类</a></li>
-                <li><a href="javascript:void(0)">二级分类</a></li>
-            </ul>
-        </li>
-        <li>
-            <div class="link"><i class="fa fa-globe"></i>一级分类<i class="icon icon-up"></i></div>
-            <ul class="submenu">
-                <li><a href="javascript:void(0)">二级分类</a></li>
-                <li><a href="javascript:void(0)">二级分类</a></li>
-                <li><a href="javascript:void(0)">二级分类</a></li>
-                <li><a href="javascript:void(0)">二级分类</a></li>
-            </ul>
-        </li>
-   		 </ul>
+				<div class="list-block">
+        		<ul id="buildlist">
+
+        		</ul>
+        	</div>
 			</div>
 		</div>
 		<script type='text/javascript' src='./sui/js/sm.min.js' charset='utf-8'></script>
 		<script type='text/javascript' src='./sui/js/sm-extend.min.js' charset='utf-8'></script>
+		<script type='text/javascript' src='./libs/wdTress/js/wdTree.js' charset='utf-8'></script>
 		<script type='text/javascript' src='./js/state.js' charset='utf-8'></script>
 		<script type='text/javascript' src='./js/accordion.js' charset='utf-8'></script>
 

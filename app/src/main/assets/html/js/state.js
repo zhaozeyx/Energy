@@ -1,12 +1,17 @@
 var api = 'http://192.168.4.14:8080';
-var data = { "fDatacenterid1": "1", "pageNum": 1 };
+
 
 //建筑选择
-$(document).on('click', '.open-build', function() {
-	$.popup('.popup-build');
+$(document).on('click', '.open-build', function () {	
+	//console.log('当前能源类型： '+fEnergytypeAll)
+	//var fEnergytype = fEnergytypeAll
+	getTree();
+    $.popup('.popup-build');
 });
-//获取数据
-var getData = function() {
+
+//获取电表信息数据
+var getData = function(val) {
+	var data = { "fDatacenterid1": "1", "pageNum":"1","fBdId":val };
 	$.ajax({
 		type: "post",
 		url: api + '/monitor/api/device/meterlist ',
@@ -17,8 +22,11 @@ var getData = function() {
 		timeout: 10000,
 		success: function(res) {
 			var res = res.data;
-			deployData(res);
-			//alert(JSON.stringify(res))
+			if($.isEmptyObject( res )){
+				deployNull();
+			}else{
+				deployData(res);
+			}			
 		}
 	});
 }
@@ -32,8 +40,9 @@ function getDevice(){
 		processData: true,
 		async: true,
 		contentType: 'application/json',
-		timeout: 10000,
+		timeout: 4000,
 		success: function(res) {
+			$('#network').hide();
 			var res = res.data;
 			//alert(JSON.stringify(res))
 			var device = '';			
@@ -48,10 +57,28 @@ function getDevice(){
 						'</li>';
 						}			
 			$('#device-list').html(device);
+		},
+		error:function(){
+			
+		},
+		complete:function(xhr, status){
+			console.log(xhr, status)
+			if(status == 'abort'|| status== 'timeout'){
+				console.log('网络错误');
+				$('#network').show();				
+			}
 		}
 	});
 }
+$('#resetNetwork').click(function(){
+	getData();
+	getDevice();
+})
 
+function deployNull(){
+	var html = '<p style="text-align:center;background-color:#efeff4;color:#9a9a9a;margin-top: 2rem;">暂无数据</p>';
+	$('#ammeter-list').html(html);
+}
 
 //部署数据到dom
 function deployData(res){
@@ -67,8 +94,54 @@ function deployData(res){
 					'</a>'+
 				'</li>';
 	}
-	$('#ammeter-list').html(html);
+	$('#ammeter-list').html('<ul>'+html+'</ul>');
 };
+
+//建筑物信息列表
+function buildlist(res){
+	var html = '';
+	for(var i = 0; i<res.length; i++){
+		html += '<li class="item-content close-popup">'+
+			        '<div class="item-inner">'+
+			          '<div class="item-title" data-val='+res[i].fBdId+'>'+res[i].fBuildname+'</div>'+
+			        '</div>'+
+			    '</li>';
+	};
+	$('#buildlist').html(html);
+	$('#buildlist').click(function(){
+		$.popup('.popup-energy');
+	})
+	$(document).on('click','#buildlist li',function(){
+		var txt = $(this).find('.item-title').html();
+ 		var val = $(this).find('.item-title').attr('data-val');
+ 		console.log(txt, val)
+ 		$('#buildName').val(txt);
+ 		getData(val)
+	})
+}
+//树结构菜单数据
+function getTree(){
+	var data = {"fDatalevelid":"1"};
+	$.ajax({
+		type:"post",
+		url:api+'/monitor/api/device/buildlist',
+		data: JSON.stringify(data),
+		contentType: 'application/json',
+		timeout: 10000,
+		async: true,
+		beforeSend: function() {
+		},
+		success: function(res) {
+			var res = res.data;	
+			console.log('获取数据成功');
+			console.log(res)
+			buildlist(res);
+		},
+		error:function(){
+			console.log('ajax error')
+		}
+	})	
+}
 
 getData();
 getDevice();

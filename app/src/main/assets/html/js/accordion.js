@@ -3,7 +3,7 @@ $(function(){
 	var Accordion = function(el,multiple){
 		this.el = el || {};
 		this.multiple = multiple || false;
-		var links = this.el.find('.link');
+		var links = this.el.find('.toggle');
 		links.on('click',{el:this.el, multiple:this.multiple}, this.dropdown)
 	}
 	
@@ -16,7 +16,7 @@ $(function(){
 		$this.parent().toggleClass('open');
 
 		if (!e.data.multiple) {
-			$el.find('.submenu').not($next).slideUp().parent().removeClass('open');
+			$el.find('.submenu').not($next).hide().parent().removeClass('open');
 		};
 	}	
 
