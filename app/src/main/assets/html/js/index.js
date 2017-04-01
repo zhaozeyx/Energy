@@ -280,28 +280,28 @@ function deployData(data) {
 		'<div class="item">' +
 		'<div class="icon-zm"></div>' +
 		'<small>照明</small>' +
-		'<p>' + data['01A00'] + '</p>' +
+		'<p>' + data.lightElec+ '</p>' +
 		'</div>' +
 		'</div>' +
 		'<div class="col-25">' +
 		'<div class="item">' +
 		'<div class="icon-kt"></div>' +
 		'<small>空调</small>' +
-		'<p>' + data['01B00'] + '</p>' +
+		'<p>' + data.airElec+ '</p>' +
 		'</div>' +
 		'</div>' +
 		'<div class="col-25">' +
 		'<div class="item">' +
 		'<div class="icon-dl"></div>' +
 		'<small>动力</small>' +
-		'<p>' + data['01C00'] + '</p>' +
+		'<p>' + data.powerElec+ '</p>' +
 		'</div>' +
 		'</div>' +
 		'<div class="col-25">' +
 		'<div class="item">' +
 		'<div class="icon-ts"></div>' +
 		'<small>特殊</small>' +
-		'<p>' + data['01D00'] + '</p>' +
+		'<p>' + data.specialElec+ '</p>' +
 		'</div>' +
 		'</div>' +
 		'</div>';
