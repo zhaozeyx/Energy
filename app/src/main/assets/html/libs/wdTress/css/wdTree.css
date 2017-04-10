@@ -153,7 +153,10 @@
 	text-decoration:none;
 }
 
-
+.bbit-tree-node a:hover span{
+	text-decoration:none;
+	color: #fff;
+}
 
 /* Fix for ie rootVisible:false issue */
 .bbit-tree-root {
@@ -278,13 +281,20 @@
 .bbit-tree-node a span{
 	color:#000;
 }
+.bbit-tree-node:hover a span{
+	color:#fff;
+}
+
 .bbit-tree-node .bbit-tree-node-disabled a span{
 	color:gray !important;
 }
 .bbit-tree-node div:hover{
-	background-color: #eee;
+	background-color: #0894ec;
 }
-
+.bbit-tree-node div:hover span{
+	color: #fff;
+	
+}
 .bbit-tree-node .bbit-tree-selected {
 	background-color: #0894ec;
 }

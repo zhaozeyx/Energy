@@ -1,1 +1,4 @@
-var api = 'http://192.168.4.14:8080/';
+var storageIP= localStorage.getItem("serveIp");
+var StoragePort = localStorage.getItem("servePort");		
+var api = 'http://'+storageIP+':'+StoragePort;
+

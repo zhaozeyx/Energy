@@ -24,7 +24,7 @@
 			<div class="page page-current" id="">
 				<!-- 你的html代码 -->
 				<div class="content">
-					<div class="" style="text-align: center;margin: 3rem;">
+					<div class="" style="text-align: center;margin: 3rem;" id="empName">
 						当前登录的账号
 					</div>
 					<div class="content-block-title"></div>
@@ -64,6 +64,7 @@
 		<script type='text/javascript' src='./js/state.js' charset='utf-8'></script>
 
 		<script type="text/javascript">
+			$('#empName').html(localStorage.getItem('empName'))
 		</script>
 	</body>
 

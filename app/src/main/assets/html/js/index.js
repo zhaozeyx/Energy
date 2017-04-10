@@ -1,3 +1,4 @@
+console.log(api)
 var prevYearData = [];
 var currentYearData = [];
 var prevYearMonth = [];
@@ -15,7 +16,7 @@ var yearPower = function() {
 	var yearChart = echarts.init(document.getElementById('yearPower'));
 	var option = {
 		title: {
-			text: '(年度)',
+			//text: '(年度)',
 			textStyle: {
 				color: 'rgba(0,0,0,.5)',
 				fontSize: 14,
@@ -108,13 +109,13 @@ var yearPower = function() {
 				itemStyle: {
 					normal: {
 						width: 1,
-						color: 'rgb(187, 228, 249)'
+						color: 'rgba(150, 225, 217, .7)'
 					}
 				},
 				//图像区域颜色
 				areaStyle: {
 					normal: {
-						color: 'rgb(214,236,247)'
+						color: 'rgba(214,236,247, .5)'
 					}
 				},
 				data: prevYearData
@@ -128,13 +129,13 @@ var yearPower = function() {
 				itemStyle: {
 					normal: {
 						width: 1,
-						color: 'rgb(165, 197, 235)'
+						color: 'rgba(248, 129, 129, .9)'
 					}
 				},
 				//图像区域颜色
 				areaStyle: {
 					normal: {
-						color: 'rgb(212, 232, 255)'
+						color: 'rgba(225, 200, 200, .3)'
 					}
 				},
 				data: currentYearData
@@ -188,7 +189,7 @@ var monthStat = function(data) {
 function indexPost() {
 	$.ajax({
 		type: 'POST',
-		url: api + 'monitor/api/index',
+		url: api + '/monitor/api/index',
 		data: JSON.stringify({ "fDatacenterid": "1" }),
 		contentType: 'application/json',
 		timeout: 4000,
@@ -228,17 +229,6 @@ function indexPost() {
 				$('#network').show();				
 			}
 		}
-//		complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
-//			console.log(status);
-//	　　　　if(status=='timeout'){//超时,status还有success,error等值的情况
-//			   //$.hidePreloader();
-//	 　　　　　  ajaxTimeout.abort();
-//	 		   console.log("网络超时，请刷新");
-////	　　　　　   alert("网络超时，请刷新", function () {
-////                      location.reload();
-////                  })
-//	　　　　}
-//	　　}
 	})
 }
 

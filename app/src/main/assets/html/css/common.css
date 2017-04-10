@@ -237,7 +237,7 @@ button[disabled], html input[disabled] {
 	position: absolute;
 	left: 0;
 	top: 0.3rem;
-	width: 38%;
+	width: 32%;
 	/*border-top: 0.03rem solid #bdbdbd;*/
 	pointer-events: none;
 	height: 1px;
@@ -251,7 +251,7 @@ button[disabled], html input[disabled] {
 	position: absolute;
 	right: 0;
 	top: 0.3rem;
-	width: 38%;
+	width: 32%;
 	height: 1px;
     background-color: #bdbdbd;
 	/*border-top: 0.03rem solid #bdbdbd;*/
@@ -309,4 +309,7 @@ button[disabled], html input[disabled] {
 .modal-title{
 	font-size: .8rem;
 	color: #666;
+}
+.toast{
+	font-size: .7rem;
 }

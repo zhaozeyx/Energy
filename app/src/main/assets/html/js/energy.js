@@ -13,7 +13,15 @@ var dateX = [],
 var firstData = '',
 	lastData = '';
 var unit = '千瓦时';
-var fEnergytypeAll = '01000'
+var energyType = '电';
+var fEnergytypeAll = '01000';
+
+var mintime = new Date();
+var year =mintime.getFullYear();
+var month = mintime.getMonth()+1;
+var day = mintime.getDate()+1;   
+var minDate = '';
+
 var myDate = new Date();
 var Datefn = myDate.toLocaleDateString();	
 var newDate = new Date();
@@ -25,7 +33,6 @@ var getDate = getYear + "-" + ((getMonth) < 10 ? "0" : "") + (getMonth) + "-" + 
 
 //统计图表
 var Chart = function () {
-    //var week = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
     var myChart = echarts.init(document.getElementById('Chart'));
     var option = {
         grid: {
@@ -49,6 +56,10 @@ var Chart = function () {
                 }
             }
         },
+        legend: {
+			show: true,
+			data: xAxisData
+		},
         xAxis: [
             {
             	boundaryGap: false,
@@ -115,7 +126,7 @@ var Chart = function () {
         ],
         series: [           
             {
-                //name: '2017',
+                name: energyType,
                 type: 'line',
                 //stack: '总量',
                 symbolSize: 0,
@@ -152,60 +163,60 @@ var Chart = function () {
 };
 
 //获取一级建筑数据
-function getSetpOne(){
-	var data = {"fDatacenterid1":"1"};
-	$.ajax({
-		type:"post",
-		url:api+'/monitor/api/device/buildlist',
-		data: JSON.stringify(data),
-		contentType: 'application/json',
-		timeout: 10000,
-		async: true,
-		beforeSend: function() {
-//			$.showPreloader();
-		},
-		success: function(res) {
-			var res = res.data;
-			var list = '';
-			for(var i = 0; i<res.length; i++){
-				list += '<li><a href="javascript:void(0)" data-fbdid="'+res[i].fBdId+'" onclick="tapSetpOne(this)">'+res[i].fBuildname+'</a></li>'
-			}			
-			$('#accordion').html(list);			
-		},
-		error:function(){
-			//alert('ajax error')
-		}
-	});
-}
+//function getSetpOne(){
+//	var data = {"fDatacenterid1":"1"};
+//	$.ajax({
+//		type:"post",
+//		url:api+'/monitor/api/device/buildlist',
+//		data: JSON.stringify(data),
+//		contentType: 'application/json',
+//		timeout: 10000,
+//		async: true,
+//		beforeSend: function() {
+////			$.showPreloader();
+//		},
+//		success: function(res) {
+//			var res = res.data;
+//			var list = '';
+//			for(var i = 0; i<res.length; i++){
+//				list += '<li><a href="javascript:void(0)" data-fbdid="'+res[i].fBdId+'" onclick="tapSetpOne(this)">'+res[i].fBuildname+'</a></li>'
+//			}			
+//			$('#accordion').html(list);			
+//		},
+//		error:function(){
+//			//alert('ajax error')
+//		}
+//	});
+//}
 
-function tapSetpOne(tags){
-	var fbdid = $(tags).attr('data-fbdid');	
-	console.log("【点击了】 ==> "+$(tags).html() +' | 当前fbdid：'+fbdid);
-	var data = {"fBdId":fbdid};
-	$.ajax({
-		type:"post",
-		url:api+'/monitor/api/consume/analy/bdfloorlist',
-		data: JSON.stringify(data),
-		contentType: 'application/json',
-		timeout: 10000,
-		async: true,
-		beforeSend: function() {
-			//$.showPreloader();
-		},
-		success: function(res) {
-			$.hidePreloader();
-			var list = '';
-			for(var i = 0; i<res.length; i++){
-				list += '<li><a href="#">'+res[i].fDatalevelname+'</a></li>'
-			}
-			$(tags).after('<ul class="menu">'+list+'</ul>')
-		},
-		error:function(){
-			//alert('ajax error')
-		}
-	});
-
-}
+//function tapSetpOne(tags){
+//	var fbdid = $(tags).attr('data-fbdid');	
+//	console.log("【点击了】 ==> "+$(tags).html() +' | 当前fbdid：'+fbdid);
+//	var data = {"fBdId":fbdid};
+//	$.ajax({
+//		type:"post",
+//		url:api+'/monitor/api/consume/analy/bdfloorlist',
+//		data: JSON.stringify(data),
+//		contentType: 'application/json',
+//		timeout: 10000,
+//		async: true,
+//		beforeSend: function() {
+//			//$.showPreloader();
+//		},
+//		success: function(res) {
+//			$.hidePreloader();
+//			var list = '';
+//			for(var i = 0; i<res.length; i++){
+//				list += '<li><a href="#">'+res[i].fDatalevelname+'</a></li>'
+//			}
+//			$(tags).after('<ul class="menu">'+list+'</ul>')
+//		},
+//		error:function(){
+//			//alert('ajax error')
+//		}
+//	});
+//
+//}
 
 //获取能换类型
 function getEnergylist(){
@@ -254,6 +265,7 @@ function energyPicker(res){
  		fEnergytypeAll = val;
  		console.log(txt, val, tag)
  		unit = tag;
+ 		energyType = txt;
  		picker.val(txt)
     });
 	
@@ -284,13 +296,18 @@ function curveFn(){
 				chartData.push(val);
 			});			
 			
-			xAxisData.splice(0,xAxisData.length);//清空数组 							
-			//截取数组
-			$.each(dateX, function(index){
-				xAxisData.push(this.substring(5,10))
-			})
-						
-//			console.log(xAxisData)					
+			xAxisData.splice(0,xAxisData.length);//清空数组 		
+			if(fScheme == 'y'){
+				$.each(dateX, function(index){
+					xAxisData.push(this.substring(0,4))
+				})
+			}else{						
+				//截取数组
+				$.each(dateX, function(index){
+					xAxisData.push(this.substring(5,10))
+				})
+			}		
+			console.log(xAxisData)					
 			//判断返回图表数据是否为空
 			if($.isEmptyObject( res )){
 				$('#Chart').html('<p style="text-align:center;line-height:10rem;color:#fff;">暂无数据</p>')
@@ -358,37 +375,69 @@ $("#timeHorizon li").click(function(){
 	$('#diyTime').hide();
 	$('#prevChart').show();
     $('#nextChart').show();
+    $('#startTime').val('');
+    $('#endTime').val('');
 	console.log(fScheme);
 })
 
 //重置时间维度加载到图表
 $("#timeReset").click(function(){
-	curveFn()
+	var timeS = $('#startTime').val();
+	var timeE = $('#endTime').val();	
+	var start=new Date(timeS.replace("-", "/").replace("-", "/"));  
+	var end=new Date(timeE.replace("-", "/").replace("-", "/"));  
+//	console.log(start, end);
+//	console.log(timeS, timeE);
+	if(timeS == '' && timeE == ''){
+		curveFn()		
+	}else if(timeS !== '' && timeE !== ''){
+		curveFn()
+		$('#contentDate').html(timeS+' — '+timeE)
+	}
+	
+	if(start > end){
+		alert('开始时间不能小于结束时间');
+		return false;
+	}
+	
+	
+	
 })
 
 //时间选择控件
 $("#startTime").calendar({
     value: [Datefn],
     maxDate: Datefn,
+    onOpen:function(){
+    	//alert(typeof Datefn);
+    	console.log(typeof Datefn)
+    },
     onClose: function () {
         theTimeS = $('#startTime').val();
-        var time = new Date(theTimeS);
-        var year =time.getFullYear();
-        var month = time.getMonth()+1;
-        var day = time.getDate()+1;        
-        var minData = year+'/'+month+'/'+day;            
-        console.log(theTimeS)
-        $("#endTime").calendar({
-            value: [minData],
-            minDate:minData,
-            maxDate: Datefn,
-            onClose:function(){
-            	theTimeE = $('#endTime').val();
-            	console.log(theTimeE)
-            }
-        });        
+        mintime = new Date(theTimeS);
+        minyear = mintime.getFullYear();
+        minmonth = mintime.getMonth()+1;
+        minday = mintime.getDate()+1;        
+        minDate = minyear+'/'+minmonth+'/'+minday;  
+        console.log(theTimeS);       
     }
 });
+
+$("#endTime").calendar({  
+		value: [Datefn],
+	    maxDate: Datefn,	
+	    onClose:function(){
+	    	theTimeE = $('#endTime').val();
+	    	console.log(theTimeE)
+	    }
+}); 
+
+
+
+
+
+
+
 
 //自定义时间选择    
 $(document).on('click', '#checkBtn', function () {
@@ -406,7 +455,9 @@ $(document).on('click', '#checkBtn', function () {
         $('#prevChart').hide();
         $('#nextChart').hide();
     } else {
-        time.hide();           
+        time.hide();    
+        $('#startTime').val('');
+        $('#endTime').val('');
     }
 });
 
@@ -520,7 +571,7 @@ function getTree(fEnergytype){
         
     }
     else{
-        alert("NULL");
+        //alert("NULL");
     }
  });
 

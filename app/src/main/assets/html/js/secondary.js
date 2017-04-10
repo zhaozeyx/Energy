@@ -1,4 +1,3 @@
-var api = 'http://192.168.4.14:8080';
 var	path;
 var fEnergytype = window.location.href.split('=')[1]; //页面类型参数
 var week = [],
@@ -486,7 +485,7 @@ function curveByWeek(fEnergytype,getdata,op) {
 		success: function(res) {
 			var res = res.data;
 			if($.isEmptyObject( res )){
-				alert('查询数据不存在')
+				$.toast("查询数据不存在");
 			}
 			weekKey.splice(0,weekKey.length);//清空数组 
 			weekVal.splice(0,weekVal.length);//清空数组 
@@ -495,35 +494,39 @@ function curveByWeek(fEnergytype,getdata,op) {
 				weekKey.push(key);
 				weekVal.push(val);
 			});
-
-
-			
+		
 			$.each(weekKey, function(index) {
 				week.push(this.substring(5, 100))
 			})
 			
 			if($.isEmptyObject( res )){
-				$('#weekChart').html('<p style="text-align:center;line-height:10rem;color:#fff;">暂无数据</p>')
+				$('#weekChart').html('<p style="text-align:center;line-height:10rem;color:#fff;">暂无数据</p>');
+				$('#prevWeek').hide();
+				$('#nextWeek').hide();
 			}else{
+				$('#prevWeek').show();
+				$('#nextWeek').show();
 				var weekKeyFirst = weekKey[0].toString();
 				var weekKeyLast = weekKey.pop().toString();
 				firstData = weekKeyFirst;
 				lastData = weekKeyLast;
 
 				weekChart();
+				//最近7天数据索引显示
+				$('#contentWeek').text(weekKeyFirst + ' -- ' + weekKeyLast);
+				//日期对比	
+				var start=new Date(getDate.replace("-", "/").replace("-", "/"));  
+				var end=new Date(lastData.replace("-", "/").replace("-", "/"));  
+				//console.log(start,end)
+				if(end<start){
+					$('#nextWeek').removeAttr('disabled');
+				}else if(end>=start){
+					$('#nextWeek').attr('disabled','disabled');
+				}
+				
 			}
 			//console.log(getDate, lastData)
-			//最近7天数据索引显示
-			$('#contentWeek').text(weekKeyFirst + ' -- ' + weekKeyLast);
-			//日期对比	
-			var start=new Date(getDate.replace("-", "/").replace("-", "/"));  
-			var end=new Date(lastData.replace("-", "/").replace("-", "/"));  
-			//console.log(start,end)
-			if(end<start){
-				$('#nextWeek').removeAttr('disabled');
-			}else if(end>=start){
-				$('#nextWeek').attr('disabled','disabled');
-			}
+			
 		},
 		error: function(xhr, type) {
 			console.log('ajax error');
@@ -620,9 +623,9 @@ function deployData(data) {
 		}
 	});
 	//单位面积能耗
-	$('#byArea').text(data.byArea);
+	$('#byArea').text((data.byArea).substring(0,4));
 	//人均能耗
-	$('#byPerson').text(data.byPerson);
+	$('#byPerson').text((data.byPerson).substring(0,4));
 
 	//年度曲线对比
 	if(data.curveByYear){

@@ -17,11 +17,12 @@
 			.icon-danger {background:url(images/yiji.png)center center no-repeat;}
 			.icon-warning{background:url(images/erji.png)center center no-repeat;}
 			.icon-primary{background:url(images/sanji.png) center center no-repeat;}
-		</style>
-		<script src="./js/echarts.js"></script>
-		<script type='text/javascript' src='./sui/js/zepto.min.js' charset='utf-8'></script>
-		<script type='text/javascript' src='./js/config.js' charset='utf-8'></script>
-
+			.del-btn{display: block;float: left;width:20%;height:2.2rem;line-height:2.2rem;font-size:.7rem;text-align:center;background-color: #ff3f3f;color: white;}
+			.del-btn:active,.del-btn:hover{background-color: #b94141;color: white;}
+			#warn-list li{background-color: #fff;overflow: hidden;position: relative;}
+			#warn-list li .item-content{overflow: hidden;width: 120%;-webkit-transition:all 0.3s linear;}
+			#warn-list li .item-content.selected{-webkit-transform: translate(-16%,0);-webkit-transition:all 0.3s linear;}
+		</style>	
 	</head>
 
 	<body>
@@ -37,35 +38,42 @@
 				<!-- 你的html代码 -->
 				<div class="content">
 					<div class="list-block">
+						<div class="my-address-list" id="my-address-list"></div>
 						<ul id="warn-list">
-							<li class="item-content">
+							<!--<li class="item-content">
 								<div class="item-media"><i class="icon icon-danger"></i></div>
 								<div class="item-inner">
 									<div class="item-title">2017-01-03 09:08:23 通道44：测试离线</div>
-								</div>
+								</div>								
 							</li>
 							<li class="item-content">
 								<div class="item-media"><i class="icon icon-warning"></i></div>
 								<div class="item-inner">
 									<div class="item-title">2017-01-03 09:08:23 通道45：测试离线</div>
-								</div>
+								</div>								
 							</li>
 							<li class="item-content">
 								<div class="item-media"><i class="icon icon-primary"></i></div>
 								<div class="item-inner">
 									<div class="item-title">2017-01-03 09:08:23 通道46：测试离线</div>
 								</div>
-							</li>
+							</li>-->
 						</ul>
 
 					</div>
 				</div>
 			</div>
-			<script type='text/javascript' src='./sui/js/sm.min.js' charset='utf-8'></script>
-			<script type='text/javascript' src='./sui/js/sm-extend.min.js' charset='utf-8'></script>
+		
+		<script type='text/javascript' src='libs/jquery.min.js' charset='utf-8'></script>
+		<script type='text/javascript' src='libs/jquery.mobile-1.3.2.min.js' charset='utf-8'></script>	
+		<script>var Zepto = jQuery</script>
+		<script type='text/javascript' src='./sui/js/sm.min.js' charset='utf-8'></script>
+		<script type='text/javascript' src='./sui/js/sm-extend.min.js' charset='utf-8'></script>
+		<script type='text/javascript' src='js/config.js' charset='utf-8'></script>
 			<script type="text/javascript">
-				var api = 'http://192.168.4.14:8080';
 				var data = {"fDatacenterid":"1"};
+				
+				//var params =  {"fEventid": "TD.9", "fGentime": "1480210081000", "fEventtype": "A"} 
 				var getData = function () {
 					$.ajax({
 						type:"post",
@@ -92,24 +100,73 @@
 							}
 						}						
 					});
-				};
+				};				
 				function deployData(res) {
 					var html = '';
 					console.log(res.length)
 					for(var i = 0; i < res.length; i++){
-						html +='<li class="item-content">'+
+						html +='<li data-id="'+res[i].fEventid+'" data-time="'+res[i].fGentime+'" data-type="'+res[i].fEventtype+'">'+
+								'<div class="item-content">'+
 								'<div class="item-media"><i class="icon icon-danger"></i></div>'+
-								'<div class="item-inner">'+
+								'<div class="item-inner session-content">'+
 									'<div class="item-title">'+res[i].fEventinfo+'</div>'+
 								'</div>'+
+									'<a href="javascript:;" class="del-btn">已读</a>'+
+								'</div>'+								
 							'</li>';						
 					}
 					$('#warn-list').html(html);
+					
+					//侧滑删除
+				    $(".item-content").on("swipeleft",function(){
+				        $(this).addClass('selected').parents("li").siblings().find(".item-content").removeClass('selected');
+				        $(this).find(".del-btn").on("click",function(){
+				            var li = $(this).parents("li");
+				            var fEventid,fGentime,fEventtype;
+											            
+				            //执行删除效果
+				            fEventid = li.attr('data-id');
+				            fGentime = li.attr('data-time');
+				            fEventtype = li.attr('data-type');
+				            var params = {"fEventid": fEventid, "fGentime": fGentime, "fEventtype": fEventtype};
+				            //console.log(params)				            				            
+				            $.ajax({
+								type:"post",
+								url:api+'/monitor/api/device/dealwarning',
+								data:JSON.stringify(params),
+								processData:true,
+								async:true,
+								contentType: 'application/json',
+								timeout: 4000,
+								beforeSend:function(){
+									 $.showIndicator();
+								},
+								success:function (data) {
+									$.hideIndicator();
+									if(data.msg == '成功'){
+										$.toast("操作成功");
+										 $(li).stop().animate({
+							                height:"0",
+							                margin:"0"
+							            },300,function(){
+							                $(this).remove();
+							            })
+									}
+								},
+								error:function(){
+									$.hideIndicator();
+								}								
+							});				            				            				          
+				        })
+				    }).on("swiperight",function(){
+				        $(this).parents("li").find(".item-content").removeClass('selected');
+				    });									
 				};
 				getData();
 				$('#resetNetwork').click(function(){
 					getData();
 				})
+
 			</script>
 	</body>
 </html>

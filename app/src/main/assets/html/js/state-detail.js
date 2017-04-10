@@ -1,5 +1,4 @@
 var fMeId = window.location.href.split('=')[1]; //页面类型参数
-var api = 'http://192.168.4.14:8080';
 var data = { "fMeId": fMeId };
 var curveByWeekX =[],
 	curveByWeekData = [];
@@ -11,8 +10,6 @@ var oneData = [],
 //三相电流曲线
 var electricityChart = function() {
 	var electricityChart = echarts.init(document.getElementById('electricity'));
-//	electricityChart.showLoading();
-	
 	var option = {
 		title: {
 			text: '(年度)',
@@ -352,8 +349,8 @@ function deployData(res) {
 	//列表详细
 	var html = '<li class="item-content">' +
 		'									<div class="item-inner">' +
-		'										<div class="item-title">编号</div>' +
-		'										<div class="item-after">200000000A0010003</div>' +
+		'										<div class="item-title">表计编码</div>' +
+		'										<div class="item-after">'+res.info.fMeterid+'</div>' +
 		'									</div>' +
 		'								</li>' +
 		'								<li class="item-content">' +
@@ -364,38 +361,38 @@ function deployData(res) {
 		'								</li>' +
 		'								<li class="item-content">' +
 		'									<div class="item-inner">' +
-		'										<div class="item-title">建筑物</div>' +
-		'										<div class="item-after">上海国际医学中心</div>' +
+		'										<div class="item-title">建筑物ID</div>' +
+		'										<div class="item-after">'+res.info.fBdId+'</div>' +
 		'									</div>' +
 		'								</li>' +
 		'								<li class="item-content">' +
 		'									<div class="item-inner">' +
-		'										<div class="item-title">采集器</div>' +
-		'										<div class="item-after">工地表采集器2</div>' +
+		'										<div class="item-title">采集器ID</div>' +
+		'										<div class="item-after">'+res.info.fClId+'</div>' +
 		'									</div>' +
 		'								</li>' +
-		'								<li class="item-content">' +
-		'									<div class="item-inner">' +
-		'										<div class="item-title">表计类型</div>' +
-		'										<div class="item-after">威思顿三相多功能表</div>' +
-		'									</div>' +
-		'								</li>' +
+//		'								<li class="item-content">' +
+//		'									<div class="item-inner">' +
+//		'										<div class="item-title">表计类型</div>' +
+//		'										<div class="item-after">威思顿三相多功能表</div>' +
+//		'									</div>' +
+//		'								</li>' +
 		'								<li class="item-content">' +
 		'									<div class="item-inner">' +
 		'										<div class="item-title">变比</div>' +
-		'										<div class="item-after">120</div>' +
+		'										<div class="item-after">'+res.info.fRate+'</div>' +
 		'									</div>' +
 		'								</li>' +
 		'								<li class="item-content">' +
 		'									<div class="item-inner">' +
-		'										<div class="item-title">波特率</div>' +
-		'										<div class="item-after">默认值</div>' +
+		'										<div class="item-title">比特率</div>' +
+		'										<div class="item-after">'+res.info.fBitnum+'</div>' +
 		'									</div>' +
 		'								</li>' +
 		'								<li class="item-content">' +
 		'									<div class="item-inner">' +
 		'										<div class="item-title">通信违约类型</div>' +
-		'										<div class="item-after">DL/T 645 07</div>' +
+		'										<div class="item-after">'+res.info.fCommtype+'</div>' +
 		'									</div>' +
 		'								</li>' +
 		'								<li class="item-content">' +
@@ -407,7 +404,7 @@ function deployData(res) {
 		'								<li class="item-content">' +
 		'									<div class="item-inner">' +
 		'										<div class="item-title">正反向接反</div>' +
-		'										<div class="item-after">嘿嘿嘿嘿</div>' +
+		'										<div class="item-after">'+res.info.fReverse+'</div>' +
 		'									</div>' +
 		'								</li>';
 

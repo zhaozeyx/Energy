@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>登录</title>
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="./sui/css/sm.min.css">
+		<link rel="stylesheet" href="./sui/css/sm-extend.min.css">
+		<!--<link rel="stylesheet" href="./css/common.css">-->
+		<style>
+			body{background:white;}
+			.page, .page-group{background: white;}
+			.login_pic{width: 100%;height: auto;}
+			.login_name{width: 60%;height: auto;margin:1% auto 3%;}
+			.login_login{}
+			.login_login .input-group{border-top: 1px solid #ddd;height:50px;}
+			.login_login .input-group .input-group-addon{line-height: 50px;}
+			.login_login .input-group .input-group-addon img{vertical-align: middle;margin: 0 15px;}
+			.login_login .input-group .form-control{height: 40px;width: 70%;border:none;font-size: 16px;}
+			.login_login .setting{text-align: right;display: block;padding: 2%;color: #3777B6;}
+			.login_login .submit{width: 100%;border: none;color: white;background-color: #3777B6;padding: 3% 0;}
+			.login_login .submit:hover,.login_login .submit:active{background-color: #265788;}
+			.login_desc p{padding: 0;margin: 0;text-align: center;font-size: 14px;color:#4790D8;}
+			.button-success.button-fill{background-color: #3777B6;}
+			.button-success.button-fill:active{background-color: #265788;}
+			.button-danger.button-fill{color: #3777B6;background-color: #FFFFFF;}
+			.button-danger.button-fill:active{background-color: #ddd;}
+			.list-block .item-title.label{width: 25%;}
+			.toast{font-size: .7rem;}
+		</style>
+	</head>
+	<body>
+		<div class="page-group">
+			<div class="page page-current">
+				<div class="content">
+					<div class="login_pic"><img src="images/src_login_header.png" width="100%"/></div>
+					<div class="login_name"><img src="images/src_login_app_name.png" width="100%"/></div>
+					<div class="login_login">
+						<form class="">
+							<div class="input-group">
+								<span class="input-group-addon"><img src="images/icon_login_account.png" width="25px" /></span>
+								<input type="text" class="form-control" id="username" value="" placeholder="请输入账号"/>
+							</div>
+							<div class="input-group">
+								<span class="input-group-addon"><img src="images/icon_login_password.png" width="25px"/></span>
+								<input type="password" class="form-control" id="password" value="" placeholder="请输入密码"/>
+							</div>
+							<button class="submit" id="submit">登 录</button>
+							<a href="javascript:void(0)" class="setting open-setting">设置登录IP</a>
+						</form>
+					</div>
+					<div class="login_desc">
+						
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- About Popup -->
+		<div class="popup popup-setting">
+			<header class="bar bar-nav">
+			  <h1 class='title'>设置登录IP</h1>
+			</header>
+			<div class="content" style="background: #E4E4E4;">
+			  <div class="list-block">
+			    <ul>
+			      <!-- Text inputs -->
+			      <li>
+			        <div class="item-content">
+			          <div class="item-media"><i class="icon icon-card"></i></div>
+			          <div class="item-inner">
+			            <div class="item-title label">服务器IP</div>
+			            <div class="item-input">
+			              <input type="text" id="serveIp" value="" placeholder="请填写服务器IP ">
+			            </div>
+			          </div>
+			        </div>
+			      </li>
+			      <li>
+			        <div class="item-content">
+			          <div class="item-media"><i class="icon icon-computer"></i></div>
+			          <div class="item-inner">
+			            <div class="item-title label">端口号</div>
+			            <div class="item-input">
+			              <input type="number" id="servePort" value="" placeholder="请填写端口号 ">
+			            </div>
+			          </div>
+			        </div>
+			      </li>
+			    </ul>
+			  </div>
+			  <div class="content-block">
+			    <div class="row">
+			      <div class="col-50"><a href="#" class="button button-big button-fill button-danger close-popup">取消</a></div>
+			      <div class="col-50"><a href="#" class="button button-big button-fill button-success" id="saveSet">保存</a></div>
+			    </div>
+			  </div>
+			</div>
+		</div>
+		
+		<script type='text/javascript' src='./sui/js/zepto.min.js' charset='utf-8'></script>
+		<script type='text/javascript' src='./sui/js/sm.min.js' charset='utf-8'></script>
+		<script type='text/javascript' src='./sui/js/sm-extend.min.js' charset='utf-8'></script>
+		<script type="text/javascript">
+			//获取本地储存的IP和端口信息
+			var storageIP= localStorage.getItem("serveIp");
+			var StoragePort = localStorage.getItem("servePort");			
+			$('#serveIp').val(storageIP);
+			$('#servePort').val(StoragePort);
+			var isPort = /^([0-9]|[1-9]\d{1,3}|[1-5]\d{4}|6[0-5]{2}[0-3][0-5])$/;
+			
+			if($('#serveIp').val() !== '' || $('#servePort').val() !== '') {
+				desc()
+			}else{
+				$('.login_desc').html('<p>请设置登录IP</p>');
+			}
+			
+			//ip效验
+			function isIP(ip){  
+			    var reSpaceCheck = /^(\d+)\.(\d+)\.(\d+)\.(\d+)$/;  
+			    if (reSpaceCheck.test(ip))  
+			    {  
+			        ip.match(reSpaceCheck);  
+			        if (RegExp.$1<=255&&RegExp.$1>=0  
+			          &&RegExp.$2<=255&&RegExp.$2>=0  
+			          &&RegExp.$3<=255&&RegExp.$3>=0  
+			          &&RegExp.$4<=255&&RegExp.$4>=0)  
+			        {  
+			            return true;   
+			        }else  
+			        {  
+			            return false;  
+			        }  
+			    }else  
+			    {  
+			        return false;  
+			    }  
+			};
+								
+			function desc(){
+				var storageIP= localStorage.getItem("serveIp");
+				var StoragePort = localStorage.getItem("servePort");
+				var api = 'http://'+storageIP+':'+StoragePort;
+				var data = {"fDatalevelid":"1"};
+//				console.log(api)
+				$.ajax({
+					type:"post",
+					url:api+"/monitor/api/linkdata",
+					data: JSON.stringify(data),
+					contentType: 'application/json',
+					timeout: 10000,
+					beforeSend:function(){
+						//$.showIndicator();
+					},
+					success:function(res){
+						$.hideIndicator();
+						var html ='<P>共接入'+res.data.linkNum+'个用户，接入电量'+res.data.linkElec+'千瓦时</P>'+
+								  '<P>继续ing...</P>';
+						$('.login_desc').html(html);
+					},
+					error:function(){
+						$.hideIndicator();
+					}
+				});
+			}
+			
+			$(function(){
+								
+				//保存设置			
+				$("#saveSet").click(function(){
+					var serveIp = $('#serveIp').val();
+					var servePort = $('#servePort').val();
+					if(serveIp == '' || servePort == ''){
+						$.toast("ip地址或端口号不能为空");
+					}else{							
+						if(isIP(serveIp) == true){
+							 localStorage.setItem("serveIp", serveIp);     
+							 localStorage.setItem("servePort", servePort);							 
+							 $.toast("保存成功");		
+							 $.closeModal('.popup-setting')
+							 desc();
+							}else{
+								$.toast("请检查ip的有效性");
+							}
+
+					}
+				});							
+				//登录			
+				$('#submit').click(function(){
+					var userName = $('#username').val();
+					var userPass = $('#password').val();
+					var serveIp = $('#serveIp').val();
+					var servePort = $('#servePort').val();					
+					if(userName == '' || userPass == ''){
+						$.toast("账号或密码不能为空");
+					}else if(serveIp == '' || servePort == ''){
+						$.toast("ip地址或端口号不能为空");
+					}else{
+						var api = 'http://'+serveIp+':'+servePort;
+						var data = {"empAccount":userName,"empPassword":userPass}
+						console.log(data)
+						$.ajax({
+							type: 'POST',
+							url: api + '/monitor/api/login ',
+							data: JSON.stringify(data),
+							contentType: 'application/json',
+							timeout: 10000,
+							beforeSend:function(){
+								$.showIndicator();
+							},
+							success:function(res){
+								$.hideIndicator();
+								if(res.code == 1){
+								 localStorage.setItem('empName',res.data.empName);
+								 $.toast("登录成功");
+								}else{
+									$.toast("账号或密码错误");
+								}
+							},
+							error:function(){
+								$.hideIndicator();
+							}
+						})
+					}
+				});
+				//弹出popup
+				$(document).on('click','.open-setting', function () {
+				  $.popup('.popup-setting');
+				});
+				
+			})
+		</script>
+	</body>
+</html>

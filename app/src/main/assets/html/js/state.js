@@ -1,5 +1,3 @@
-var api = 'http://192.168.4.14:8080';
-
 
 //建筑选择
 $(document).on('click', '.open-build', function () {	
