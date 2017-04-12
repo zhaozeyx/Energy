@@ -190,13 +190,14 @@ function indexPost() {
 	$.ajax({
 		type: 'POST',
 		url: api + '/monitor/api/index',
-		data: JSON.stringify({ "fDatacenterid": "1" }),
+		data: JSON.stringify({ "fDatacenterid": Datacenterid }),
 		contentType: 'application/json',
 		timeout: 4000,
-//		beforeSend:function(){
-//			 $.showPreloader();
-//		},
+		beforeSend:function(){
+			 $.showIndicator();
+		},
 		success: function(data) {
+			$.hideIndicator();
 			$('#network').hide();
 			var data = data.data;
 			var powerCurveData0 = data.powerCurve[prevYear];
@@ -219,6 +220,7 @@ function indexPost() {
 
 		},
 		error: function(xhr, errorType, error) {
+			$.hideIndicator();
 			//alert('Ajax error!')
 			console.log(xhr, errorType, error)
 		},

@@ -477,7 +477,7 @@ $(document).on('click', '.open-time', function () {
 //树结构菜单数据
 function getTree(fEnergytype){
 	console.log('请求中的数据类型： '+fEnergytype)
-	var data = {"fDatacenterid":"1","fEnergytype":fEnergytype};
+	var data = {"fDatacenterid":Datacenterid,"fEnergytype":fEnergytype};
 	$.ajax({
 		type:"post",
 		url:api+'/monitor/api/device/buildlist',
@@ -486,8 +486,9 @@ function getTree(fEnergytype){
 		timeout: 10000,
 		async: true,
 		beforeSend: function() {
+			$.showIndicator();
 		},
-		success: function(res) {
+		success: function(res) {			
 			var res = res.data;	
 			console.log('获取数据成功');
 			$("#tree").treeview({
@@ -495,8 +496,10 @@ function getTree(fEnergytype){
 				theme: "bbit-tree-arrows", //bbit-tree-lines ,bbit-tree-no-lines,bbit-tree-arrows
 				    data: [createNode(res)]
 			});
+			$.hideIndicator();
 		},
 		error:function(){
+			$.hideIndicator();
 			//console.log('ajax error')
 		}
 	})	

@@ -40,7 +40,6 @@
 					<div class="login_pic"><img src="images/src_login_header.png" width="100%"/></div>
 					<div class="login_name"><img src="images/src_login_app_name.png" width="100%"/></div>
 					<div class="login_login">
-						<form class="">
 							<div class="input-group">
 								<span class="input-group-addon"><img src="images/icon_login_account.png" width="25px" /></span>
 								<input type="text" class="form-control" id="username" value="" placeholder="请输入账号"/>
@@ -49,9 +48,8 @@
 								<span class="input-group-addon"><img src="images/icon_login_password.png" width="25px"/></span>
 								<input type="password" class="form-control" id="password" value="" placeholder="请输入密码"/>
 							</div>
-							<button class="submit" id="submit">登 录</button>
+							<button class="submit" id="submitBtn">登 录</button>
 							<a href="javascript:void(0)" class="setting open-setting">设置登录IP</a>
-						</form>
 					</div>
 					<div class="login_desc">
 						
@@ -179,7 +177,7 @@
 					}else{							
 						if(isIP(serveIp) == true){
 							 localStorage.setItem("serveIp", serveIp);     
-							 localStorage.setItem("servePort", servePort);							 
+							 localStorage.setItem("servePort", servePort);							 							 							
 							 $.toast("保存成功");		
 							 $.closeModal('.popup-setting')
 							 desc();
@@ -190,7 +188,7 @@
 					}
 				});							
 				//登录			
-				$('#submit').click(function(){
+				$('#submitBtn').click(function(){
 					var userName = $('#username').val();
 					var userPass = $('#password').val();
 					var serveIp = $('#serveIp').val();
@@ -216,12 +214,14 @@
 								$.hideIndicator();
 								if(res.code == 1){
 								 localStorage.setItem('empName',res.data.empName);
+								 localStorage.setItem("Datacenterid", res.data.empDatacenterid);
 								 $.toast("登录成功");
 								}else{
 									$.toast("账号或密码错误");
 								}
 							},
 							error:function(){
+								$.toast("服务器连接失败，请检查ip设置");
 								$.hideIndicator();
 							}
 						})

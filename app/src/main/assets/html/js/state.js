@@ -9,7 +9,7 @@ $(document).on('click', '.open-build', function () {
 
 //获取电表信息数据
 var getData = function(val) {
-	var data = { "fDatacenterid1": "1", "pageNum":"1","fBdId":val };
+	var data = { "fDatacenterid": Datacenterid, "pageNum":"1","fBdId":val };
 	$.ajax({
 		type: "post",
 		url: api + '/monitor/api/device/meterlist ',
@@ -30,7 +30,7 @@ var getData = function(val) {
 }
 //获取采集器设备列表
 function getDevice(){
-	var data = {"fDatacenterid1":"1","pageNum":1};
+	var data = {"fDatacenterid":Datacenterid,"pageNum":1};
 	$.ajax({
 		type: "post",
 		url: api + '/monitor/api/device/list',
@@ -39,6 +39,9 @@ function getDevice(){
 		async: true,
 		contentType: 'application/json',
 		timeout: 4000,
+		beforeSend:function(){
+			$.showIndicator();
+		},
 		success: function(res) {
 			$('#network').hide();
 			var res = res.data;
@@ -55,8 +58,10 @@ function getDevice(){
 						'</li>';
 						}			
 			$('#device-list').html(device);
+			$.hideIndicator();
 		},
 		error:function(){
+			$.hideIndicator();
 			
 		},
 		complete:function(xhr, status){
@@ -128,14 +133,17 @@ function getTree(){
 		timeout: 10000,
 		async: true,
 		beforeSend: function() {
+			$.showIndicator();
 		},
 		success: function(res) {
 			var res = res.data;	
 			console.log('获取数据成功');
 			console.log(res)
 			buildlist(res);
+			$.hideIndicator();
 		},
 		error:function(){
+			$.hideIndicator();
 			console.log('ajax error')
 		}
 	})	

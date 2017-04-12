@@ -295,10 +295,11 @@ var getData = function() {
 		contentType: 'application/json',
 		timeout: 10000,
 		async: true,
-//		beforeSend: function() {
-//			$.showPreloader();
-//		},
+		beforeSend: function() {
+			$.showIndicator();
+		},
 		success: function(res) {
+			$.hideIndicator();
 			var res = res.data;
 			deployData(res);
 		},

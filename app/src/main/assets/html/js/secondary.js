@@ -451,19 +451,21 @@ function postData(path) {
 	$.ajax({
 		type: 'POST',
 		url: api + path,
-		data: JSON.stringify({ "fDatacenterid": "1" }),
+		data: JSON.stringify({ "fDatacenterid": Datacenterid }),
 		contentType: 'application/json',
 		timeout: 10000,
-//		beforeSend:function(){
-//			 $.showPreloader();
-//		},		
+		beforeSend:function(){
+			 $.showIndicator();
+		},		
 		success: function(res) {
+			$.hideIndicator();
 			var data = res.data;
 			deployData(data);
 			classifyChart(data);
 
 		},
 		error: function(xhr, type) {
+			$.hideIndicator();
 			//alert('Ajax error!')
 		}
 	})
@@ -471,7 +473,7 @@ function postData(path) {
 
 //最近七天数据
 function curveByWeek(fEnergytype,getdata,op) {	
-	var weekData = { "fDatacenterid": "1", "fEnergytype": fEnergytype, "theTime": getdata, "op": op };	
+	var weekData = { "fDatacenterid": Datacenterid, "fEnergytype": fEnergytype, "theTime": getdata, "op": op };	
 	console.log(weekData)
 	$.ajax({
 		type: 'POST',
@@ -480,9 +482,10 @@ function curveByWeek(fEnergytype,getdata,op) {
 		contentType: 'application/json',
 		timeout: 10000,
 		beforeSend:function(){
-			
+			$.showIndicator();
 		},
 		success: function(res) {
+			$.hideIndicator();
 			var res = res.data;
 			if($.isEmptyObject( res )){
 				$.toast("查询数据不存在");
@@ -529,6 +532,7 @@ function curveByWeek(fEnergytype,getdata,op) {
 			
 		},
 		error: function(xhr, type) {
+			$.hideIndicator();
 			console.log('ajax error');
 		}
 	})
