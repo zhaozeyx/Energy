@@ -8,6 +8,7 @@ var currentYear = mydate.getFullYear(); //当前年
 var prevYear = currentYear - 1; //上一年
 
 var yearPower = function() {
+	console.log(prevYearData)
 	$.each(prevYearMonth, function(index, item) {
 		//item[index]+'月'
 		//console.log(this+'月');
@@ -104,7 +105,7 @@ var yearPower = function() {
 				symbolSize: 0,
 				name: prevYear + '年',
 				type: 'line',
-				stack: '总量',
+				stack: '总量1',
 				smooth: true,
 				itemStyle: {
 					normal: {
@@ -123,7 +124,7 @@ var yearPower = function() {
 			{
 				name: currentYear + '年',
 				type: 'line',
-				stack: '总量',
+				stack: '总量2',
 				smooth: true,
 				symbolSize: 0,
 				itemStyle: {
@@ -148,6 +149,7 @@ var yearPower = function() {
 };
 
 var monthStat = function(data) {
+	console.log(data);
 	var myChart = echarts.init(document.getElementById('monthStat'));
 	var option = {
 		color: ['#2e75b6', '#ea5d7f', '#f2f354', '#73de2b'],
@@ -162,19 +164,19 @@ var monthStat = function(data) {
 				}
 			},
 			data: [{
-					value: data['01A00'],
+					value: data.lightElec,
 					name: ''
 				},
 				{
-					value: data['01B00'],
+					value: data.airElec,
 					name: ''
 				},
 				{
-					value: data['01C00'],
+					value: data.powerElec,
 					name: ''
 				},
 				{
-					value: data['01D00'],
+					value: data.specialElec,
 					name: ''
 				},
 			]
@@ -203,11 +205,13 @@ function indexPost() {
 			var powerCurveData0 = data.powerCurve[prevYear];
 			var powerCurveData1 = data.powerCurve[currentYear];
 			$.each(powerCurveData0, function(key, value) {
-				prevYearData.push(value);
+				var valueFn = (value == '0') ? value = '':value;
+				prevYearData.push(valueFn);
 				prevYearMonth.push(key);
 			});
 			$.each(powerCurveData1, function(key, value) {
-				currentYearData.push(value);
+				var valueFn = (value == '0') ? value = '':value;
+				currentYearData.push(valueFn);
 			});
 			//年度图表数据
 			yearPower();
@@ -247,6 +251,8 @@ function deployData(data) {
 		if(d > 0) {
 			var sub = str.substring(0, 2);
 			return '同比 ' + sub + '%' + '<i class="icon-t"></i>'
+		}else if(d == 0){
+			return '同比 '+ '—'
 		} else {
 			var sub = str.substring(1, 3);
 			return '同比' + sub + '%' + '<i class="icon-b"></i>'
@@ -261,7 +267,9 @@ function deployData(data) {
 		if(d > 0) {
 			var sub = str.substring(0, 2);
 			return '环比 ' + sub + '%' + '<i class="icon-t"></i>'
-		} else {
+		}else if(d == 0){
+			return '环比 '+ '—'
+		}else {
 			var sub = str.substring(1, 3);
 			return '环比' + sub + '%' + '<i class="icon-b"></i>'
 		}
@@ -305,7 +313,7 @@ function deployData(data) {
 		'<div class="item-media"><i class="icon icon-f7"></i></div>' +
 		'<div class="item-inner">' +
 		'<div class="item-title">电</div>' +
-		'<div class="item-after">'+data.totalElectricity+'</div>' +
+		'<div class="item-after">'+data.totalElectricity+' 千瓦时</div>' +
 		'</div>' +
 		'</a>' +
 		'</li>' +
@@ -314,7 +322,7 @@ function deployData(data) {
 		'<div class="item-media"><i class="icon icon-f7"></i></div>' +
 		'<div class="item-inner">' +
 		'<div class="item-title">水</div>' +
-		'<div class="item-after">'+data.totalWater+'</div>' +
+		'<div class="item-after">'+data.totalWater+' 吨</div>' +
 		'</div>' +
 		'</a>' +
 		'</li>' +
@@ -323,7 +331,7 @@ function deployData(data) {
 		'<div class="item-media"><i class="icon icon-f7"></i></div>' +
 		'<div class="item-inner">' +
 		'<div class="item-title">煤</div>' +
-		'<div class="item-after">'+data.totalCoal+'</div>' +
+		'<div class="item-after">'+data.totalCoal+' 吨</div>' +
 		'</div>' +
 		'</a>' +
 		'</li>' +
@@ -332,7 +340,7 @@ function deployData(data) {
 		'<div class="item-media"><i class="icon icon-f7"></i></div>' +
 		'<div class="item-inner">' +
 		'<div class="item-title">天然气</div>' +
-		'<div class="item-after">'+data.totalGas+'</div>' +
+		'<div class="item-after">'+data.totalGas+' 方</div>' +
 		'</div>' +
 		'</a>' +
 		'</li>' +

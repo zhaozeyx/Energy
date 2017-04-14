@@ -140,7 +140,7 @@ var electricityChart = function() {
 		}, {
 			name: 'B',
 			type: 'line',
-			stack: '总量',
+			stack: '总量1',
 			smooth: true,
 			symbolSize: 5,
 			itemStyle: {
@@ -154,7 +154,7 @@ var electricityChart = function() {
 		}, {
 			name: 'C',
 			type: 'line',
-			stack: '总量',
+			stack: '总量2',
 			smooth: true,
 			symbolSize: 5,
 			itemStyle: {

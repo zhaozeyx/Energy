@@ -36,8 +36,8 @@
 		<div class="page-group">
 			<div class="page page-current" id="">
 				<!-- 你的html代码 -->
-				<div class="content">
-					<div class="list-block">
+				<div class="content infinite-scroll infinite-scroll-bottom" >
+					<div class="list-block ">
 						<div class="my-address-list" id="my-address-list"></div>
 						<ul id="warn-list">
 							<!--<li class="item-content">
@@ -59,6 +59,10 @@
 								</div>
 							</li>-->
 						</ul>
+						 <!-- 加载提示符 -->
+				          <div class="infinite-scroll-preloader">
+				              <div class="preloader"></div>
+				          </div>
 
 					</div>
 				</div>
@@ -66,15 +70,25 @@
 		
 		<script type='text/javascript' src='libs/jquery.min.js' charset='utf-8'></script>
 		<script type='text/javascript' src='libs/jquery.mobile-1.3.2.min.js' charset='utf-8'></script>	
-		<script>var Zepto = jQuery</script>
+		<script>$.noConflict();</script>
+		<script type='text/javascript' src='./sui/js/zepto.min.js' charset='utf-8'></script>
 		<script type='text/javascript' src='./sui/js/sm.min.js' charset='utf-8'></script>
 		<script type='text/javascript' src='./sui/js/sm-extend.min.js' charset='utf-8'></script>
 		<script type='text/javascript' src='js/config.js' charset='utf-8'></script>
 			<script type="text/javascript">
-				var data = {"fDatacenterid":Datacenterid};
-				
+				var loading = false;
+		      	// 最多可加载的条目
+		     	var maxItems = '';		
+		      	// 每次加载添加多少条目
+		     	var itemsPerLoad = 20;
+		     	
+		     	var pageNum = '1';
+				var lastIndex;
+		     								
+			    $(function() { 
 				//var params =  {"fEventid": "TD.9", "fGentime": "1480210081000", "fEventtype": "A"} 
-				var getData = function () {
+				function getData (number) {
+					var data = {"fDatacenterid":Datacenterid,"pageNum":pageNum};				
 					$.ajax({
 						type:"post",
 						url:api+'/monitor/api/device/warninglist',
@@ -83,17 +97,19 @@
 						async:true,
 						contentType: 'application/json',
 						timeout: 4000,
-						success:function (res) {
+						success:function (data) {
 							$('#network').hide();	
-							var res = res.data;
-							deployData(res);
+							var res = data.data.list;
+							maxItems = data.data.total;
+							deployData(res, number);
 							//alert(JSON.stringify(res))
+							pageNum++;
 						},
 						error:function(){
 							
 						},
 						complete:function(xhr, status){
-							console.log(xhr, status)
+							loading = false;
 							if(status == 'abort'|| status== 'timeout'){
 								console.log('网络错误');
 								$('#network').show();				
@@ -101,10 +117,14 @@
 						}						
 					});
 				};				
-				function deployData(res) {
+				//预先加载20条
+				getData(itemsPerLoad, 0)
+				
+				
+				function deployData(res, number, lastIndex) {
 					var html = '';
-					console.log(res.length)
-					for(var i = 0; i < res.length; i++){
+					for(var i = 1; i < number; i++){
+						
 						html +='<li data-id="'+res[i].fEventid+'" data-time="'+res[i].fGentime+'" data-type="'+res[i].fEventtype+'">'+
 								'<div class="item-content">'+
 								'<div class="item-media"><i class="icon icon-danger"></i></div>'+
@@ -115,10 +135,15 @@
 								'</div>'+								
 							'</li>';						
 					}
-					$('#warn-list').html(html);
+					$('#warn-list').append(html);
+					
+					lastIndex = $('#warn-list li').length;
+					sessionStorage.setItem("lastIndex", lastIndex);
+					console.log(lastIndex)
+					
 					
 					//侧滑删除
-				    $(".item-content").on("swipeleft",function(){
+				    jQuery(".item-content").on("swipeleft",function(){
 				        $(this).addClass('selected').parents("li").siblings().find(".item-content").removeClass('selected');
 				        $(this).find(".del-btn").on("click",function(){
 				            var li = $(this).parents("li");
@@ -162,10 +187,47 @@
 				        $(this).parents("li").find(".item-content").removeClass('selected');
 				    });									
 				};
-				getData();
-				$('#resetNetwork').click(function(){
-					getData();
-				})
+				
+
+				// 注册'infinite'事件处理函数
+				$(document).on('infinite', '.infinite-scroll-bottom', function() {
+					// 如果正在加载，则退出
+					if(loading) return;
+				
+					// 设置flag
+					loading = true;
+				
+					// 模拟1s的加载过程
+					setTimeout(function() {
+						// 重置加载flag
+						loading = false;
+						var lastIndex = sessionStorage.getItem("lastIndex");
+						console.log(lastIndex, maxItems);
+						
+						if(parseInt(lastIndex) >= parseInt(maxItems)) {
+							console.log(lastIndex, maxItems);
+							// 加载完毕，则注销无限加载事件，以防不必要的加载
+							$.detachInfiniteScroll($('.infinite-scroll'));
+							// 删除加载提示符
+							$('.infinite-scroll-preloader .preloader').remove();
+							$('.infinite-scroll-preloader').append('<p style="color:#8e8e8e;">暂无更多</p>');
+							return;
+						}
+				
+						// 添加新条目
+						getData(itemsPerLoad, lastIndex);
+						// 更新最后加载的序号
+						lastIndex = $('#warn-list li').length;
+						//容器发生改变,如果是js滚动，需要刷新滚动
+						$.refreshScroller();
+					}, 1000);
+				});
+				  
+				$.init();
+		})
+			$('#resetNetwork').click(function(){
+				getData(itemsPerLoad, 0)
+			})
 
 			</script>
 	</body>

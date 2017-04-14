@@ -143,18 +143,18 @@ var yearPower = function() {
 				symbolSize: 0,
 				name: prevYear + '年',
 				type: 'line',
-				stack: '总量',
+				stack: '总量1',
 				smooth: true,
 				itemStyle: {
 					normal: {
 						width: 1,
-						color: 'rgb(187, 228, 249)'
+						color: 'rgba(150, 225, 217, .7)'
 					}
 				},
 				//图像区域颜色
 				areaStyle: {
 					normal: {
-						color: 'rgb(214,236,247)'
+						color: 'rgba(214,236,247, .5)'
 					}
 				},
 				data: prevYearData
@@ -162,19 +162,19 @@ var yearPower = function() {
 			{
 				name: getYear + '年',
 				type: 'line',
-				stack: '总量',
+				stack: '总量2',
 				smooth: true,
 				symbolSize: 0,
 				itemStyle: {
 					normal: {
 						width: 1,
-						color: 'rgb(165, 197, 235)'
+						color: 'rgba(248, 129, 129, .9)'
 					}
 				},
 				//图像区域颜色
 				areaStyle: {
 					normal: {
-						color: 'rgb(212, 232, 255)'
+						color: 'rgba(225, 200, 200, .3)'
 					}
 				},
 				data: currentYearData
@@ -188,6 +188,7 @@ var yearPower = function() {
 //饼图分类
 var classifyChart = function(data) {
 	var myChart = echarts.init(document.getElementById('classifyChart'));
+	console.log(data);
 	var option = {
 		tooltip: {
 			trigger: 'item',
@@ -198,10 +199,7 @@ var classifyChart = function(data) {
 			show: false,
 			min: 60,
 			max: 700,
-			inRange: {
-				colorLightness: [0.3, 1]
-			},
-			color: ['#a1dafc', '#3095e6', '#32a5f6', '49b9fd']
+ 			inRange: {color: ['#89d9fa','#77cefb','#51b8fc', '#2ca3fd','#1999fe']}
 		},
 		series: [{
 			name: '能耗分类',
@@ -602,7 +600,9 @@ function deployData(data) {
 		if(d > 0) {
 			var sub = str.substring(0, 2);
 			return sub + '%' + '<i class="icon-t"></i>'
-		} else {
+		}else if(d == 0){
+			return '—'
+		}  else {
 			var sub = str.substring(1, 3);
 			return sub + '%' + '<i class="icon-b"></i>'
 		}
@@ -619,7 +619,7 @@ function deployData(data) {
 			var sub = str.substring(0, 2);
 			return sub + '%' + '<i class="icon-t"></i>'
 		}else if(d == 0){
-			var sub = str.substring(0, 2);
+			var sub = '—'
 			return sub
 		}else {
 			var sub = str.substring(1, 3);
@@ -636,10 +636,12 @@ function deployData(data) {
 		var powerCurveData0 = data.curveByYear[prevYear];
 		var powerCurveData1 = data.curveByYear[getYear];
 		$.each(powerCurveData0, function(key, value) {
-			prevYearData.push(value);
+			var valueFn = (value == '0') ? value = '':value;
+			prevYearData.push(valueFn);
 		});
 		$.each(powerCurveData1, function(key, value) {
-			currentYearData.push(value);
+			var valueFn = (value == '0') ? value = '':value;
+			currentYearData.push(valueFn);
 		});
 		yearPower();
 	}

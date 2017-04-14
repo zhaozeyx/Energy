@@ -1,4 +1,15 @@
+var DeviceTotal;
+var DataTotal;
+var DeviceNum = 1;
+var DataNum = 1;
+var lastIndex1,lastIndex2;
+//多个标签页下的无限滚动
+ var loading = false;
+ // 每次加载添加多少条目
+ var itemsPerLoad = 20;
 
+
+$(function(){
 //建筑选择
 $(document).on('click', '.open-build', function () {	
 	//console.log('当前能源类型： '+fEnergytypeAll)
@@ -9,7 +20,7 @@ $(document).on('click', '.open-build', function () {
 
 //获取电表信息数据
 var getData = function(val) {
-	var data = { "fDatacenterid": Datacenterid, "pageNum":"1","fBdId":val };
+	var data = { "fDatacenterid": Datacenterid, "pageNum":DataNum,"fBdId":val };
 	$.ajax({
 		type: "post",
 		url: api + '/monitor/api/device/meterlist ',
@@ -18,8 +29,10 @@ var getData = function(val) {
 		async: true,
 		contentType: 'application/json',
 		timeout: 10000,
-		success: function(res) {
-			var res = res.data;
+		success: function(data) {
+			DataNum++;
+			var res = data.data.list;
+				DataTotal = data.data.total;
 			if($.isEmptyObject( res )){
 				deployNull();
 			}else{
@@ -30,7 +43,7 @@ var getData = function(val) {
 }
 //获取采集器设备列表
 function getDevice(){
-	var data = {"fDatacenterid":Datacenterid,"pageNum":1};
+	var data = {"fDatacenterid":Datacenterid,"pageNum":DeviceNum};
 	$.ajax({
 		type: "post",
 		url: api + '/monitor/api/device/list',
@@ -42,13 +55,19 @@ function getDevice(){
 		beforeSend:function(){
 			$.showIndicator();
 		},
-		success: function(res) {
+		success: function(data) {
+			DeviceNum++;
 			$('#network').hide();
-			var res = res.data;
+			var res = data.data.list;
+			DeviceTotal = data.data.total;
+			
+			if(DeviceTotal <= 9){
+				$('#tab1 .infinite-scroll-preloader').hide();
+			}
 			//alert(JSON.stringify(res))
 			var device = '';			
 			for(var i = 0; i < res.length; i++){
-				var toggle = (res[i].fClDes == '完成')?'success':'warning';
+				var toggle = (res[i].fState == '1')?'success':'warning';
 				device +='<li class="item-content">'+
 						'<div class="item-media"><i class="icon icon-collector"></i></div>'+
 						'<div class="item-inner">'+
@@ -57,7 +76,9 @@ function getDevice(){
 						'</div>'+
 						'</li>';
 						}			
-			$('#device-list').html(device);
+			$('#device-list').append(device);
+			lastIndex1 = $('#device-list li').length;
+			sessionStorage.setItem("lastIndex1", lastIndex1);
 			$.hideIndicator();
 		},
 		error:function(){
@@ -97,7 +118,9 @@ function deployData(res){
 					'</a>'+
 				'</li>';
 	}
-	$('#ammeter-list').html('<ul>'+html+'</ul>');
+	$('#ammeter-list').append('<ul>'+html+'</ul>');
+	lastIndex2 = $('#ammeter-list li').length;
+	sessionStorage.setItem("lastIndex2", lastIndex2);
 };
 
 //建筑物信息列表
@@ -124,7 +147,7 @@ function buildlist(res){
 }
 //树结构菜单数据
 function getTree(){
-	var data = {"fDatalevelid":"1"};
+	var data = {"fDatalevelid":Datacenterid};
 	$.ajax({
 		type:"post",
 		url:api+'/monitor/api/device/buildlist',
@@ -149,5 +172,92 @@ function getTree(){
 	})	
 }
 
+	// 注册'infinite'事件处理函数
+	$(document).on('infinite', function() {
+		// 如果正在加载，则退出
+		if(loading) return;
+	
+		// 设置flag
+		loading = true;
+		
+		var tabIndex = 0;
+        if($(this).find('.infinite-scroll.active').attr('id') == "tab1"){
+          tabIndex = 0;
+        }
+        if($(this).find('.infinite-scroll.active').attr('id') == "tab2"){
+          tabIndex = 1;
+        }
+        //lastIndex = $('.list-container').eq(tabIndex).find('li').length;
+	
+		switch(tabIndex){
+			 case 0:
+			 
+		        // 模拟1s的加载过程
+					setTimeout(function() {
+						// 重置加载flag
+						loading = false;
+						var lastIndex1 = sessionStorage.getItem("lastIndex1");
+						
+						if(parseInt(lastIndex1) >= parseInt(DeviceTotal)) {
+							// 加载完毕，则注销无限加载事件，以防不必要的加载
+							//$.detachInfiniteScroll($('.infinite-scroll').eq(tabIndex));
+							// 删除加载提示符
+							$('#tab1 .infinite-scroll-preloader').eq(tabIndex).hide();
+							//$('#tab1 .infinite-scroll-preloader .preloader').remove();
+							//$('#tab1 .infinite-scroll-preloader').append('<p style="color:#8e8e8e;">暂无更多</p>');
+							return;
+						}
+				
+						// 添加新条目
+						getDevice();
+						// 更新最后加载的序号
+						//lastIndex = $('#warn-list li').length;
+						//容器发生改变,如果是js滚动，需要刷新滚动
+						$.refreshScroller();
+					}, 1000);	
+		        break;
+		     case 1:
+		     
+		     	// 模拟1s的加载过程
+		     	$.attachInfiniteScroll($('.infinite-scroll').eq(tabIndex));
+					setTimeout(function() {
+						// 重置加载flag
+						loading = false;
+						var lastIndex2 = sessionStorage.getItem("lastIndex2");
+						if(parseInt(lastIndex2) >= parseInt(DataTotal)) {
+							// 加载完毕，则注销无限加载事件，以防不必要的加载
+							//$.detachInfiniteScroll($('.infinite-scroll').eq(tabIndex));
+							// 删除加载提示符
+							 $('#tab2 .infinite-scroll-preloader').eq(tabIndex).hide();
+							//$('#tab2 .infinite-scroll-preloader .preloader').remove();
+							//$('#tab2 .infinite-scroll-preloader').append('<p style="color:#8e8e8e;">暂无更多</p>');
+							return;
+						}
+				
+						// 添加新条目
+						getData();
+						// 更新最后加载的序号
+						//lastIndex = $('#warn-list li').length;
+						//容器发生改变,如果是js滚动，需要刷新滚动
+						$.refreshScroller();
+					}, 1000);
+		     	break;	        
+		}
+	
+	
+
+	});
+
+
+
+
+
+
+
+
+
+
+$.init();
 getData();
 getDevice();
+})

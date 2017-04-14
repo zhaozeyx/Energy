@@ -135,7 +135,8 @@
         }
         //endregion
         function buildnode(nd, ht, deep, path, isend) {
-            var nid = nd.id.replace(/[^\w]/gi, "_");
+//          var nid = nd.id.replace(/[^\w]/gi, "_");
+            var nid = nd.id;
             ht.push("<li class='bbit-tree-node'>");
             ht.push("<div id='", id, "_", nid, "' tpath='", path, "' unselectable='on' title='", nd.text, "'");
             var cs = [];
@@ -288,6 +289,12 @@
                         var deep = path.split(".").length;
                         if (item.complete) {
                             item.ChildNodes != null && asnybuild(item.ChildNodes, deep, path, ul, item);
+                            			$('div[tpath="0.1.0"]').each(function(){
+																    var ifnull = $(this).find('a span').html();
+																    if(ifnull == ''){
+																    	$(this).hide()
+																    }
+																 });
                         }
                         else {
                             $(this).addClass("bbit-tree-node-loading");
@@ -337,7 +344,8 @@
             }
             else {
                 if (dfop.citem) {
-                    var nid = dfop.citem.id.replace(/[^\w]/gi, "_");
+//                  var nid = dfop.citem.id.replace(/[^\w]/gi, "_");
+                    var nid = dfop.citem.id;
                     $("#" + id + "_" + nid).removeClass("bbit-tree-selected");
                 }
                 dfop.citem = item;

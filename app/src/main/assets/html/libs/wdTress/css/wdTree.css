@@ -289,10 +289,10 @@
 	color:gray !important;
 }
 .bbit-tree-node div:hover{
-	background-color: #0894ec;
+	/*background-color: #0894ec;*/
 }
 .bbit-tree-node div:hover span{
-	color: #fff;
+	/*color: #fff;*/
 	
 }
 .bbit-tree-node .bbit-tree-selected {

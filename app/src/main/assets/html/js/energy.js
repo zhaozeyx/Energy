@@ -2,7 +2,7 @@ var borderColor = 'rgba(255,255,255,.2)';
 var op = 'init',	//previous上一页  next下一页  init最近七天
 	fEnergytype = '01000',	//能源类型
 	byType = 'all',	//all build  floor  circuit =>全部  建筑物  楼层 回路
-	byId = '',	//byId =>  建筑物ID fBdId   fDatalevelid  回路ID fCcId
+	byId = Datacenterid,	//byId =>  建筑物ID fBdId   fDatalevelid  回路ID fCcId
 	fScheme ='d',	//d : 天  m：月  y：年  o：自定义
 	theTimeS ='',	//当fScheme=o,theTimeS 是开始时间
 	theTimeE = '',	//当fScheme=o,theTimeE是结束时间
@@ -220,7 +220,8 @@ var Chart = function () {
 
 //获取能换类型
 function getEnergylist(){
-	var data = {"fDatalevelid":"1"};
+	var data = {"fDatalevelid":Datacenterid};
+	console.log(data)
 	$.ajax({
 		type:"post",
 		url:api+'/monitor/api/consume/analy/energylist ',
@@ -478,6 +479,7 @@ $(document).on('click', '.open-time', function () {
 function getTree(fEnergytype){
 	console.log('请求中的数据类型： '+fEnergytype)
 	var data = {"fDatacenterid":Datacenterid,"fEnergytype":fEnergytype};
+//	var data = {"fDatacenterid":1,"fEnergytype":fEnergytype};
 	$.ajax({
 		type:"post",
 		url:api+'/monitor/api/device/buildlist',
@@ -496,6 +498,13 @@ function getTree(fEnergytype){
 				theme: "bbit-tree-arrows", //bbit-tree-lines ,bbit-tree-no-lines,bbit-tree-arrows
 				    data: [createNode(res)]
 			});
+			
+			$('div[tpath="0.1.0"]').each(function(){
+			    var ifnull = $(this).find('a span').html();
+			    if(ifnull == ''){
+			    	$(this).hide()
+			    }
+			 });
 			$.hideIndicator();
 		},
 		error:function(){
@@ -508,7 +517,7 @@ function getTree(fEnergytype){
 //树结构菜单
  function createNode(res) { 
 	var root = {
-		"id": '',
+		"id": Datacenterid,
 		"text": '全部',
 		"value": 'all',
 		"showcheck": true,
@@ -521,33 +530,38 @@ function getTree(fEnergytype){
  	for(var i = 0; i < res.length; i++){
  		var three = [];
  		var resThree = res[i].bdFloorList; 		
- 		for(var x = 0; x < resThree.length; x++ ){
- 			var four = [];
- 			var resFour = resThree[x].meterList;
- 			for(var a = 0; a < resFour.length; a++){
- 				four.push({
-			 		"id": resFour[a].fCcId,
-					"text": resFour[a].fCircuitname,
-					"value": 'circuit',
+ 		console.log(resThree.length)
+		if(resThree.length !== 0){
+	   		for(var x = 0; x < resThree.length; x++ ){
+	   			var four = [];
+	   			var resFour = resThree[x].meterList;
+	   			for(var a = 0; a < resFour.length; a++){
+	   				four.push({
+				 		"id": resFour[a].fCcId,
+						"text": resFour[a].fCircuitname,
+						"value": 'circuit',
+						"showcheck": true,
+						"complete": true,
+						"isexpand": true,
+						"checkstate": 0,
+						"hasChildren": false
+	   				})
+	   			} 		
+
+	   			three.push({
+			 		"id": resThree[x].fDlId,
+					"text": resThree[x].fDatalevelname,
+					"value": 'floor',
 					"showcheck": true,
 					"complete": true,
 					"isexpand": true,
 					"checkstate": 0,
-					"hasChildren": false
- 				})
- 			} 			
- 			three.push({
-		 		"id": resThree[x].fDlId,
-				"text": resThree[x].fDatalevelname,
-				"value": 'floor',
-				"showcheck": true,
-				"complete": true,
-				"isexpand": false,
-				"checkstate": 0,
-				"hasChildren": true,
-				"ChildNodes": four
- 			})
- 		}
+					"hasChildren": true,
+					"ChildNodes": four
+	   			})
+ 			
+	   		}
+   		}
  		two.push({
 	 		"id": res[i].fBdId,
 			"text": res[i].fBuildname,
@@ -563,6 +577,9 @@ function getTree(fEnergytype){
     root["ChildNodes"] = two;
     return root;
 }
+ 
+
+
 
  $("#buildReset").click(function(e){
     var s = $("#tree").getCurrentNode();
