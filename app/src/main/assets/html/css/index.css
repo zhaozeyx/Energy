@@ -4,7 +4,8 @@
     justify-content: space-between;
     align-items: center;
 }
-
+.card-bottom .left{flex: 1;}
+.card-bottom .right{flex: 1;text-align: right;}
 i.icon-t,
 i.icon-b {
     width: 5px;
@@ -101,7 +102,7 @@ i.icon-b {
 }
 
 .col-25 .item p {
-    font-size: .8rem;
+    font-size: .7rem;
     font-weight: bold;
     margin: 0;
     color: #646464;

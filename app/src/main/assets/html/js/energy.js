@@ -283,9 +283,11 @@ function curveFn(){
 		timeout: 4000,
 		async: true,
 		beforeSend: function() {
+			$.showIndicator();
 		},
 		success: function(res) {
 			$('#network').hide();
+			$.hideIndicator();
 //			console.log($.isEmptyObject( res ));
 			
 			dateX.splice(0,dateX.length);//清空数组 	
@@ -334,9 +336,11 @@ function curveFn(){
 			
 		},
 		error:function(){
+			$.hideIndicator();
 			//alert('ajax error')
 		},
 		complete:function(xhr, status){
+			$.hideIndicator();
 			console.log(xhr, status)
 			if(status == 'abort'|| status== 'timeout'){
 				console.log('网络错误');

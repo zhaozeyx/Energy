@@ -170,7 +170,7 @@
 									$.hideIndicator();
 									if(data.msg == '成功'){
 										$.toast("操作成功");
-										 $(li).stop().animate({
+										 jQuery(li).stop().animate({
 							                height:"0",
 							                margin:"0"
 							            },300,function(){
@@ -197,7 +197,7 @@
 					// 设置flag
 					loading = true;
 				
-					// 模拟1s的加载过程
+					
 					setTimeout(function() {
 						// 重置加载flag
 						loading = false;
@@ -220,7 +220,7 @@
 						lastIndex = $('#warn-list li').length;
 						//容器发生改变,如果是js滚动，需要刷新滚动
 						$.refreshScroller();
-					}, 1000);
+					}, 500);
 				});
 				  
 				$.init();
