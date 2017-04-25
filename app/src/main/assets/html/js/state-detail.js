@@ -12,7 +12,7 @@ var electricityChart = function () {
     var electricityChart = echarts.init(document.getElementById('electricity'));
     var option = {
         title: {
-            text: '(年度)',
+            // text: '',
             textStyle: {
                 color: 'rgba(0,0,0,.5)',
                 fontSize: 14,
@@ -35,7 +35,7 @@ var electricityChart = function () {
             left: '0',
             right: '3.5%',
             bottom: '0',
-            top: '35',
+            top: '5',
             borderColor: '#f5f5f5',
             borderWidth: 1,
             containLabel: true
@@ -201,7 +201,7 @@ var weekChart = function () {
             left: '0',
             right: '3.5%',
             bottom: '0',
-            top: '35',
+            top: '5',
             borderColor: '#f5f5f5',
             borderWidth: 1,
             containLabel: true
@@ -330,14 +330,20 @@ function mtview() {
                 curveByDayB = curveByDay.B,
                 curveByDayC = curveByDay.C;
             $.each(curveByDayA, function (key, val) {
+                var Nval =  Number(val).toFixed(2);
+                var valFn = (Nval == 0.00) ? Nval = '':Nval;
                 curveByDayX.push(key);
-                oneData.push(val)
+                oneData.push(valFn)
             });
             $.each(curveByDayB, function (key, val) {
-                twoData.push(val)
+                var Nval =  Number(val).toFixed(2);
+                var valFn = (Nval == 0.00) ? Nval = '':Nval;
+                twoData.push(valFn)
             });
             $.each(curveByDayC, function (key, val) {
-                threeData.push(val)
+                var Nval =  Number(val).toFixed(2);
+                var valFn = (Nval == 0.00) ? Nval = '':Nval;
+                threeData.push(valFn)
             });
             if (curveByDayA == '' && curveByDayB == '' && curveByDayC == '') {
                 $('#electricity').html('<p style="text-align:center;line-height:10rem;color:#a9a9a9;">暂无数据</p>')
@@ -355,8 +361,10 @@ function deployData(res) {
     var curveByWeek = res.curveByWeek;
 //	alert(JSON.stringify(curveByWeek))
     $.each(curveByWeek, function (key, val) {
+        var Nval =  Number(val).toFixed(2);
+        var valFn = (Nval == 0.00) ? Nval = '':Nval;
         curveByWeekX.push(key.substring(5, 100));
-        curveByWeekData.push(val);
+        curveByWeekData.push(valFn);
     });
 
     if ($.isEmptyObject(res.curveByWeek)) {

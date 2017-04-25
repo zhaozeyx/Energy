@@ -207,19 +207,19 @@ var classifyChart = function(data) {
 			radius: '85%',
 			center: ['50%', '50%'],
 			data: [{
-					value: data.airConditioningElec,
+					value: Number(data.airConditioningElec).toFixed(2),
 					name: '空调用电'
 				},
 				{
-					value: data.specialElec,
+					value: Number(data.specialElec).toFixed(2),
 					name: '特殊用电'
 				},
 				{
-					value: data.lightingElec,
+					value: Number(data.lightingElec).toFixed(2),
 					name: '照明插座'
 				},
 				{
-					value: data.powerElec,
+					value: Number(data.powerElec).toFixed(2),
 					name: '动力用电'
 				}
 			].sort(function(a, b) {
@@ -263,7 +263,7 @@ var classifyChart = function(data) {
 };
 
 //码表统计
-var gaugeChart = function(total, monthOnStd) {
+var gaugeChart = function(min, max, total, Mtotal ,unit) {
 	var myChart = echarts.init(document.getElementById('gaugeChart'));
 	var option = {
 		tooltip: {
@@ -272,7 +272,9 @@ var gaugeChart = function(total, monthOnStd) {
 		series: [{
 			//name: '业务指标',
 			type: 'gauge',
-			radius: '90%',
+			radius: '95%',
+			min:min,
+			max:max,
 			//仪表盘轴线配置
 			axisLine: {
 				show: true,
@@ -282,13 +284,13 @@ var gaugeChart = function(total, monthOnStd) {
 						[0.8, '#1697ea'],
 						[1, '#ff9000']
 					],
-					width: 12
+					width: 10
 				}
 			},
 			//分割线配置
 			splitLine: {
 				show: true,
-				length: 12
+				length: 10
 			},
 			//指针配置
 			pointer: {
@@ -314,8 +316,8 @@ var gaugeChart = function(total, monthOnStd) {
 				}
 			},
 			data: [{
-				value: monthOnStd,
-				//name: 'Kwh'
+				value: Mtotal,
+				name:unit
 			}]
 		}]
 	};
@@ -492,8 +494,9 @@ function curveByWeek(fEnergytype,getdata,op) {
 			weekVal.splice(0,weekVal.length);//清空数组 
 			week.splice(0,week.length);//清空数组 
 			$.each(res, function(key, val) {
+				var valFn = Number(val).toFixed(2);
 				weekKey.push(key);
-				weekVal.push(val);
+				weekVal.push(valFn);
 			});
 		
 			$.each(weekKey, function(index) {
@@ -559,7 +562,7 @@ function deployData(data) {
 		'</div>' +
 		'<div class="item-inner">' +
 		'<div class="item-title">照明插座用电</div>' +
-		'<div class="item-after">' + data.lightingElec + '千瓦时</div>' +
+		'<div class="item-after">' + Number(data.lightingElec).toFixed(2) + ' 千瓦时</div>' +
 		'</div>' +
 		'</li>' +
 		'<li class="item-content">' +
@@ -568,7 +571,7 @@ function deployData(data) {
 		'</div>' +
 		'<div class="item-inner">' +
 		'<div class="item-title">空调用电</div>' +
-		'<div class="item-after">' + data.airConditioningElec + '千瓦时</div>' +
+		'<div class="item-after">' + Number(data.airConditioningElec).toFixed(2) + ' 千瓦时</div>' +
 		'</div>' +
 		'</li>' +
 		'<li class="item-content">' +
@@ -577,7 +580,7 @@ function deployData(data) {
 		'</div>' +
 		'<div class="item-inner">' +
 		'<div class="item-title">动力用电</div>' +
-		'<div class="item-after">' + data.powerElec + '千瓦时</div>' +
+		'<div class="item-after">' + Number(data.powerElec).toFixed(2) + ' 千瓦时</div>' +
 		'</div>' +
 		'</li>' +
 		'<li class="item-content">' +
@@ -586,7 +589,7 @@ function deployData(data) {
 		'</div>' +
 		'<div class="item-inner">' +
 		'<div class="item-title">特殊用电</div>' +
-		'<div class="item-after">' + data.specialElec + '千瓦时</div>' +
+		'<div class="item-after">' + Number(data.specialElec).toFixed(2) + ' 千瓦时</div>' +
 		'</div>' +
 		'</li>' +
 		'</ul>';
@@ -608,9 +611,99 @@ function deployData(data) {
 		}
 	});
 	//月能耗图表
-	var monthOnStd = data.monthOnStd;
 	var total = data.total;
-	gaugeChart(total, monthOnStd);
+	var unit = '';
+	var Mtotal = Number(data.monthOnStd.total);
+	// var Mtotal = 500.00;
+		total = Number(total).toFixed(0);
+	var max = Number(data.monthOnStd.max);
+	// var max = 500;
+	var min = Number(data.monthOnStd.step1);
+	console.info(max.toFixed(0).toString().length)
+	switch (min.toFixed(0).toString().length){
+		case 4:
+			min = Number(min/1000).toFixed(0)
+			break;
+		case 5:
+			min = Number(min/10000).toFixed(0)
+			break;
+		case 6:
+			min = Number(min/100000).toFixed(0)
+			break;
+		case 7:
+			min = Number(min/1000000).toFixed(0)
+			break;
+		default:
+			min = Number(min).toFixed(0)
+	}
+
+	if(max == '0'){
+		max = data.monthOnStd.total*1.2;
+		//max = 24622*1.2;
+		switch (Mtotal.toFixed(0).toString().length){
+			case 4:
+				max = Number(max/1000).toFixed(0)
+				break;
+			case 5:
+				max = Number(max/10000).toFixed(0)
+				break;
+			case 6:
+				max = Number(max/100000).toFixed(0)
+				break;
+			case 7:
+				max = Number(max/1000000).toFixed(0)
+				break;
+			default:
+				max = Number(max).toFixed(0)
+		}
+	}else {
+		switch (max.toFixed(0).toString().length){
+			case 4:
+				max = Number(max/1000).toFixed(0)
+				break;
+			case 5:
+				max = Number(max/10000).toFixed(0)
+				break;
+			case 6:
+				max = Number(max/100000).toFixed(0)
+				break;
+			case 7:
+				max = Number(max/1000000).toFixed(0)
+				break;
+			default:
+				max = Number(max).toFixed(0)
+		}
+	}
+
+	switch (Mtotal.toFixed(0).toString().length){
+		case 4:
+			console.log('千',Mtotal.toFixed(0));
+			Mtotal = Mtotal/1000;
+			unit = 'x1千';
+			break;
+		case 5:
+			console.log('万',Mtotal.toFixed(0));
+			Mtotal = Mtotal/10000;
+			unit = 'x1万';
+			break;
+		case 6:
+			console.log('十万',Mtotal.toFixed(0));
+			Mtotal = Mtotal/100000;
+			unit = 'x10万';
+			break;
+		case 7:
+			console.log('百万',Mtotal.toFixed(0));
+			Mtotal = Mtotal/100000;
+			unit = 'x1百万';
+			break;
+		default:
+			console.log(Mtotal.toFixed(0));
+			Mtotal = Mtotal.toFixed(0)
+	}
+
+	console.log(min, max, total, Mtotal, unit)
+
+	gaugeChart(min, max, total, Mtotal, unit);
 	//	环比
 	$('#mom').html(function() {
 		var d = data.monthOnMonth * 100;
@@ -627,20 +720,22 @@ function deployData(data) {
 		}
 	});
 	//单位面积能耗
-	$('#byArea').text((data.byArea).substring(0,4));
+	$('#byArea').text(Number(data.byArea).toFixed(2));
 	//人均能耗
-	$('#byPerson').text((data.byPerson).substring(0,4));
+	$('#byPerson').text(Number(data.byPerson).toFixed(2));
 
 	//年度曲线对比
 	if(data.curveByYear){
 		var powerCurveData0 = data.curveByYear[prevYear];
 		var powerCurveData1 = data.curveByYear[getYear];
 		$.each(powerCurveData0, function(key, value) {
-			var valueFn = (value == '0') ? value = '':value;
+			var Nvalue =  Number(value).toFixed(2);
+			var valueFn = (Nvalue == 0.00) ? Nvalue = '':Nvalue;
 			prevYearData.push(valueFn);
 		});
 		$.each(powerCurveData1, function(key, value) {
-			var valueFn = (value == '0') ? value = '':value;
+			var Nvalue =  Number(value).toFixed(2);
+			var valueFn = (Nvalue == 0.00) ? Nvalue = '':Nvalue;
 			currentYearData.push(valueFn);
 		});
 		yearPower();

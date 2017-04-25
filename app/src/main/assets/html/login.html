@@ -110,6 +110,12 @@
 			var StoragePort = localStorage.getItem("servePort");			
 			$('#serveIp').val(storageIP);
 			$('#servePort').val(StoragePort);
+			//获取以前储存的账号密码
+			var StorageUser = localStorage.getItem('StorageUser');
+			var StoragePass = localStorage.getItem('StoragePass');
+			$('#username').val(StorageUser);
+			$('#password').val(StoragePass);
+
 			var isPort = /^([0-9]|[1-9]\d{1,3}|[1-5]\d{4}|6[0-5]{2}[0-3][0-5])$/;
 			
 			if($('#serveIp').val() !== '' || $('#servePort').val() !== '') {
@@ -200,7 +206,9 @@
 						$.toast("ip地址或端口号不能为空");
 					}else{
 						var api = 'http://'+serveIp+':'+servePort;
-						var data = {"empAccount":userName,"empPassword":userPass}
+						var data = {"empAccount":userName,"empPassword":userPass};
+						localStorage.setItem('StorageUser', userName);
+						localStorage.setItem('StoragePass', userPass);
 						console.log(data)
 						$.ajax({
 							type: 'POST',

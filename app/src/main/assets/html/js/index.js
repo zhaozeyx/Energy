@@ -205,12 +205,15 @@ function indexPost() {
 			var powerCurveData0 = data.powerCurve[prevYear];
 			var powerCurveData1 = data.powerCurve[currentYear];
 			$.each(powerCurveData0, function(key, value) {
-				var valueFn = (value == '0') ? value = '':value;
+				var Nvalue =  Number(value).toFixed(2);
+				var valueFn = (Nvalue == 0.00) ? Nvalue = '':Nvalue;
+				console.log(valueFn);
 				prevYearData.push(valueFn);
 				prevYearMonth.push(key);
 			});
 			$.each(powerCurveData1, function(key, value) {
-				var valueFn = (value == '0') ? value = '':value;
+				var Nvalue =  Number(value).toFixed(2);
+				var valueFn = (Nvalue == 0.00) ? Nvalue = '':Nvalue;
 				currentYearData.push(valueFn);
 			});
 			//年度图表数据
@@ -259,7 +262,7 @@ function deployData(data) {
 		}
 	});
 	//月用电总量
-	$('#totalM').html(data.totalElectricity);
+	$('#totalM').html(Number(data.totalElectricity).toFixed(0));
 	//	环比
 	$('#mom').html(function() {
 		var d = data.monthOnMonth * 100;
@@ -280,28 +283,28 @@ function deployData(data) {
 		'<div class="item">' +
 		'<div class="icon-zm"></div>' +
 		'<small>照明</small>' +
-		'<p>' + data.lightElec+ '</p>' +
+		'<p>' + Number(data.lightElec).toFixed(2)+ '</p>' +
 		'</div>' +
 		'</div>' +
 		'<div class="col-25">' +
 		'<div class="item">' +
 		'<div class="icon-kt"></div>' +
 		'<small>空调</small>' +
-		'<p>' + data.airElec+ '</p>' +
+		'<p>' + Number(data.airElec).toFixed(2)+ '</p>' +
 		'</div>' +
 		'</div>' +
 		'<div class="col-25">' +
 		'<div class="item">' +
 		'<div class="icon-dl"></div>' +
 		'<small>动力</small>' +
-		'<p>' + data.powerElec+ '</p>' +
+		'<p>' + Number(data.powerElec).toFixed(2)+ '</p>' +
 		'</div>' +
 		'</div>' +
 		'<div class="col-25">' +
 		'<div class="item">' +
 		'<div class="icon-ts"></div>' +
 		'<small>特殊</small>' +
-		'<p>' + data.specialElec+ '</p>' +
+		'<p>' + Number(data.specialElec).toFixed(2)+ '</p>' +
 		'</div>' +
 		'</div>' +
 		'</div>';
@@ -313,7 +316,7 @@ function deployData(data) {
 		'<div class="item-media"><i class="icon icon-f7"></i></div>' +
 		'<div class="item-inner">' +
 		'<div class="item-title">电</div>' +
-		'<div class="item-after">'+data.totalElectricity+' 千瓦时</div>' +
+		'<div class="item-after">'+Number(data.totalElectricity).toFixed(2)+' 千瓦时</div>' +
 		'</div>' +
 		'</a>' +
 		'</li>' +
@@ -322,7 +325,7 @@ function deployData(data) {
 		'<div class="item-media"><i class="icon icon-f7"></i></div>' +
 		'<div class="item-inner">' +
 		'<div class="item-title">水</div>' +
-		'<div class="item-after">'+data.totalWater+' 吨</div>' +
+		'<div class="item-after">'+Number(data.totalWater).toFixed(2)+' 吨</div>' +
 		'</div>' +
 		'</a>' +
 		'</li>' +
@@ -331,7 +334,7 @@ function deployData(data) {
 		'<div class="item-media"><i class="icon icon-f7"></i></div>' +
 		'<div class="item-inner">' +
 		'<div class="item-title">煤</div>' +
-		'<div class="item-after">'+data.totalCoal+' 吨</div>' +
+		'<div class="item-after">'+Number(data.totalCoal).toFixed(2)+' 吨</div>' +
 		'</div>' +
 		'</a>' +
 		'</li>' +
@@ -340,7 +343,7 @@ function deployData(data) {
 		'<div class="item-media"><i class="icon icon-f7"></i></div>' +
 		'<div class="item-inner">' +
 		'<div class="item-title">天然气</div>' +
-		'<div class="item-after">'+data.totalGas+' 方</div>' +
+		'<div class="item-after">'+Number(data.totalGas).toFixed(2)+' 方</div>' +
 		'</div>' +
 		'</a>' +
 		'</li>' +

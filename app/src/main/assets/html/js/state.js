@@ -157,7 +157,7 @@ $(function() {
 		})
 	//树结构菜单数据
 	function getTree() {
-		var data = { "fDatalevelid": Datacenterid };
+		var data = { "fDatacenterid": Datacenterid, "fEnergytype": '01000'};
 		$.ajax({
 			type: "post",
 			url: api + '/monitor/api/device/buildlist',

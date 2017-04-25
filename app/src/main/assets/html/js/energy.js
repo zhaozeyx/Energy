@@ -220,7 +220,7 @@ function energyPicker(res) {
 function curveFn() {
     var curveData = {
         "op": op,
-        "fEnergytype": fEnergytype,
+        "fEnergytype": fEnergytypeAll,
         "byType": byType,
         "byId": byId,
         "fScheme": fScheme,
@@ -248,8 +248,10 @@ function curveFn() {
 
             //对象插入对应的数组
             $.each(res, function (key, val) {
+                var Nval =  Number(val).toFixed(2);
+                var valFn = (Nval == 0.00) ? Nval = '':Nval;
                 dateX.push(key);
-                chartData.push(val);
+                chartData.push(valFn);
             });
 
             xAxisData.splice(0, xAxisData.length);//清空数组
