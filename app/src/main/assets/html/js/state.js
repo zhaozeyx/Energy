@@ -1,5 +1,6 @@
 var DeviceTotal;
 var DataTotal;
+var currentVal;
 var DeviceNum = 1;
 var DataNum = 1;
 var lastIndex1, lastIndex2;
@@ -30,6 +31,7 @@ $(function() {
 			contentType: 'application/json',
 			timeout: 10000,
 			success: function(data) {
+
 				console.log(data)				
 				var res = data.data.list;
 				DataTotal = data.data.total;
@@ -37,6 +39,7 @@ $(function() {
 					DataNum = 1;
 					deployNull();
 				} else {
+
 					$('#noneData').remove();
 					DataNum++;
 					deployData(res);
@@ -134,13 +137,20 @@ $(function() {
 	//建筑物信息列表
 	function buildlist(res) {
 		var html = '';
+		var currentCB = [];
+		var currentAD = 'AD'+Datacenterid;
 		for(var i = 0; i < res.length; i++) {
-			html += '<li class="item-content close-popup">' +
-				'<div class="item-inner">' +
-				'<div class="item-title" data-val=' + res[i].fBdId + '>' + res[i].fBuildname + '</div>' +
-				'</div>' +
-				'</li>';
+			var AD = res[i].pid;    //数据中心
+			if(AD == currentAD){
+				currentCB.push(i);
+				html += '<li class="item-content close-popup">' +
+					'<div class="item-inner">' +
+					'<div class="item-title" data-val=' + res[i].id + '>' + res[i].name + '</div>' +
+					'</div>' +
+					'</li>';
+			}
 		};
+		console.log(currentCB)
 		$('#buildlist').html(html);
 		$('#buildlist').click(function() {
 			$.popup('.popup-energy');
@@ -151,8 +161,10 @@ $(function() {
 	$(document).on('click', '#buildlist li', function() {
 			DataNum = 1;
 			var txt = $(this).find('.item-title').html();
-			var val = $(this).find('.item-title').attr('data-val');
+			var val = $(this).find('.item-title').attr('data-val').substring(2,10);
+			currentVal = val;
 			$('#buildName').val(txt);
+			$('#ammeter-list').empty();
 			getData(val)
 		})
 	//树结构菜单数据
@@ -179,6 +191,31 @@ $(function() {
 			}
 		})
 	}
+
+	$("#buildReset").click(function (e) {
+		$('#buildName').val('')
+		if($('#buildName').val() == ''){
+			var val = undefined;
+			currentVal = undefined;
+			$('#ammeter-list').empty();
+			DataNum = 1;
+			getData(val)
+			$('#buildName').val('全部')
+
+		}
+	});
+	$("#buildCancel").click(function (e) {
+		$('#buildName').val('')
+		if($('#buildName').val() == ''){
+			$('#ammeter-list').empty();
+			var val = undefined;
+			currentVal = undefined;
+			DataNum = 1;
+			getData(val)
+			$('#buildName').val('全部')
+
+		}
+	});
 
 	// 注册'infinite'事件处理函数
 	$(document).on('infinite', function() {
@@ -231,18 +268,21 @@ $(function() {
 					// 重置加载flag
 					loading = false;
 					var lastIndex2 = sessionStorage.getItem("lastIndex2");
+					console.log(parseInt(lastIndex2),parseInt(DataTotal))
 					if(parseInt(lastIndex2) >= parseInt(DataTotal)) {
 						// 加载完毕，则注销无限加载事件，以防不必要的加载
 						//$.detachInfiniteScroll($('.infinite-scroll').eq(tabIndex));
 						// 删除加载提示符
-						$('#tab2 .infinite-scroll-preloader').eq(tabIndex).hide();
+						$('#tab2 .infinite-scroll-preloader').eq(0).hide();
 						//$('#tab2 .infinite-scroll-preloader .preloader').remove();
 						//$('#tab2 .infinite-scroll-preloader').append('<p style="color:#8e8e8e;">暂无更多</p>');
 						return;
 					}
 
 					// 添加新条目
-					getData();
+					var val = currentVal;
+					console.log(val);
+					getData(val);
 					// 更新最后加载的序号
 					//lastIndex = $('#warn-list li').length;
 					//容器发生改变,如果是js滚动，需要刷新滚动

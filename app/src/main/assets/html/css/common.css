@@ -313,3 +313,79 @@ button[disabled], html input[disabled] {
 .toast{
 	font-size: .7rem;
 }
+
+/*ztree修改*/
+.ztree{
+	padding:0 !important;
+}
+.ztree li{
+	position: relative;
+	background-color: white;
+}
+.ztree li ul {
+	padding:0;
+}
+.ztree li ul li ul li a{
+	padding-left: 50px;
+}
+.ztree li ul li a{
+	padding-left:30px;
+}
+.ztree li ul li{
+	position: relative;
+}
+.ztree li a{
+	display: block;
+	height: 40px;
+	line-height:40px;
+	padding:0 0 0 15px;
+	border-bottom:1px solid #ddd;
+}
+.ztree li a.curSelectedNode{
+	height: 40px;
+	line-height:40px;
+	background-color: #9bd1f4;
+	border:none;
+}
+.ztree li span{
+	display: inline-block;
+	/*height: 40px;*/
+	/*line-height:40px;*/
+}
+.ztree li span.button{
+	width:0;
+	/*height: 40px;*/
+	/*line-height:40px;*/
+	border:none;
+}
+.ztree li ul li span.button.switch{
+	background-position:7px;
+}
+.ztree li span.button.switch{
+	position: absolute;
+	right:0;
+	width:38px;
+	height:40px;
+	background-image:url("../libs/zTree/css/zTreeStyle/img/arrows.png");
+	background-repeat: no-repeat;
+	background-size:53px 26px;
+	z-index: 99;
+}
+.ztree li span.button.noline_close,.ztree li ul li span.button.noline_close{
+	background-position:6px 7px;
+}
+.ztree li span.button.noline_open,.ztree li ul li span.button.noline_open{
+	background-position: -21px 7px;
+}
+.ztree li span.button.ico_close,.ztree li span.button.ico_open{
+	background: none;
+	width:0;
+	height:0;
+	outline: none;
+}
+.ztree li span.button.noline_docu{
+	background: none;
+}
+.ztree *{
+	font-size:14px;
+}

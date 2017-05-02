@@ -1,7 +1,7 @@
 var borderColor = 'rgba(255,255,255,.2)';
 var op = 'init',	//previous上一页  next下一页  init最近七天
     fEnergytype = '01000',	//能源类型
-    byType = 'all',	//all build  floor  circuit =>全部  建筑物  楼层 回路
+    byType = 'AD0'+Datacenterid,	//all build  floor  circuit =>全部  建筑物  楼层 回路
     byId = Datacenterid,	//byId =>  建筑物ID fBdId   fDatalevelid  回路ID fCcId
     fScheme = 'd',	//d : 天  m：月  y：年  o：自定义
     theTimeS = '',	//当fScheme=o,theTimeS 是开始时间
@@ -228,6 +228,7 @@ function curveFn() {
         "theTimeE": theTimeE,
         "theTime": theTime
     };
+    console.log(curveData)
     $.ajax({
         type: "post",
         url: api + '/monitor/api/consume/analy/curve',
@@ -239,6 +240,7 @@ function curveFn() {
             $.showIndicator();
         },
         success: function (res) {
+            console.log(res)
             $('#network').hide();
             $.hideIndicator();
 //			console.log($.isEmptyObject( res ));
@@ -423,11 +425,17 @@ $(document).on('click', '.open-time', function () {
     $.popup('.popup-time');
 });
 
+function zTreeOnClick(event, treeId, treeNode) {
+    console.log(treeNode.id + ", " + treeNode.name);
+    byType = treeNode.id;
+    $('#buildVal').val(treeNode.name)
+
+};
+
 //树结构菜单数据
 function getTree(fEnergytype) {
     console.log('请求中的数据类型： ' + fEnergytype)
     var data = {"fDatacenterid": Datacenterid, "fEnergytype": fEnergytype};
-//	var data = {"fDatacenterid":1,"fEnergytype":fEnergytype};
     $.ajax({
         type: "post",
         url: api + '/monitor/api/device/buildlist',
@@ -441,18 +449,32 @@ function getTree(fEnergytype) {
         success: function (res) {
             var res = res.data;
             console.log('获取数据成功');
-            $("#tree").treeview({
-                showcheck: false,
-                theme: "bbit-tree-arrows", //bbit-tree-lines ,bbit-tree-no-lines,bbit-tree-arrows
-                data: [createNode(res)]
-            });
-
-            $('div[tpath="0.1.0"]').each(function () {
-                var ifnull = $(this).find('a span').html();
-                if (ifnull == '') {
-                    $(this).hide()
+            $('#buildVal').val('');
+            var setting = {
+                view: {
+                    dblClickExpand: false,//双击节点时，是否自动展开父节点的标识
+                    showLine: false,//是否显示节点之间的连线
+                    selectedMulti: false //设置是否允许同时选中多个节点
+                },
+                key: {
+                    name: "name",
+                    title:'name'
+                },
+                data: {
+                    simpleData: {
+                        enable: true,
+                        idKey: "id",
+                        pIdKey: "pid",
+                        // rootPId: "0"
+                    }
+                },
+                callback: {
+                    onClick: zTreeOnClick
                 }
-            });
+            };
+            jQuery.fn.zTree.init(jQuery("#treeDemo"), setting, res);
+            var treeObj = jQuery.fn.zTree.getZTreeObj("treeDemo");
+
             $.hideIndicator();
         },
         error: function () {
@@ -461,6 +483,8 @@ function getTree(fEnergytype) {
         }
     })
 }
+
+
 
 //树结构菜单
 function createNode(res) {
@@ -474,69 +498,79 @@ function createNode(res) {
         "checkstate": 0,
         "hasChildren": true
     };
-    var two = [];
-    for (var i = 0; i < res.length; i++) {
-        var three = [];
-        var resThree = res[i].bdFloorList;
-        if (resThree.length !== 0) {
-            for (var x = 0; x < resThree.length; x++) {
-                var four = [];
-                var resFour = resThree[x].meterList;
-                for (var a = 0; a < resFour.length; a++) {
-                    four.push({
-                        "id": resFour[a].fCcId,
-                        "text": resFour[a].fCircuitname,
-                        "value": 'circuit',
-                        "showcheck": true,
-                        "complete": true,
-                        "isexpand": true,
-                        "checkstate": 0,
-                        "hasChildren": false
-                    })
-                }
 
+    var currentAD = 'AD'+Datacenterid;
+    var two = [],
+        three = [],
+        four = [];
+    var currentCB = [],     //当前建筑
+        currentDF = '';     //当前楼层
+    var currentCB1 = [];
+    for(var i = 0; i <res.length; i++){
+        var AD = res[i].PID;    //数据中心
+        var CB = res[i].PID;    //建筑物
+        var FC = res[i].PID;    //支路
+        var DF = res[i].PID;    //楼层
+        //获取建筑物列表
+        if(AD == currentAD){
+            currentCB1.push(i);
+            two.push({
+                "id": res[i].ID,
+                "text": res[i].NAME,
+                "value": 'build',
+                "showcheck": true,
+                "complete": true,
+                "isexpand": true,
+                "checkstate": 0,
+                "hasChildren": true,
+              "ChildNos": three
+            });
+        }
+    }
+    //获取二级列表
+    $.each(currentCB1,function(key,value){
+        currentCB.push(res[value].ID)
+    })
+
+    for(var i = 0; i <res.length; i++){
+        $.each(currentCB1,function(key,value){
+            if(res[i].PID == res[value].ID){
                 three.push({
-                    "id": resThree[x].fDlId,
-                    "text": resThree[x].fDatalevelname,
-                    "value": 'floor',
+                    "id": res[i].ID,
+                    "text": res[i].NAME,
+                    "value": 'build',
                     "showcheck": true,
                     "complete": true,
                     "isexpand": true,
                     "checkstate": 0,
                     "hasChildren": true,
-                    "ChildNodes": four
-                })
-
+                    // "ChildNos": three
+                });
             }
-        }
-        two.push({
-            "id": res[i].fBdId,
-            "text": res[i].fBuildname,
-            "value": 'build',
-            "showcheck": true,
-            "complete": true,
-            "isexpand": true,
-            "checkstate": 0,
-            "hasChildren": true,
-            "ChildNodes": three
+
         })
     }
+
+
+    console.log(currentCB1);
+    console.log(currentCB)
     root["ChildNodes"] = two;
     return root;
 }
 
 
 $("#buildReset").click(function (e) {
-    var s = $("#tree").getCurrentNode();
-    if (s != null) {
-        $('#buildVal').val(s.text)
-        console.log(s.id, s.text, s.value);
-        byType = s.value;
-        byId = s.id;
-
+    if($('#buildVal').val() == ''){
+        byType = 'AD0'+Datacenterid;
+        $('#buildVal').val('全部')
+        
     }
-    else {
-        //alert("NULL");
+});
+$("#buildCancel").click(function (e) {
+    if($('#buildVal').val() == ''){
+        byType = 'AD0'+Datacenterid;
+        $('#buildVal').val('全部')
+
     }
 });
 
