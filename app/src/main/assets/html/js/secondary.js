@@ -119,7 +119,7 @@ var yearPower = function() {
 		}],
 		yAxis: [{
 			type: 'value',
-			//name:'千瓦时',
+			// name:'千瓦时',
 			nameTextStyle: {
 				color: '#646464'
 			},

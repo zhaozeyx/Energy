@@ -8,7 +8,7 @@ var currentYear = mydate.getFullYear(); //当前年
 var prevYear = currentYear - 1; //上一年
 
 var yearPower = function() {
-	console.log(prevYearData)
+	// console.log(prevYearData)
 	$.each(prevYearMonth, function(index, item) {
 		//item[index]+'月'
 		//console.log(this+'月');
@@ -81,7 +81,7 @@ var yearPower = function() {
 		}],
 		yAxis: [{
 			type: 'value',
-			//name:'千瓦时',
+			name:'千瓦时',
 			nameTextStyle: {
 				color: '#646464'
 			},
@@ -149,7 +149,7 @@ var yearPower = function() {
 };
 
 var monthStat = function(data) {
-	console.log(data);
+	// console.log(data);
 	var myChart = echarts.init(document.getElementById('monthStat'));
 	var option = {
 		color: ['#2e75b6', '#ea5d7f', '#f2f354', '#73de2b'],
@@ -207,7 +207,7 @@ function indexPost() {
 			$.each(powerCurveData0, function(key, value) {
 				var Nvalue =  Number(value).toFixed(2);
 				var valueFn = (Nvalue == 0.00) ? Nvalue = '':Nvalue;
-				console.log(valueFn);
+				// console.log(valueFn);
 				prevYearData.push(valueFn);
 				prevYearMonth.push(key);
 			});
@@ -241,9 +241,35 @@ function indexPost() {
 	})
 }
 
+//请求能源列表
+function indexEnergy() {
+	$.ajax({
+        type: 'POST',
+        url: api + '/monitor/api/consume/analy/energylist',
+        data: JSON.stringify({ "fDatacenterid": Datacenterid }),
+        contentType: 'application/json',
+        timeout: 4000,
+        beforeSend:function(){
+            // $.showIndicator();
+        },
+        success: function(data) {
+        	console.log(data)
+            deployEnergyList(data);
+		},
+		error:function(){
+
+		}
+	})
+}
+
 $('#resetNetwork').click(function(){
 	indexPost()
 })
+
+//判断数组是否为空
+function isEmpty(value) {
+    return (Array.isArray(value) && value.length === 0) || (Object.prototype.isPrototypeOf(value) && Object.keys(value).length === 0);
+}
 
 //数据部署
 function deployData(data) {
@@ -309,49 +335,35 @@ function deployData(data) {
 		'</div>' +
 		'</div>';
 	$('#electricityType').html(electricityType);
-	//能耗总览		
-	var energyTotal = '<ul>' +
-		'<li>' +
-		'<a href="secondary.html?typeid=01000" class="item-link item-content" external>' +
-		'<div class="item-media"><i class="icon icon-f7"></i></div>' +
-		'<div class="item-inner">' +
-		'<div class="item-title">电</div>' +
-		'<div class="item-after">'+Number(data.totalElectricity).toFixed(2)+' 千瓦时</div>' +
-		'</div>' +
-		'</a>' +
-		'</li>' +
-		'<li >' +
-		'<a href="secondary.html?typeid=02000" class="item-link item-content" external>' +
-		'<div class="item-media"><i class="icon icon-f7"></i></div>' +
-		'<div class="item-inner">' +
-		'<div class="item-title">水</div>' +
-		'<div class="item-after">'+Number(data.totalWater).toFixed(2)+' 吨</div>' +
-		'</div>' +
-		'</a>' +
-		'</li>' +
-		'<li>' +
-		'<a href="secondary.html?typeid=07000" class="item-link item-content" external>' +
-		'<div class="item-media"><i class="icon icon-f7"></i></div>' +
-		'<div class="item-inner">' +
-		'<div class="item-title">煤</div>' +
-		'<div class="item-after">'+Number(data.totalCoal).toFixed(2)+' 吨</div>' +
-		'</div>' +
-		'</a>' +
-		'</li>' +
-		'<li>' +
-		'<a href="secondary.html?typeid=03000" class="item-link item-content" external>' +
-		'<div class="item-media"><i class="icon icon-f7"></i></div>' +
-		'<div class="item-inner">' +
-		'<div class="item-title">天然气</div>' +
-		'<div class="item-after">'+Number(data.totalGas).toFixed(2)+' 方</div>' +
-		'</div>' +
-		'</a>' +
-		'</li>' +
-		'</ul>';
-	$('#energyTotal').html(energyTotal);
+}
+
+//能耗列表
+function deployEnergyList(data) {
+    var energyList = '';
+	for(var i = 0; i < data.length; i++){
+		energyList +=
+			'<li>' +
+            '<a href="secondary.html?typeid='+data[i].fEnergytype+'" class="item-link item-content" external>' +
+            '<div class="item-media"><i class="icon icon-f7"></i></div>' +
+            '<div class="item-inner">' +
+            '<div class="item-title">'+data[i].fEnergyname+'</div>' +
+            '<div class="item-after">'+Number(data[i].fEnergyitemfml).toFixed(2)+data[i].fEnergyitemunit+' </div>' +
+            '</div>' +
+            '</a>' +
+            '</li>';
+	}
+    var energyMain = '<div class="content-block-title">能耗总览</div>'+
+        			 '<div class="list-block"><ul>'+energyList+'</ul></div>';
+    if(isEmpty(data) == true){
+        $('#energyTotal').html('<div class="list-block"></div>');
+	}else{
+        $('#energyTotal').html(energyMain);
+    }
+
 }
 
 //初始化图表
 $(function() {
 	indexPost()
+    indexEnergy()
 });

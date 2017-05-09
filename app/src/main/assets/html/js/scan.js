@@ -1,5 +1,6 @@
-var fMeId = window.location.href.split('=')[1]; //页面类型参数
-var data = {"fMeId": fMeId};
+// var fMeId = window.location.href.split('=')[1]; //页面类型参数
+var fCommaddress = '150584935037';
+var data = {"fCommaddress": fCommaddress,"fDatacenterid":Datacenterid};
 var curveByWeekX = [],
     curveByWeekData = [];
 var oneData = [],
@@ -290,7 +291,7 @@ var weekChart = function () {
 var getData = function () {
     $.ajax({
         type: "post",
-        url: api + '/monitor/api/device/meterview',
+        url: api + '/monitor/api/device/meterscan',
         data: JSON.stringify(data),
         contentType: 'application/json',
         timeout: 10000,
@@ -311,7 +312,7 @@ var getData = function () {
 function mtview() {
     $.ajax({
         type: "post",
-        url: api + '/monitor/api/device/mtview',
+        url: api + '/monitor/api/device/mtviewscan',
         data: JSON.stringify(data),
         contentType: 'application/json',
         timeout: 10000,
@@ -386,54 +387,20 @@ function deployData(res) {
         '										<div class="item-after">' + res.info.fMetername + '</div>' +
         '									</div>' +
         '								</li>' +
-        // '								<li class="item-content">' +
-        // '									<div class="item-inner">' +
-        // '										<div class="item-title">建筑物ID</div>' +
-        // '										<div class="item-after">' + res.info.fBdId + '</div>' +
-        // '									</div>' +
-        // '								</li>' +
-        // '								<li class="item-content">' +
-        // '									<div class="item-inner">' +
-        // '										<div class="item-title">采集器ID</div>' +
-        // '										<div class="item-after">' + res.info.fClId + '</div>' +
-        // '									</div>' +
-        // '								</li>' +
-//		'								<li class="item-content">' +
-//		'									<div class="item-inner">' +
-//		'										<div class="item-title">表计类型</div>' +
-//		'										<div class="item-after">威思顿三相多功能表</div>' +
-//		'									</div>' +
-//		'								</li>' +
         '								<li class="item-content">' +
         '									<div class="item-inner">' +
         '										<div class="item-title">变比</div>' +
         '										<div class="item-after">' + res.info.fRate + '</div>' +
         '									</div>' +
         '								</li>' +
-        // '								<li class="item-content">' +
-        // '									<div class="item-inner">' +
-        // '										<div class="item-title">比特率</div>' +
-        // '										<div class="item-after">' + res.info.fBitnum + '</div>' +
-        // '									</div>' +
-        // '								</li>' +
-        // '								<li class="item-content">' +
-        // '									<div class="item-inner">' +
-        // '										<div class="item-title">通信违约类型</div>' +
-        // '										<div class="item-after">' + res.info.fCommtype + '</div>' +
-        // '									</div>' +
-        // '								</li>' +
         '								<li class="item-content">' +
         '									<div class="item-inner">' +
         '										<div class="item-title">通信地址</div>' +
         '										<div class="item-after">' + res.info.fCommaddress + '</div>' +
         '									</div>' +
         '								</li>' ;
-        // '								<li class="item-content">' +
-        // '									<div class="item-inner">' +
-        // '										<div class="item-title">正反向接反</div>' +
-        // '										<div class="item-after">' + res.info.fReverse + '</div>' +
-        // '									</div>' +
-        // '								</li>';
+
+
     html = html.replace(/undefined/ig, '--');
     $('#ammeter-list').html(html);
 //	$.hidePreloader();
@@ -441,9 +408,10 @@ function deployData(res) {
 
 //页面初始化
 $(function () {
-    var fMeId = window.location.href.split('=')[1]; //页面类型参数
+    // var fMeId = window.location.href.split('=')[1]; //页面类型参数
+    var fCommaddress = '';
     getData();
     mtview();
-    console.log(fMeId)
+    console.log(fCommaddress)
 
 })

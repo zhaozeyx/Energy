@@ -162,10 +162,15 @@ var Chart = function () {
     myChart.setOption(option);
 };
 
+//判断数组是否为空
+function isEmpty(value) {
+    return (Array.isArray(value) && value.length === 0) || (Object.prototype.isPrototypeOf(value) && Object.keys(value).length === 0);
+}
 
 //获取能换类型
 function getEnergylist() {
-    var data = {"fDatalevelid": Datacenterid};
+    var data = {"fDatacenterid": Datacenterid};
+    console.log(data);
     $.ajax({
         type: "post",
         url: api + '/monitor/api/consume/analy/energylist ',
@@ -200,7 +205,12 @@ function energyPicker(res) {
             '</li>';
     }
     ;
-    $('#energyType').html(html);
+
+    if( isEmpty(res) == true){
+        $('#energyType').parent(".list-block").html("<p style='text-align:center'><span class='icon icon-browser'></span> 暂无更多</p>");
+    }else{
+        $('#energyType').html(html);
+    }
     picker.click(function () {
         $.popup('.popup-energy');
     })
