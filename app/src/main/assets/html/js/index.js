@@ -241,27 +241,6 @@ function indexPost() {
 	})
 }
 
-//请求能源列表
-function indexEnergy() {
-	$.ajax({
-        type: 'POST',
-        url: api + '/monitor/api/consume/analy/energylist',
-        data: JSON.stringify({ "fDatacenterid": Datacenterid }),
-        contentType: 'application/json',
-        timeout: 4000,
-        beforeSend:function(){
-            // $.showIndicator();
-        },
-        success: function(data) {
-        	console.log(data)
-            deployEnergyList(data);
-		},
-		error:function(){
-
-		}
-	})
-}
-
 $('#resetNetwork').click(function(){
 	indexPost()
 })
@@ -288,7 +267,7 @@ function deployData(data) {
 		}
 	});
 	//月用电总量
-	$('#totalM').html(Number(data.totalElectricity).toFixed(0));
+	$('#totalM').html(Number(data.specialElec).toFixed(0));
 	//	环比
 	$('#mom').html(function() {
 		var d = data.monthOnMonth * 100;
@@ -335,35 +314,31 @@ function deployData(data) {
 		'</div>' +
 		'</div>';
 	$('#electricityType').html(electricityType);
-}
-
-//能耗列表
-function deployEnergyList(data) {
-    var energyList = '';
-	for(var i = 0; i < data.length; i++){
-		energyList +=
-			'<li>' +
+	// 能耗分析
+    var energyList = '',
+		data = data.energyList;
+    for(var i = 0; i < data.length; i++){
+        energyList +=
+            '<li>' +
             '<a href="secondary.html?typeid='+data[i].fEnergytype+'" class="item-link item-content" external>' +
             '<div class="item-media"><i class="icon icon-f7"></i></div>' +
             '<div class="item-inner">' +
             '<div class="item-title">'+data[i].fEnergyname+'</div>' +
-            '<div class="item-after">'+Number(data[i].fEnergyitemfml).toFixed(2)+data[i].fEnergyitemunit+' </div>' +
+            '<div class="item-after">'+Number(data[i].totalAmount).toFixed(2)+' '+data[i].fEnergyitemunit+'</div>' +
             '</div>' +
             '</a>' +
             '</li>';
-	}
+    }
     var energyMain = '<div class="content-block-title">能耗总览</div>'+
-        			 '<div class="list-block"><ul>'+energyList+'</ul></div>';
+        '<div class="list-block"><ul>'+energyList+'</ul></div>';
     if(isEmpty(data) == true){
         $('#energyTotal').html('<div class="list-block"></div>');
-	}else{
+    }else{
         $('#energyTotal').html(energyMain);
     }
-
 }
 
 //初始化图表
 $(function() {
 	indexPost()
-    indexEnergy()
 });
