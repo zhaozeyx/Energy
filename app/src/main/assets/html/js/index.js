@@ -267,7 +267,7 @@ function deployData(data) {
 		}
 	});
 	//月用电总量
-	$('#totalM').html(Number(data.specialElec).toFixed(0));
+	$('#totalM').html(Number(data.totalElectricity).toFixed(0));
 	//	环比
 	$('#mom').html(function() {
 		var d = data.monthOnMonth * 100;

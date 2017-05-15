@@ -263,7 +263,7 @@ var classifyChart = function(data) {
 };
 
 //码表统计
-var gaugeChart = function(min, max, total, Mtotal ,unit) {
+var gaugeChart = function(min, max, total, Mtotal ,unit, step1, step2) {
 	var myChart = echarts.init(document.getElementById('gaugeChart'));
 	var option = {
 		tooltip: {
@@ -273,15 +273,15 @@ var gaugeChart = function(min, max, total, Mtotal ,unit) {
 			//name: '业务指标',
 			type: 'gauge',
 			radius: '95%',
-			min:min,
+			min:0,
 			max:max,
 			//仪表盘轴线配置
 			axisLine: {
 				show: true,
 				lineStyle: {
 					color: [
-						[0.2, '#55dc42'],
-						[0.8, '#1697ea'],
+						[step1, '#55dc42'],
+						[step2, '#1697ea'],
 						[1, '#ff9000']
 					],
 					width: 10
@@ -616,10 +616,14 @@ function deployData(data) {
 	var Mtotal = Number(data.monthOnStd.total);
 	// var Mtotal = 500.00;
 		total = Number(total).toFixed(0);
-	var max = Number(data.monthOnStd.max);
+	var max = Number(data.monthOnStd.max).toFixed(0);
 	// var max = 500;
 	var min = Number(data.monthOnStd.step1);
-	console.info(max.toFixed(0).toString().length)
+	var step1 = Number(data.monthOnStd.step1).toFixed(0),
+		step2 = Number(data.monthOnStd.step2).toFixed(0);
+	console.log(data.monthOnStd.step1)
+	console.info(max.toString().length)
+	console.info(min.toFixed(0).toString().length)
 	switch (min.toFixed(0).toString().length){
 		case 4:
 			min = Number(min/1000).toFixed(0)
@@ -657,7 +661,7 @@ function deployData(data) {
 				max = Number(max).toFixed(0)
 		}
 	}else {
-		switch (max.toFixed(0).toString().length){
+		switch (max.toString().length){
 			case 4:
 				max = Number(max/1000).toFixed(0)
 				break;
@@ -701,9 +705,16 @@ function deployData(data) {
 			Mtotal = Mtotal.toFixed(0)
 	}
 
-	console.log(min, max, total, Mtotal, unit)
+	if(step1 == 0 && step2 == 0 ){
+        step1 = 0.2;
+        step2 = 0.8;
+	}else{
+		step1 = Number(step1).toFixed(0)/Number(data.monthOnStd.max).toFixed(0);
+		step2 = Number(step2).toFixed(0)/Number(data.monthOnStd.max).toFixed(0);
+	}
+	console.log(min, max, total, Mtotal, unit, step1, step2)
 
-	gaugeChart(min, max, total, Mtotal, unit);
+	gaugeChart(min, max, total, Mtotal, unit, step1, step2);
 	//	环比
 	$('#mom').html(function() {
 		var d = data.monthOnMonth * 100;

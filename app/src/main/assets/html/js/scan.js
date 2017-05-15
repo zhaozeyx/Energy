@@ -302,7 +302,12 @@ var getData = function () {
         success: function (res) {
             $.hideIndicator();
             var res = res.data;
-            deployData(res);
+            if($.isEmptyObject(res.curveByWeek) && res.info == ''){
+                $.toast("没有找到设备信息");
+            }else{
+                deployData(res);
+            }
+
         },
     });
 }
