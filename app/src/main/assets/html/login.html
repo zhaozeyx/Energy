@@ -74,7 +74,7 @@
 			          <div class="item-inner">
 			            <div class="item-title label">服务器IP</div>
 			            <div class="item-input">
-			              <input type="text" id="serveIp" value="221.204.25.125" autocomplete="off" placeholder="请填写服务器IP ">
+			              <input type="text" id="serveIp" value="" autocomplete="off" placeholder="请填写服务器IP ">
 			            </div>
 			          </div>
 			        </div>
@@ -85,7 +85,7 @@
 			          <div class="item-inner">
 			            <div class="item-title label">端口号</div>
 			            <div class="item-input">
-			              <input type="number" id="servePort" value="8088" autocomplete="off" placeholder="请填写端口号 ">
+			              <input type="number" id="servePort" value="" autocomplete="off" placeholder="请填写端口号 ">
 			            </div>
 			          </div>
 			        </div>
@@ -105,21 +105,39 @@
 		<script type='text/javascript' src='./sui/js/sm.min.js' charset='utf-8'></script>
 		<script type='text/javascript' src='./sui/js/sm-extend.min.js' charset='utf-8'></script>
 		<script type="text/javascript">
-            if($('#serveIp').val() !== '' && $('#servePort').val() !== '') {
-                var serveIp = $('#serveIp').val();
-                var servePort = $('#servePort').val();
+			var defaultIp = '221.204.25.125',
+				defaultPort = '8088';
+			var getBol = localStorage.getItem('Bol');
+            if(getBol === null){
+			    console.log('不存在')
+                var serveIp = $('#serveIp').val(defaultIp);
+                var servePort = $('#servePort').val(defaultPort);
+                var storageIP =  defaultIp,
+                    StoragePort = defaultPort;
+                console.log(storageIP, StoragePort)
                 localStorage.setItem("serveIp", serveIp);
                 localStorage.setItem("servePort", servePort);
-                desc()
-            }else{
-                $('.login_desc').html('<p>请设置登录IP</p>');
-            }
+                desc(storageIP, StoragePort)
+			}else{
+				console.log('存在');
+                //获取本地储存的IP和端口信息
+                var storageIP= localStorage.getItem("serveIp");
+                var StoragePort = localStorage.getItem("servePort");
+                $('#serveIp').val(storageIP);
+                $('#servePort').val(StoragePort);
+                if($('#serveIp').val() !== '' && $('#servePort').val() !== '') {
+                    var serveIp = $('#serveIp').val();
+                    var servePort = $('#servePort').val();
+                    localStorage.setItem("serveIp", serveIp);
+                    localStorage.setItem("servePort", servePort);
+                    desc(storageIP, StoragePort)
+                }else{
+                    $('.login_desc').html('<p>请设置登录IP</p>');
+                }
+			}
 
-			//获取本地储存的IP和端口信息
-			var storageIP= localStorage.getItem("serveIp");
-			var StoragePort = localStorage.getItem("servePort");
-			$('#serveIp').val(storageIP);
-			$('#servePort').val(StoragePort);
+
+
 			//获取以前储存的账号密码
 			var StorageUser = localStorage.getItem('StorageUser');
 			var StoragePass = localStorage.getItem('StoragePass');
@@ -152,9 +170,9 @@
 			    }  
 			};
 								
-			function desc(){
-				var storageIP= localStorage.getItem("serveIp");
-				var StoragePort = localStorage.getItem("servePort");
+			function desc(storageIP, StoragePort){
+//				var storageIP= localStorage.getItem("serveIp");
+//				var StoragePort = localStorage.getItem("servePort");
 				var api = 'http://'+storageIP+':'+StoragePort;
 				var data = {"fDatalevelid":"1"};
 //				console.log(api)
@@ -190,10 +208,11 @@
 					}else{							
 						if(isIP(serveIp) == true){
 							 localStorage.setItem("serveIp", serveIp);     
-							 localStorage.setItem("servePort", servePort);							 							 							
+							 localStorage.setItem("servePort", servePort);
+							 localStorage.setItem('Bol','0');
 							 $.toast("保存成功");		
 							 $.closeModal('.popup-setting')
-							 desc();
+							 desc(serveIp, servePort);
 							}else{
 								$.toast("请检查ip的有效性");
 							}
