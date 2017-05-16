@@ -53,7 +53,7 @@
 							<a href="javascript:void(0)" class="setting open-setting"><i class="icon icon-settings"></i> 设置</a>
 					</div>
 					<div class="login_desc">
-						
+
 					</div>
 				</div>
 			</div>
@@ -74,7 +74,7 @@
 			          <div class="item-inner">
 			            <div class="item-title label">服务器IP</div>
 			            <div class="item-input">
-			              <input type="text" id="serveIp" value="" autocomplete="off" placeholder="请填写服务器IP ">
+			              <input type="text" id="serveIp" value="221.204.25.125" autocomplete="off" placeholder="请填写服务器IP ">
 			            </div>
 			          </div>
 			        </div>
@@ -85,7 +85,7 @@
 			          <div class="item-inner">
 			            <div class="item-title label">端口号</div>
 			            <div class="item-input">
-			              <input type="number" id="servePort" value="" autocomplete="off" placeholder="请填写端口号 ">
+			              <input type="number" id="servePort" value="8088" autocomplete="off" placeholder="请填写端口号 ">
 			            </div>
 			          </div>
 			        </div>
@@ -105,9 +105,19 @@
 		<script type='text/javascript' src='./sui/js/sm.min.js' charset='utf-8'></script>
 		<script type='text/javascript' src='./sui/js/sm-extend.min.js' charset='utf-8'></script>
 		<script type="text/javascript">
+            if($('#serveIp').val() !== '' && $('#servePort').val() !== '') {
+                var serveIp = $('#serveIp').val();
+                var servePort = $('#servePort').val();
+                localStorage.setItem("serveIp", serveIp);
+                localStorage.setItem("servePort", servePort);
+                desc()
+            }else{
+                $('.login_desc').html('<p>请设置登录IP</p>');
+            }
+
 			//获取本地储存的IP和端口信息
 			var storageIP= localStorage.getItem("serveIp");
-			var StoragePort = localStorage.getItem("servePort");			
+			var StoragePort = localStorage.getItem("servePort");
 			$('#serveIp').val(storageIP);
 			$('#servePort').val(StoragePort);
 			//获取以前储存的账号密码
@@ -118,11 +128,7 @@
 
 			var isPort = /^([0-9]|[1-9]\d{1,3}|[1-5]\d{4}|6[0-5]{2}[0-3][0-5])$/;
 			
-			if($('#serveIp').val() !== '' || $('#servePort').val() !== '') {
-				desc()
-			}else{
-				$('.login_desc').html('<p>请设置登录IP</p>');
-			}
+
 			
 			//ip效验
 			function isIP(ip){  
