@@ -110,8 +110,10 @@
 			var getBol = localStorage.getItem('Bol');
             if(getBol === null){
 			    console.log('不存在')
-                var serveIp = $('#serveIp').val(defaultIp);
-                var servePort = $('#servePort').val(defaultPort);
+                $('#serveIp').val(defaultIp);
+                $('#servePort').val(defaultPort);
+                var serveIp = defaultIp;
+                var servePort = defaultPort;
                 var storageIP =  defaultIp,
                     StoragePort = defaultPort;
                 console.log(storageIP, StoragePort)
